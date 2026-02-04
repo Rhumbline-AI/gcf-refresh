@@ -33,4 +33,6 @@ const nextConfig = {
   redirects,
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+// devBundleServerPackages: true bundles server packages in dev to avoid duplicate modules
+// and "__webpack_modules__[moduleId] is not a function" / Invalid hook call errors
+export default withPayload(nextConfig, { devBundleServerPackages: true })

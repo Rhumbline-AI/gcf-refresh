@@ -1,13 +1,21 @@
+import { config as loadEnv } from 'dotenv'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+// Load .env from project root (payload.config is in src/) so it works regardless of cwd
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
+loadEnv({ path: path.resolve(dirname, '../../.env') })
+
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import sharp from 'sharp'
-import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
-import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Projects } from './collections/Projects'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -15,8 +23,18 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
+// Required for Payload to run; missing values cause admin white screen or silent failure
+if (!process.env.PAYLOAD_SECRET) {
+  throw new Error(
+    'PAYLOAD_SECRET is required. Add it to .env (see .env.example). Example: PAYLOAD_SECRET=your-secret-here',
+  )
+}
+
+if (!process.env.DATABASE_URI) {
+  throw new Error(
+    'DATABASE_URI is required. Add it to .env (see .env.example). Example: DATABASE_URI=postgresql://127.0.0.1:5432/your-db',
+  )
+}
 
 export default buildConfig({
   admin: {
@@ -59,10 +77,10 @@ export default buildConfig({
   editor: defaultLexical,
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || '',
+      connectionString: process.env.DATABASE_URI,
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Projects, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,
