@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import { WorkSection } from '@/components/WorkSection'
 import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
@@ -14,7 +13,6 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { HomePageLivePreview } from './HomePageLivePreview'
-import type { Project } from '@/payload-types'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -70,7 +68,6 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const { hero, layout } = page
   const isHome = decodedSlug === 'home'
-  const projects = isHome ? await queryProjects() : []
 
   return (
     <article className="pt-16 pb-24">
@@ -81,7 +78,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
 
       {isHome ? (
-        <HomePageLivePreview initialPage={page} initialProjects={projects}>
+        <HomePageLivePreview initialPage={page}>
           <RenderBlocks blocks={layout} />
         </HomePageLivePreview>
       ) : (
@@ -115,8 +112,8 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     collection: 'pages',
     draft,
     limit: 1,
-    pagination: false,
     overrideAccess: draft,
+    pagination: false,
     where: {
       slug: {
         equals: slug,
@@ -125,16 +122,4 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
   })
 
   return result.docs?.[0] || null
-})
-
-const queryProjects = cache(async (): Promise<Project[]> => {
-  const payload = await getPayload({ config: configPromise })
-  const result = await payload.find({
-    collection: 'projects',
-    depth: 1,
-    limit: 100,
-    overrideAccess: false,
-    pagination: false,
-  })
-  return result.docs ?? []
 })

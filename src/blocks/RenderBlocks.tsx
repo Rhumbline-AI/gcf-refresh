@@ -6,14 +6,20 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { LogoGridBlock } from '@/blocks/LogoGrid/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { MethodologyBlock } from '@/blocks/Methodology/Component'
+import { WorkBlock } from '@/blocks/Work/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
+  logoGrid: LogoGridBlock,
   mediaBlock: MediaBlock,
+  methodology: MethodologyBlock,
+  work: WorkBlock,
 }
 
 export const RenderBlocks: React.FC<{

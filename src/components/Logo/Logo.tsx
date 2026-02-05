@@ -1,5 +1,7 @@
 import clsx from 'clsx'
+import Image from 'next/image'
 import React from 'react'
+import LogoImage from '@/images/GCF-logo.png'
 
 interface Props {
   className?: string
@@ -11,19 +13,17 @@ export const Logo = (props: Props) => {
   const { loading: loadingFromProps, priority: priorityFromProps, className } = props
 
   const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
+  const priorityValue = priorityFromProps === 'high'
 
   return (
-    /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
+    <Image
+      src={LogoImage}
+      alt="Growth Fuel"
+      width={58}
+      height={58}
       loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
+      priority={priorityValue}
+      className={clsx('w-auto h-[58px]', className)}
     />
   )
 }
