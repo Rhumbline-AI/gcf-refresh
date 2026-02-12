@@ -222,6 +222,7 @@ export interface Page {
     | {
         title?: string | null;
         subtitle?: string | null;
+        definition?: string | null;
         items?:
           | {
               label: string;
@@ -1173,6 +1174,7 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               title?: T;
               subtitle?: T;
+              definition?: T;
               items?:
                 | T
                 | {
