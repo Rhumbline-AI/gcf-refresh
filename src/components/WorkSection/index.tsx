@@ -3,10 +3,9 @@
 import { motion } from 'framer-motion'
 import React from 'react'
 import dotMatrixBg from '@/images/dot-matrix-background.gif'
+import type { Project } from '@/payload-types'
 
-import type { WorkProject } from './types'
-
-export function WorkSection({ projects }: { projects: WorkProject[] }) {
+export function WorkSection({ projects }: { projects: Project[] }) {
   if (projects.length === 0) return null
 
   // For now, hardcode 3 projects layout - we'll expand this later
@@ -130,25 +129,56 @@ export function WorkSection({ projects }: { projects: WorkProject[] }) {
 }
 
 type ProjectCircleProps = {
-  project: WorkProject
+  project: Project
   size: 'medium' | 'xlarge'
 }
 
 function ProjectCircle({ project, size }: ProjectCircleProps) {
   const diameter = size === 'xlarge' ? 500 : 340
+  const borderWidth = 25 // 25px blue border showing
+  // Image should be larger to fill most of circle, leaving ~25px border
+  const imageSize = diameter + 200 // Make image much larger than circle
+  
+  // Extract image URL from thumbnail Media object
+  const thumbnailUrl = typeof project.thumbnail === 'object' && project.thumbnail !== null 
+    ? project.thumbnail.url 
+    : null
   
   return (
     <div
-      className="rounded-full flex items-center justify-start text-white font-bold shadow-2xl px-12"
+      className="rounded-full relative overflow-hidden flex items-center justify-center"
       style={{
         width: `${diameter}px`,
         height: `${diameter}px`,
         backgroundColor: '#307fe2',
-        fontSize: size === 'xlarge' ? '2.5rem' : '1.75rem',
-        fontFamily: 'var(--font-inter)',
       }}
     >
-      {project.title}
+      {/* Project image - centered and larger (z-index: 2) */}
+      {thumbnailUrl && (
+        <img
+          src={thumbnailUrl}
+          alt={project.title}
+          style={{
+            width: `${imageSize}px`,
+            height: `${imageSize}px`,
+            objectFit: 'contain',
+            zIndex: 2,
+          }}
+        />
+      )}
+      
+      {/* Title overlay (z-index: 3) */}
+      <div
+        className="absolute inset-0 flex items-center justify-start px-12 text-white font-bold"
+        style={{
+          fontSize: size === 'xlarge' ? '2.5rem' : '1.75rem',
+          fontFamily: 'var(--font-inter)',
+          textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+          zIndex: 3,
+        }}
+      >
+        {project.title}
+      </div>
     </div>
   )
 }
