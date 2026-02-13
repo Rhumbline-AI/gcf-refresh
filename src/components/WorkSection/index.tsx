@@ -36,10 +36,10 @@ export function WorkSection({ projects }: { projects: Project[] }) {
       >
         {/* Line from The Venetian - diagonal going down and to the LEFT edge */}
         <line 
-          x1="32%" 
-          y1="450" 
+          x1="28%" 
+          y1="480" 
           x2="0" 
-          y2="700" 
+          y2="750" 
           stroke="#307fe2" 
           strokeWidth="3"
         />
@@ -47,22 +47,22 @@ export function WorkSection({ projects }: { projects: Project[] }) {
         {/* Tecovas connector arm - elbow shape */}
         {/* First segment: vertical line down from Tecovas */}
         <line 
-          x1="68%" 
-          y1="450" 
-          x2="68%" 
-          y2="550" 
+          x1="72%" 
+          y1="480" 
+          x2="72%" 
+          y2="580" 
           stroke="#307fe2" 
           strokeWidth="3"
         />
         {/* Node at the elbow */}
-        <circle cx="68%" cy="550" r="5" fill="#307fe2" />
+        <circle cx="72%" cy="580" r="5" fill="#307fe2" />
         
         {/* Second segment: horizontal line to right viewport edge */}
         <line 
-          x1="68%" 
-          y1="550" 
+          x1="72%" 
+          y1="580" 
           x2="100%" 
-          y2="550" 
+          y2="580" 
           stroke="#307fe2" 
           strokeWidth="3"
         />
@@ -75,14 +75,14 @@ export function WorkSection({ projects }: { projects: Project[] }) {
       </div>
 
       {/* Top Row - Two circles */}
-      <div className="relative mx-auto w-full max-w-7xl -mb-8" style={{ minHeight: '400px' }}>
+      <div className="relative mx-auto w-full max-w-7xl -mb-16" style={{ minHeight: '420px' }}>
         {/* Top Left Circle - The Venetian */}
         {displayProjects[0] && (
           <motion.div
             className="absolute"
             style={{
               top: '0%',
-              left: '15%',
+              left: '10%',
               zIndex: 2,
             }}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -99,7 +99,7 @@ export function WorkSection({ projects }: { projects: Project[] }) {
             className="absolute"
             style={{
               top: '0%',
-              right: '15%',
+              right: '10%',
               zIndex: 2,
             }}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -135,9 +135,8 @@ type ProjectCircleProps = {
 
 function ProjectCircle({ project, size }: ProjectCircleProps) {
   const diameter = size === 'xlarge' ? 500 : 340
-  const borderWidth = 25 // 25px blue border showing
-  // Image should be larger to fill most of circle, leaving ~25px border
-  const imageSize = diameter + 200 // Make image much larger than circle
+  const imageSize = size === 'xlarge' ? 490 : 330 // Image size
+  const blueCircleSize = size === 'xlarge' ? 470 : 310 // Blue circle smaller - thinner border
   
   // Extract image URL from thumbnail Media object
   const thumbnailUrl = typeof project.thumbnail === 'object' && project.thumbnail !== null 
@@ -146,14 +145,24 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
   
   return (
     <div
-      className="rounded-full relative overflow-hidden flex items-center justify-center"
+      className="relative flex items-center justify-center"
       style={{
         width: `${diameter}px`,
         height: `${diameter}px`,
-        backgroundColor: '#307fe2',
       }}
     >
-      {/* Project image - centered and larger (z-index: 2) */}
+      {/* Solid blue circle - smaller than image, creates thin border effect */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: `${blueCircleSize}px`,
+          height: `${blueCircleSize}px`,
+          backgroundColor: '#307fe2',
+          zIndex: 1,
+        }}
+      />
+      
+      {/* Project image - slightly smaller, blue shows around edges */}
       {thumbnailUrl && (
         <img
           src={thumbnailUrl}
