@@ -240,6 +240,13 @@ export interface Page {
         blockName?: string | null;
         blockType: 'work';
       }
+    | {
+        title?: string | null;
+        image?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'workWithUs';
+      }
   )[];
   meta?: {
     title?: string | null;
@@ -1189,6 +1196,14 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               title?: T;
+              id?: T;
+              blockName?: T;
+            };
+        workWithUs?:
+          | T
+          | {
+              title?: T;
+              image?: T;
               id?: T;
               blockName?: T;
             };

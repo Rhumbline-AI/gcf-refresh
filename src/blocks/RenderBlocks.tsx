@@ -10,6 +10,7 @@ import { LogoGridBlock } from '@/blocks/LogoGrid/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MethodologyBlock } from '@/blocks/Methodology/Component'
 import { WorkBlock } from '@/blocks/Work/Component'
+import { WorkWithUsBlock } from '@/blocks/WorkWithUs/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -20,6 +21,7 @@ const blockComponents = {
   mediaBlock: MediaBlock,
   methodology: MethodologyBlock,
   work: WorkBlock,
+  workWithUs: WorkWithUsBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -40,7 +42,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

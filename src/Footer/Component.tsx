@@ -16,7 +16,7 @@ export async function Footer() {
 
   return (
     <footer 
-      className="mt-auto relative py-12"
+      className="relative py-12 -mt-16 md:-mt-24"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
         backgroundRepeat: 'repeat',
