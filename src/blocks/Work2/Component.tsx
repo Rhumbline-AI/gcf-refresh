@@ -1,15 +1,15 @@
 import React from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { WorkSection } from '@/components/WorkSection'
+import { WorkSection2 } from '@/components/WorkSection2'
 import type { Project } from '@/payload-types'
 
-type WorkBlockProps = {
+type Work2BlockProps = {
   title?: string | null
   projects?: (number | Project)[] | null
 }
 
-export const WorkBlock = async ({ projects }: WorkBlockProps) => {
+export const Work2Block = async ({ projects }: Work2BlockProps) => {
   // Handle missing or empty projects
   if (!projects || projects.length === 0) {
     return null
@@ -39,5 +39,5 @@ export const WorkBlock = async ({ projects }: WorkBlockProps) => {
     return null
   }
 
-  return <WorkSection projects={sortedProjects} />
+  return <WorkSection2 projects={sortedProjects} />
 }

@@ -10,6 +10,7 @@ import { LogoGrid } from '../../blocks/LogoGrid/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { Methodology } from '../../blocks/Methodology/config'
 import { Work } from '../../blocks/Work/config'
+import { Work2 } from '../../blocks/Work2/config'
 import { WorkWithUs } from '../../blocks/WorkWithUs/config'
 import { hero } from '@/heros/config'
 import formatSlug from '../../utilities/formatSlug'
@@ -85,6 +86,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 LogoGrid,
                 Methodology,
                 Work,
+                Work2,
                 WorkWithUs,
               ],
               required: true,

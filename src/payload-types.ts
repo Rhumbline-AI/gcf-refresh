@@ -236,9 +236,23 @@ export interface Page {
       }
     | {
         title?: string | null;
+        /**
+         * Select up to 3 projects. First two appear as smaller circles on top, third appears as large circle on bottom.
+         */
+        projects?: (number | Project)[] | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'work';
+      }
+    | {
+        title?: string | null;
+        /**
+         * Select up to 3 projects. First appears as large circle on top, second two appear as smaller circles on bottom.
+         */
+        projects?: (number | Project)[] | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'work2';
       }
     | {
         title?: string | null;
@@ -1196,6 +1210,15 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               title?: T;
+              projects?: T;
+              id?: T;
+              blockName?: T;
+            };
+        work2?:
+          | T
+          | {
+              title?: T;
+              projects?: T;
               id?: T;
               blockName?: T;
             };

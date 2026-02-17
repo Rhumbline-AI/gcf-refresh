@@ -1,10 +1,10 @@
 import type { Block } from 'payload'
 
-export const Work: Block = {
-  slug: 'work',
+export const Work2: Block = {
+  slug: 'work2',
   labels: {
-    singular: 'Work Section',
-    plural: 'Work Sections',
+    singular: 'Work Section 2 (Inverted)',
+    plural: 'Work Sections 2',
   },
   fields: [
     {
@@ -23,7 +23,7 @@ export const Work: Block = {
       label: 'Select 3 Projects',
       required: false,
       admin: {
-        description: 'Select up to 3 projects. First two appear as smaller circles on top, third appears as large circle on bottom.',
+        description: 'Select up to 3 projects. First appears as large circle on top, second two appear as smaller circles on bottom.',
       },
     },
   ],

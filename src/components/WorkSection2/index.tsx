@@ -5,10 +5,10 @@ import React from 'react'
 import dotMatrixBg from '@/images/dot-matrix-background.gif'
 import type { Project } from '@/payload-types'
 
-export function WorkSection({ projects }: { projects: Project[] }) {
+export function WorkSection2({ projects }: { projects: Project[] }) {
   if (projects.length === 0) return null
 
-  // For now, hardcode 3 projects layout - we'll expand this later
+  // For now, hardcode 3 projects layout
   const displayProjects = projects.slice(0, 3)
 
   return (
@@ -34,50 +34,58 @@ export function WorkSection({ projects }: { projects: Project[] }) {
         }}
         preserveAspectRatio="none"
       >
-        {/* Line from The Venetian - diagonal going down and to the LEFT edge */}
+        {/* Line from bottom-left circle - diagonal going up and to the LEFT edge */}
         <line 
           x1="28%" 
-          y1="480" 
+          y1="620" 
           x2="0" 
-          y2="750" 
+          y2="400" 
           stroke="#307fe2" 
           strokeWidth="3"
         />
         
-        {/* Tecovas connector arm - elbow shape */}
-        {/* First segment: vertical line down from Tecovas */}
+        {/* Bottom-right connector arm - elbow shape */}
+        {/* First segment: vertical line up from bottom-right circle */}
         <line 
           x1="72%" 
-          y1="480" 
+          y1="620" 
           x2="72%" 
-          y2="580" 
+          y2="520" 
           stroke="#307fe2" 
           strokeWidth="3"
         />
         {/* Node at the elbow */}
-        <circle cx="72%" cy="580" r="5" fill="#307fe2" />
+        <circle cx="72%" cy="520" r="5" fill="#307fe2" />
         
         {/* Second segment: horizontal line to right viewport edge */}
         <line 
           x1="72%" 
-          y1="580" 
+          y1="520" 
           x2="100%" 
-          y2="580" 
+          y2="520" 
           stroke="#307fe2" 
           strokeWidth="3"
         />
       </svg>
 
-      <div className="container">
-        <h2 className="mb-16 text-4xl md:text-5xl font-light text-center" style={{ fontFamily: 'var(--font-inter)' }}>
-          The work
-        </h2>
+      {/* Top Row - Large centered circle */}
+      <div className="relative w-full flex justify-center mb-8">
+        {/* Top Center Circle - Large */}
+        {displayProjects[0] && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <ProjectCircle project={displayProjects[0]} size="xlarge" />
+          </motion.div>
+        )}
       </div>
 
-      {/* Top Row - Two circles */}
-      <div className="relative mx-auto w-full max-w-7xl -mb-16" style={{ minHeight: '420px' }}>
-        {/* Top Left Circle - The Venetian */}
-        {displayProjects[0] && (
+      {/* Bottom Row - Two smaller circles */}
+      <div className="relative mx-auto w-full max-w-7xl" style={{ minHeight: '380px' }}>
+        {/* Bottom Left Circle */}
+        {displayProjects[1] && (
           <motion.div
             className="absolute"
             style={{
@@ -87,14 +95,14 @@ export function WorkSection({ projects }: { projects: Project[] }) {
             }}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <ProjectCircle project={displayProjects[0]} size="medium" />
+            <ProjectCircle project={displayProjects[1]} size="medium" />
           </motion.div>
         )}
 
-        {/* Top Right Circle - Tecovas */}
-        {displayProjects[1] && (
+        {/* Bottom Right Circle */}
+        {displayProjects[2] && (
           <motion.div
             className="absolute"
             style={{
@@ -104,23 +112,9 @@ export function WorkSection({ projects }: { projects: Project[] }) {
             }}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <ProjectCircle project={displayProjects[1]} size="medium" />
-          </motion.div>
-        )}
-      </div>
-
-      {/* Bottom Row - Large centered circle */}
-      <div className="relative w-full flex justify-center">
-        {/* Bottom Center Circle - USAA (larger) */}
-        {displayProjects[2] && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <ProjectCircle project={displayProjects[2]} size="xlarge" />
+            <ProjectCircle project={displayProjects[2]} size="medium" />
           </motion.div>
         )}
       </div>
