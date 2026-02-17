@@ -11,6 +11,10 @@ export function WorkSection({ projects }: { projects: Project[] }) {
   // For now, hardcode 3 projects layout - we'll expand this later
   const displayProjects = projects.slice(0, 3)
 
+  // Circle sizes for reference
+  const mediumDiameter = 340
+  const xlargeDiameter = 575
+
   return (
     <section 
       className="relative py-8 md:py-12 -mt-8 md:-mt-12"
@@ -23,48 +27,71 @@ export function WorkSection({ projects }: { projects: Project[] }) {
     >
       {/* Background SVG for all connecting lines - full viewport width */}
       <svg 
-        className="absolute pointer-events-none overflow-visible" 
+        className="absolute pointer-events-none overflow-visible hidden md:block" 
         style={{ 
           top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '100vw',
+          left: 0,
+          width: '100%',
           height: '100%',
           zIndex: 1 
         }}
-        preserveAspectRatio="none"
+        preserveAspectRatio="xMidYMid meet"
       >
-        {/* Line from The Venetian - diagonal going down and to the LEFT edge */}
+        {/* LEFT CONNECTOR - from The Venetian circle (bottom-left edge) */}
         <line 
-          x1="28%" 
-          y1="480" 
-          x2="0" 
-          y2="750" 
+          x1="26%" 
+          y1="38%" 
+          x2="16%" 
+          y2="52%" 
           stroke="#307fe2" 
-          strokeWidth="3"
+          strokeWidth="4"
+        />
+        <circle cx="16%" cy="52%" r="6" fill="#307fe2" />
+        <line 
+          x1="16%" 
+          y1="52%" 
+          x2="-2%" 
+          y2="68%" 
+          stroke="#307fe2" 
+          strokeWidth="4"
         />
         
-        {/* Tecovas connector arm - elbow shape */}
-        {/* First segment: vertical line down from Tecovas */}
+        {/* RIGHT CONNECTOR - from USAA circle (bottom-right edge) */}
         <line 
-          x1="72%" 
-          y1="480" 
-          x2="72%" 
-          y2="580" 
+          x1="74%" 
+          y1="38%" 
+          x2="84%" 
+          y2="52%" 
           stroke="#307fe2" 
-          strokeWidth="3"
+          strokeWidth="4"
         />
-        {/* Node at the elbow */}
-        <circle cx="72%" cy="580" r="5" fill="#307fe2" />
-        
-        {/* Second segment: horizontal line to right viewport edge */}
+        <circle cx="84%" cy="52%" r="6" fill="#307fe2" />
         <line 
-          x1="72%" 
-          y1="580" 
-          x2="100%" 
-          y2="580" 
+          x1="84%" 
+          y1="52%" 
+          x2="102%" 
+          y2="62%" 
           stroke="#307fe2" 
-          strokeWidth="3"
+          strokeWidth="4"
+        />
+        
+        {/* BOTTOM CONNECTOR - from Safe Auto circle (bottom-left edge) */}
+        <line 
+          x1="42%" 
+          y1="88%" 
+          x2="30%" 
+          y2="98%" 
+          stroke="#307fe2" 
+          strokeWidth="4"
+        />
+        <circle cx="30%" cy="98%" r="6" fill="#307fe2" />
+        <line 
+          x1="30%" 
+          y1="98%" 
+          x2="-2%" 
+          y2="115%" 
+          stroke="#307fe2" 
+          strokeWidth="4"
         />
       </svg>
 
