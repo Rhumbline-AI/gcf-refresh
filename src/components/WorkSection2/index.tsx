@@ -13,7 +13,7 @@ export function WorkSection2({ projects }: { projects: Project[] }) {
 
   return (
     <section 
-      className="relative py-8 md:py-12 -mt-8 md:-mt-12"
+      className="relative py-8 md:py-12 -mt-24 md:-mt-32"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
         backgroundRepeat: 'repeat',
@@ -33,59 +33,40 @@ export function WorkSection2({ projects }: { projects: Project[] }) {
         }}
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* TOP CONNECTOR - from Safe Auto circle (bottom-right edge, going down-right then out) */}
+        {/* LEFT CONNECTOR - from top-left circle (bottom-left edge) */}
+        <line 
+          x1="26%" 
+          y1="38%" 
+          x2="16%" 
+          y2="52%" 
+          stroke="#307fe2" 
+          strokeWidth="4"
+        />
+        <circle cx="16%" cy="52%" r="6" fill="#307fe2" />
+        <line 
+          x1="16%" 
+          y1="52%" 
+          x2="-2%" 
+          y2="68%" 
+          stroke="#307fe2" 
+          strokeWidth="4"
+        />
+        
+        {/* BOTTOM CONNECTOR - from large center circle (bottom-right edge) */}
         <line 
           x1="58%" 
-          y1="52%" 
-          x2="70%" 
-          y2="58%" 
+          y1="88%" 
+          x2="68%" 
+          y2="105%" 
           stroke="#307fe2" 
           strokeWidth="4"
         />
-        <circle cx="70%" cy="58%" r="6" fill="#307fe2" />
+        <circle cx="68%" cy="105%" r="6" fill="#307fe2" />
         <line 
-          x1="70%" 
-          y1="58%" 
+          x1="68%" 
+          y1="105%" 
           x2="102%" 
-          y2="65%" 
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
-        
-        {/* LEFT CONNECTOR - from USAA circle (upper-left edge, angled up-left) */}
-        <line 
-          x1="20%" 
-          y1="62%" 
-          x2="10%" 
-          y2="55%" 
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
-        <circle cx="10%" cy="55%" r="6" fill="#307fe2" />
-        <line 
-          x1="10%" 
-          y1="55%" 
-          x2="-2%" 
-          y2="48%" 
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
-        
-        {/* RIGHT CONNECTOR - from Tecovas circle (right edge, steeper angle down-right) */}
-        <line 
-          x1="82%" 
-          y1="78%" 
-          x2="90%" 
-          y2="92%" 
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
-        <circle cx="90%" cy="92%" r="6" fill="#307fe2" />
-        <line 
-          x1="90%" 
-          y1="92%" 
-          x2="102%" 
-          y2="102%" 
+          y2="115%" 
           stroke="#307fe2" 
           strokeWidth="4"
         />
@@ -93,7 +74,7 @@ export function WorkSection2({ projects }: { projects: Project[] }) {
         {/* DECORATIVE PARTIAL CIRCLE - left side of screen */}
         <circle 
           cx="-2%" 
-          cy="45%" 
+          cy="85%" 
           r="160" 
           fill="none"
           stroke="#307fe2" 
@@ -101,23 +82,9 @@ export function WorkSection2({ projects }: { projects: Project[] }) {
         />
       </svg>
 
-      {/* Top Row - Large centered circle */}
-      <div className="relative w-full flex justify-center mb-8">
-        {/* Top Center Circle - Large */}
-        {displayProjects[0] && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <ProjectCircle project={displayProjects[0]} size="xlarge" />
-          </motion.div>
-        )}
-      </div>
-
-      {/* Bottom Row - Two smaller circles */}
-      <div className="relative mx-auto w-full max-w-7xl" style={{ minHeight: '380px' }}>
-        {/* Bottom Left Circle */}
+      {/* Top Row - Two smaller circles */}
+      <div className="relative mx-auto w-full max-w-7xl -mb-32" style={{ minHeight: '380px' }}>
+        {/* Top Left Circle */}
         {displayProjects[1] && (
           <motion.div
             className="absolute"
@@ -128,13 +95,13 @@ export function WorkSection2({ projects }: { projects: Project[] }) {
             }}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
           >
             <ProjectCircle project={displayProjects[1]} size="medium" />
           </motion.div>
         )}
 
-        {/* Bottom Right Circle */}
+        {/* Top Right Circle */}
         {displayProjects[2] && (
           <motion.div
             className="absolute"
@@ -145,9 +112,23 @@ export function WorkSection2({ projects }: { projects: Project[] }) {
             }}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
             <ProjectCircle project={displayProjects[2]} size="medium" />
+          </motion.div>
+        )}
+      </div>
+
+      {/* Bottom Row - Large centered circle */}
+      <div className="relative w-full flex justify-center">
+        {/* Bottom Center Circle - Large */}
+        {displayProjects[0] && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <ProjectCircle project={displayProjects[0]} size="xlarge" />
           </motion.div>
         )}
       </div>
@@ -161,9 +142,9 @@ type ProjectCircleProps = {
 }
 
 function ProjectCircle({ project, size }: ProjectCircleProps) {
-  const diameter = size === 'xlarge' ? 575 : 340 // xlarge increased by 15%
-  const imageSize = size === 'xlarge' ? 564 : 330 // Image size
-  const blueCircleSize = size === 'xlarge' ? 540 : 310 // Blue circle smaller - thinner border
+  const diameter = size === 'xlarge' ? 575 : 374 // medium increased by 10%
+  const imageSize = size === 'xlarge' ? 564 : 363 // Image size
+  const blueCircleSize = size === 'xlarge' ? 540 : 341 // Blue circle smaller - thinner border
   
   // Extract image URL from thumbnail Media object
   const thumbnailUrl = typeof project.thumbnail === 'object' && project.thumbnail !== null 

@@ -75,25 +75,6 @@ export function WorkSection({ projects }: { projects: Project[] }) {
           strokeWidth="4"
         />
         
-        {/* BOTTOM CONNECTOR - from Safe Auto circle (bottom-left edge) */}
-        <line 
-          x1="42%" 
-          y1="88%" 
-          x2="32%" 
-          y2="105%" 
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
-        <circle cx="32%" cy="105%" r="6" fill="#307fe2" />
-        <line 
-          x1="32%" 
-          y1="105%" 
-          x2="-2%" 
-          y2="115%" 
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
-        
         {/* DECORATIVE PARTIAL CIRCLE - right side of screen */}
         <circle 
           cx="102%" 
@@ -112,7 +93,7 @@ export function WorkSection({ projects }: { projects: Project[] }) {
       </div>
 
       {/* Top Row - Two circles */}
-      <div className="relative mx-auto w-full max-w-7xl -mb-16" style={{ minHeight: '420px' }}>
+      <div className="relative mx-auto w-full max-w-7xl -mb-32" style={{ minHeight: '380px' }}>
         {/* Top Left Circle - The Venetian */}
         {displayProjects[0] && (
           <motion.div
@@ -171,9 +152,9 @@ type ProjectCircleProps = {
 }
 
 function ProjectCircle({ project, size }: ProjectCircleProps) {
-  const diameter = size === 'xlarge' ? 575 : 340 // xlarge increased by 15%
-  const imageSize = size === 'xlarge' ? 564 : 330 // Image size
-  const blueCircleSize = size === 'xlarge' ? 540 : 310 // Blue circle smaller - thinner border
+  const diameter = size === 'xlarge' ? 575 : 374 // medium increased by 10%
+  const imageSize = size === 'xlarge' ? 564 : 363 // Image size
+  const blueCircleSize = size === 'xlarge' ? 540 : 341 // Blue circle smaller - thinner border
   
   // Extract image URL from thumbnail Media object
   const thumbnailUrl = typeof project.thumbnail === 'object' && project.thumbnail !== null 
