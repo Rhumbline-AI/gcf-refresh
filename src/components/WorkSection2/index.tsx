@@ -89,6 +89,16 @@ export function WorkSection2({ projects }: { projects: Project[] }) {
           stroke="#307fe2" 
           strokeWidth="4"
         />
+        
+        {/* DECORATIVE PARTIAL CIRCLE - left side of screen */}
+        <circle 
+          cx="-2%" 
+          cy="45%" 
+          r="160" 
+          fill="none"
+          stroke="#307fe2" 
+          strokeWidth="4"
+        />
       </svg>
 
       {/* Top Row - Large centered circle */}

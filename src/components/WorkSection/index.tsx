@@ -79,17 +79,27 @@ export function WorkSection({ projects }: { projects: Project[] }) {
         <line 
           x1="42%" 
           y1="88%" 
-          x2="30%" 
-          y2="98%" 
+          x2="32%" 
+          y2="105%" 
           stroke="#307fe2" 
           strokeWidth="4"
         />
-        <circle cx="30%" cy="98%" r="6" fill="#307fe2" />
+        <circle cx="32%" cy="105%" r="6" fill="#307fe2" />
         <line 
-          x1="30%" 
-          y1="98%" 
+          x1="32%" 
+          y1="105%" 
           x2="-2%" 
           y2="115%" 
+          stroke="#307fe2" 
+          strokeWidth="4"
+        />
+        
+        {/* DECORATIVE PARTIAL CIRCLE - right side of screen */}
+        <circle 
+          cx="102%" 
+          cy="55%" 
+          r="160" 
+          fill="none"
           stroke="#307fe2" 
           strokeWidth="4"
         />
