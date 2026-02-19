@@ -23,48 +23,71 @@ export function WorkSection2({ projects }: { projects: Project[] }) {
     >
       {/* Background SVG for all connecting lines - full viewport width */}
       <svg 
-        className="absolute pointer-events-none overflow-visible" 
+        className="absolute pointer-events-none overflow-visible hidden md:block" 
         style={{ 
           top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '100vw',
+          left: 0,
+          width: '100%',
           height: '100%',
           zIndex: 1 
         }}
-        preserveAspectRatio="none"
+        preserveAspectRatio="xMidYMid meet"
       >
-        {/* Line from bottom-left circle - diagonal going up and to the LEFT edge */}
+        {/* TOP CONNECTOR - from Safe Auto circle (bottom-right edge, going down-right then out) */}
         <line 
-          x1="28%" 
-          y1="620" 
-          x2="0" 
-          y2="400" 
+          x1="58%" 
+          y1="52%" 
+          x2="70%" 
+          y2="58%" 
           stroke="#307fe2" 
-          strokeWidth="3"
+          strokeWidth="4"
+        />
+        <circle cx="70%" cy="58%" r="6" fill="#307fe2" />
+        <line 
+          x1="70%" 
+          y1="58%" 
+          x2="102%" 
+          y2="65%" 
+          stroke="#307fe2" 
+          strokeWidth="4"
         />
         
-        {/* Bottom-right connector arm - elbow shape */}
-        {/* First segment: vertical line up from bottom-right circle */}
+        {/* LEFT CONNECTOR - from USAA circle (upper-left edge, angled up-left) */}
         <line 
-          x1="72%" 
-          y1="620" 
-          x2="72%" 
-          y2="520" 
+          x1="20%" 
+          y1="62%" 
+          x2="10%" 
+          y2="55%" 
           stroke="#307fe2" 
-          strokeWidth="3"
+          strokeWidth="4"
         />
-        {/* Node at the elbow */}
-        <circle cx="72%" cy="520" r="5" fill="#307fe2" />
-        
-        {/* Second segment: horizontal line to right viewport edge */}
+        <circle cx="10%" cy="55%" r="6" fill="#307fe2" />
         <line 
-          x1="72%" 
-          y1="520" 
-          x2="100%" 
-          y2="520" 
+          x1="10%" 
+          y1="55%" 
+          x2="-2%" 
+          y2="48%" 
           stroke="#307fe2" 
-          strokeWidth="3"
+          strokeWidth="4"
+        />
+        
+        {/* RIGHT CONNECTOR - from Tecovas circle (right edge, steeper angle down-right) */}
+        <line 
+          x1="82%" 
+          y1="78%" 
+          x2="90%" 
+          y2="92%" 
+          stroke="#307fe2" 
+          strokeWidth="4"
+        />
+        <circle cx="90%" cy="92%" r="6" fill="#307fe2" />
+        <line 
+          x1="90%" 
+          y1="92%" 
+          x2="102%" 
+          y2="102%" 
+          stroke="#307fe2" 
+          strokeWidth="4"
         />
       </svg>
 
