@@ -1,8 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import React from 'react'
+import React, { useRef, useState } from 'react'
+import { gsap } from 'gsap'
 import dotMatrixBg from '@/images/dot-matrix-background.gif'
+import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import type { Project } from '@/payload-types'
 
 export function WorkSection({ projects }: { projects: Project[] }) {
@@ -152,37 +154,150 @@ type ProjectCircleProps = {
 }
 
 function ProjectCircle({ project, size }: ProjectCircleProps) {
-  const diameter = size === 'xlarge' ? 575 : 374 // medium increased by 10%
-  const imageSize = size === 'xlarge' ? 564 : 363 // Image size
-  const blueCircleSize = size === 'xlarge' ? 540 : 341 // Blue circle smaller - thinner border
+  const diameter = size === 'xlarge' ? 575 : 374
+  const imageSize = size === 'xlarge' ? 564 : 363
+  const blueCircleSize = size === 'xlarge' ? 540 : 341
   
-  // Extract image URL from thumbnail Media object
+  const containerRef = useRef<HTMLDivElement>(null)
+  const blueCircleRef = useRef<HTMLDivElement>(null)
+  const imageRef = useRef<HTMLImageElement>(null)
+  const titleRef = useRef<HTMLDivElement>(null)
+  const hoverContentRef = useRef<HTMLDivElement>(null)
+  const [isHovered, setIsHovered] = useState(false)
+  
   const thumbnailUrl = typeof project.thumbnail === 'object' && project.thumbnail !== null 
     ? project.thumbnail.url 
     : null
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    
+    gsap.to(blueCircleRef.current, {
+      filter: 'blur(30px)',
+      duration: 0.4,
+      ease: 'power2.out',
+    })
+    
+    gsap.to(imageRef.current, {
+      filter: 'blur(20px)',
+      opacity: 0.2,
+      duration: 0.4,
+      ease: 'power2.out',
+    })
+    
+    gsap.to(titleRef.current, {
+      opacity: 0,
+      y: -20,
+      duration: 0.3,
+      ease: 'power2.out',
+    })
+    
+    gsap.to(hoverContentRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.4,
+      delay: 0.1,
+      ease: 'power2.out',
+    })
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+    
+    gsap.to(blueCircleRef.current, {
+      filter: 'blur(0px)',
+      duration: 0.4,
+      ease: 'power2.out',
+    })
+    
+    gsap.to(imageRef.current, {
+      filter: 'blur(0px)',
+      opacity: 1,
+      duration: 0.4,
+      ease: 'power2.out',
+    })
+    
+    gsap.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.3,
+      ease: 'power2.out',
+    })
+    
+    gsap.to(hoverContentRef.current, {
+      opacity: 0,
+      y: 20,
+      duration: 0.3,
+      ease: 'power2.out',
+    })
+  }
   
   return (
     <div
-      className="relative flex items-center justify-center"
+      ref={containerRef}
+      className="relative flex items-center justify-center cursor-pointer"
       style={{
         width: `${diameter}px`,
         height: `${diameter}px`,
       }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {/* Solid blue circle - smaller than image, creates thin border effect */}
+      {/* SVG filter for film grain effect */}
+      <svg className="absolute w-0 h-0">
+        <defs>
+          <filter id={`grain-${project.id}`}>
+            <feTurbulence 
+              type="fractalNoise" 
+              baseFrequency="0.8" 
+              numOctaves="4" 
+              stitchTiles="stitch"
+              result="noise"
+            />
+            <feColorMatrix
+              type="saturate"
+              values="0"
+              in="noise"
+              result="monoNoise"
+            />
+            <feBlend 
+              in="SourceGraphic" 
+              in2="monoNoise" 
+              mode="multiply" 
+            />
+          </filter>
+        </defs>
+      </svg>
+      
+      {/* Solid blue circle with noise texture and grain filter */}
       <div
-        className="absolute rounded-full"
+        ref={blueCircleRef}
+        className="absolute rounded-full overflow-hidden"
         style={{
           width: `${blueCircleSize}px`,
           height: `${blueCircleSize}px`,
           backgroundColor: '#307fe2',
+          backgroundImage: `url(${blueNoiseBg.src})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundBlendMode: 'overlay',
           zIndex: 1,
         }}
-      />
+      >
+        {/* Grain overlay */}
+        <div 
+          className="absolute inset-0 rounded-full opacity-30 mix-blend-overlay pointer-events-none"
+          style={{
+            filter: `url(#grain-${project.id})`,
+            backgroundColor: '#fff',
+          }}
+        />
+      </div>
       
-      {/* Project image - slightly smaller, blue shows around edges */}
+      {/* Project image */}
       {thumbnailUrl && (
         <img
+          ref={imageRef}
           src={thumbnailUrl}
           alt={project.title}
           style={{
@@ -194,8 +309,9 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         />
       )}
       
-      {/* Title overlay (z-index: 3) */}
+      {/* Title overlay - visible by default */}
       <div
+        ref={titleRef}
         className="absolute inset-0 flex items-center justify-start px-12 text-white font-bold"
         style={{
           fontSize: size === 'xlarge' ? '2.5rem' : '1.75rem',
@@ -205,6 +321,44 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         }}
       >
         {project.title}
+      </div>
+      
+      {/* Hover content - hidden by default */}
+      <div
+        ref={hoverContentRef}
+        className="absolute inset-0 flex flex-col items-start justify-center px-12"
+        style={{
+          opacity: 0,
+          transform: 'translateY(20px)',
+          zIndex: 4,
+        }}
+      >
+        <p 
+          className="text-white mb-6"
+          style={{
+            fontSize: size === 'xlarge' ? '1.5rem' : '1.125rem',
+            fontFamily: 'var(--font-inter)',
+            fontWeight: 300,
+            lineHeight: 1.4,
+            maxWidth: '80%',
+          }}
+        >
+          {project.title === 'Tecovas' && 'How boots became a brand platform.'}
+          {project.title === 'The Venetian' && 'Reimagining luxury hospitality.'}
+          {project.title === 'USAA' && 'Banking on trust and service.'}
+          {project.title === 'Safe Auto' && 'Making insurance accessible.'}
+          {!['Tecovas', 'The Venetian', 'USAA', 'Safe Auto'].includes(project.title) && 'Discover the story behind this project.'}
+        </p>
+        <a 
+          href={`/work/${project.slug || ''}`}
+          className="text-white font-bold uppercase tracking-wider hover:opacity-80 transition-opacity"
+          style={{
+            fontSize: size === 'xlarge' ? '1rem' : '0.875rem',
+            fontFamily: 'var(--font-inter)',
+          }}
+        >
+          See Case Study &gt;
+        </a>
       </div>
     </div>
   )
