@@ -316,7 +316,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
       {/* Hover content - hidden by default */}
       <div
         ref={hoverContentRef}
-        className="absolute inset-0 flex flex-col items-start justify-center px-12"
+        className="absolute inset-0 flex flex-col items-start justify-center px-12 pl-16"
         style={{
           opacity: 0,
           transform: 'translateY(20px)',
