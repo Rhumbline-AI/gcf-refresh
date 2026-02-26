@@ -2,8 +2,10 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
 
+import { AboutMethodologyBlock } from '@/blocks/AboutMethodology/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { CapabilitiesBlock } from '@/blocks/Capabilities/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { LogoGridBlock } from '@/blocks/LogoGrid/Component'
@@ -14,7 +16,9 @@ import { Work2Block } from '@/blocks/Work2/Component'
 import { WorkWithUsBlock } from '@/blocks/WorkWithUs/Component'
 
 const blockComponents = {
+  aboutMethodology: AboutMethodologyBlock,
   archive: ArchiveBlock,
+  capabilities: CapabilitiesBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,

@@ -160,7 +160,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'aboutHero';
     richText?: {
       root: {
         type: string;
@@ -203,7 +203,50 @@ export interface Page {
     media?: (number | null) | Media;
   };
   layout: (
+    | {
+        items?:
+          | {
+              label: string;
+              description: string;
+              image?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        overlayImage?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'aboutMethodology';
+      }
     | CallToActionBlock
+    | {
+        title?: string | null;
+        items?:
+          | {
+              title: string;
+              description?: string | null;
+              enableLink?: boolean | null;
+              link?: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'capabilities';
+      }
     | ContentBlock
     | MediaBlock
     | ArchiveBlock
@@ -1173,7 +1216,46 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        aboutMethodology?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    label?: T;
+                    description?: T;
+                    image?: T;
+                    id?: T;
+                  };
+              overlayImage?: T;
+              id?: T;
+              blockName?: T;
+            };
         cta?: T | CallToActionBlockSelect<T>;
+        capabilities?:
+          | T
+          | {
+              title?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    enableLink?: T;
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;

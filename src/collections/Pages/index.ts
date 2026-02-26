@@ -2,8 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { AboutMethodology } from '../../blocks/AboutMethodology/config'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
+import { Capabilities } from '../../blocks/Capabilities/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { LogoGrid } from '../../blocks/LogoGrid/config'
@@ -78,7 +80,9 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [
+                AboutMethodology,
                 CallToAction,
+                Capabilities,
                 Content,
                 MediaBlock,
                 Archive,
