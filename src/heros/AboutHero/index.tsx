@@ -59,8 +59,8 @@ export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
               className={[
                 'mb-0',
                 '[&_h1]:text-4xl [&_h1]:sm:text-5xl [&_h1]:md:text-7xl [&_h1]:lg:text-8xl [&_h1]:font-extralight [&_h1]:uppercase [&_h1]:leading-[1.1] [&_h1]:tracking-tight [&_h1]:text-[#307fe2] [&_h1]:whitespace-nowrap',
-                '[&_p]:text-base [&_p]:sm:text-lg [&_p]:md:text-xl [&_p]:lg:text-2xl [&_p]:font-extralight [&_p]:uppercase [&_p]:leading-[1.7] [&_p]:tracking-[0.15em] [&_p]:max-w-2xl [&_p]:mx-auto [&_p]:text-foreground/70 [&_p]:mt-12 [&_p]:text-justify',
-                '[&_strong]:font-extralight [&_strong]:text-[#307fe2] [&_strong]:underline [&_strong]:underline-offset-4 [&_strong]:decoration-[#307fe2]',
+                '[&_p]:text-base [&_p]:sm:text-lg [&_p]:md:text-xl [&_p]:lg:text-2xl [&_p]:font-extralight [&_p]:uppercase [&_p]:leading-[1.7] [&_p]:tracking-[0.15em] [&_p]:max-w-2xl [&_p]:mx-auto [&_p]:text-[#555555] [&_p]:mt-12 [&_p]:text-justify [&_p]:[hyphens:none] [&_p]:[word-break:keep-all]',
+                '[&_strong]:font-extralight [&_strong]:text-[#307fe2] [&_strong]:no-underline',
               ].join(' ')}
               data={richText}
               enableGutter={false}
