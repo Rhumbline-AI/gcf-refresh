@@ -33,7 +33,7 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
           {/* Blue circle with methodology grid inside */}
           <div className="relative">
             <div
-              className="relative w-[340px] h-[340px] sm:w-[450px] sm:h-[450px] md:w-[580px] md:h-[580px] lg:w-[700px] lg:h-[700px] rounded-full flex items-center justify-center overflow-hidden"
+              className="relative w-[380px] h-[380px] sm:w-[500px] sm:h-[500px] md:w-[650px] md:h-[650px] lg:w-[780px] lg:h-[780px] rounded-full flex items-center justify-center overflow-hidden"
               style={{
                 backgroundColor: '#307fe2',
                 backgroundImage: `url(${circleBg.src})`,
@@ -41,7 +41,7 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
                 backgroundPosition: 'center',
               }}
             >
-              <div className="w-full px-10 sm:px-14 md:px-20 lg:px-24">
+              <div className="w-full px-14 sm:px-20 md:px-28 lg:px-36">
                 <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:gap-x-8 sm:gap-y-8 md:gap-x-12 md:gap-y-10">
                   {items.map((item, i) => (
                     <MethodologyCircle key={i} item={item} />
@@ -88,7 +88,7 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
         {item.label}
       </h3>
       <p
-        className="text-[10px] sm:text-xs md:text-sm text-white/80 leading-relaxed max-w-[180px]"
+        className="text-[10px] sm:text-xs md:text-sm text-white/90 font-medium leading-snug max-w-[180px]"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.description}

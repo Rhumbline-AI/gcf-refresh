@@ -45,7 +45,7 @@ export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
 
   return (
     <div
-      className="relative pt-32 pb-16 md:pt-40 md:pb-24"
+      className="relative -mt-[10.4rem] pt-56 pb-16 md:pt-64 md:pb-24"
       style={{ backgroundColor: '#ffffff' }}
     >
       <div className="container">
