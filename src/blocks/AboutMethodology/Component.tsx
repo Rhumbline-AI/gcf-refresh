@@ -1,6 +1,7 @@
 import React from 'react'
 import { Media } from '@/components/Media'
 import type { Media as MediaType } from '@/payload-types'
+import circleBg from '@/images/blue-noise-background.jpg'
 
 type MethodologyItem = {
   label: string
@@ -19,41 +20,48 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
 }) => {
   if (!items || items.length === 0) return null
 
-  const topRow = items.slice(0, 2)
-  const bottomRow = items.slice(2, 4)
-
   return (
-    <div className="relative py-16 md:py-24 overflow-hidden bg-background">
-      {/* Large decorative grey partial circle */}
+    <div className="relative py-16 md:py-24 overflow-hidden bg-white">
+      {/* Large decorative gray circle outline, partially off-screen left */}
       <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] md:w-[900px] md:h-[900px] lg:w-[1100px] lg:h-[1100px] rounded-full border-[40px] md:border-[60px] border-muted-foreground/10 pointer-events-none"
+        className="absolute -left-[200px] md:-left-[150px] top-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] lg:w-[900px] lg:h-[900px] rounded-full border-[30px] md:border-[40px] border-[#d4d0cb] pointer-events-none z-0"
         aria-hidden
       />
 
       <div className="container relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-0">
-          {/* Methodology grid */}
-          <div className="flex-1 w-full max-w-2xl">
-            {/* Top row */}
-            <div className="grid grid-cols-2 gap-8 md:gap-12 mb-8 md:mb-12">
-              {topRow.map((item, i) => (
-                <MethodologyCircle key={i} item={item} />
-              ))}
-            </div>
-            {/* Bottom row */}
-            <div className="grid grid-cols-2 gap-8 md:gap-12">
-              {bottomRow.map((item, i) => (
-                <MethodologyCircle key={i} item={item} />
-              ))}
+        <div className="flex flex-col items-center">
+          {/* Blue circle with methodology grid inside */}
+          <div className="relative">
+            <div
+              className="relative w-[340px] h-[340px] sm:w-[450px] sm:h-[450px] md:w-[580px] md:h-[580px] lg:w-[700px] lg:h-[700px] rounded-full flex items-center justify-center overflow-hidden"
+              style={{
+                backgroundColor: '#307fe2',
+                backgroundImage: `url(${circleBg.src})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <div className="w-full px-10 sm:px-14 md:px-20 lg:px-24">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:gap-x-8 sm:gap-y-8 md:gap-x-12 md:gap-y-10">
+                  {items.map((item, i) => (
+                    <MethodologyCircle key={i} item={item} />
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Overlay image */}
+          {/* Rocket/shuttle overlay image -- grayscale, overlaps blue circle
+          TODO: re-enable once circle layout is finalized
           {overlayImage && typeof overlayImage === 'object' && (
-            <div className="relative w-full lg:w-[45%] lg:-ml-16 aspect-[4/5] rounded-tl-[50%] overflow-hidden">
-              <Media resource={overlayImage} fill imgClassName="object-cover" />
+            <div className="relative w-full lg:w-[40%] lg:-ml-20 mt-8 lg:mt-0 min-h-[300px] md:min-h-[400px] lg:min-h-0 lg:self-stretch overflow-hidden">
+              <Media
+                resource={overlayImage}
+                fill
+                imgClassName="object-cover grayscale"
+              />
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>
@@ -66,21 +74,21 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div
-        className="relative w-32 h-32 md:w-44 md:h-44 lg:w-52 lg:h-52 rounded-full overflow-hidden mb-4"
-        style={{ backgroundColor: '#307fe2' }}
+        className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 rounded-full overflow-hidden mb-2 md:mb-3 border-2 border-white/20"
+        style={{ backgroundColor: '#1a2a4a' }}
       >
         {hasImage && (
           <Media resource={item.image as MediaType} fill imgClassName="object-cover" />
         )}
       </div>
       <h3
-        className="text-sm md:text-base font-bold uppercase tracking-wider mb-2 text-[#307fe2]"
+        className="text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider mb-1 text-white"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.label}
       </h3>
       <p
-        className="text-xs md:text-sm text-muted-foreground leading-relaxed max-w-[200px]"
+        className="text-[10px] sm:text-xs md:text-sm text-white/80 leading-relaxed max-w-[180px]"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.description}
