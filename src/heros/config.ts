@@ -47,6 +47,10 @@ export const hero: Field = {
           label: 'Contact',
           value: 'contactHero',
         },
+        {
+          label: 'POV',
+          value: 'povHero',
+        },
       ],
       required: true,
     },
@@ -88,6 +92,33 @@ export const hero: Field = {
         condition: (_, { type } = {}) => type === 'contactHero',
       },
       label: 'Contact Form',
+    },
+    {
+      name: 'quotes',
+      type: 'array',
+      label: 'Quotes',
+      admin: {
+        condition: (_, { type } = {}) => type === 'povHero',
+      },
+      fields: [
+        {
+          name: 'text',
+          type: 'textarea',
+          label: 'Quote Text',
+          required: true,
+        },
+        {
+          name: 'attribution',
+          type: 'text',
+          label: 'Attribution (name)',
+          required: true,
+        },
+        {
+          name: 'role',
+          type: 'text',
+          label: 'Role / Title',
+        },
+      ],
     },
   ],
   label: false,

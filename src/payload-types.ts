@@ -160,7 +160,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'aboutHero' | 'workHero' | 'contactHero';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'aboutHero' | 'workHero' | 'contactHero' | 'povHero';
     richText?: {
       root: {
         type: string;
@@ -202,6 +202,14 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
     form?: (number | null) | Form;
+    quotes?:
+      | {
+          text: string;
+          attribution: string;
+          role?: string | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   layout: (
     | {
@@ -286,6 +294,20 @@ export interface Page {
         id?: string | null;
         blockName?: string | null;
         blockType: 'methodology';
+      }
+    | {
+        articles?:
+          | {
+              logo?: (number | null) | Media;
+              title: string;
+              description?: string | null;
+              link?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'povArticles';
       }
     | {
         title?: string | null;
@@ -1223,6 +1245,14 @@ export interface PagesSelect<T extends boolean = true> {
             };
         media?: T;
         form?: T;
+        quotes?:
+          | T
+          | {
+              text?: T;
+              attribution?: T;
+              role?: T;
+              id?: T;
+            };
       };
   layout?:
     | T
@@ -1304,6 +1334,21 @@ export interface PagesSelect<T extends boolean = true> {
                 | {
                     label?: T;
                     description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        povArticles?:
+          | T
+          | {
+              articles?:
+                | T
+                | {
+                    logo?: T;
+                    title?: T;
+                    description?: T;
+                    link?: T;
                     id?: T;
                   };
               id?: T;

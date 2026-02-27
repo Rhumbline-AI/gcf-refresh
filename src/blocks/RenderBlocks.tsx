@@ -11,6 +11,7 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { LogoGridBlock } from '@/blocks/LogoGrid/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MethodologyBlock } from '@/blocks/Methodology/Component'
+import { POVArticlesBlock } from '@/blocks/POVArticles/Component'
 import { WorkBlock } from '@/blocks/Work/Component'
 import { Work2Block } from '@/blocks/Work2/Component'
 import { WorkWithUsBlock } from '@/blocks/WorkWithUs/Component'
@@ -27,6 +28,7 @@ const blockComponents = {
   logoGrid: LogoGridBlock,
   mediaBlock: MediaBlock,
   methodology: MethodologyBlock,
+  povArticles: POVArticlesBlock,
   work: WorkBlock,
   work2: Work2Block,
   workWithUs: WorkWithUsBlock,

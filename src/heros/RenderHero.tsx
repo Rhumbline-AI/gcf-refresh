@@ -7,6 +7,7 @@ import { ContactHero } from '@/heros/ContactHero'
 import { HighImpactHero } from '@/heros/HighImpact'
 import { LowImpactHero } from '@/heros/LowImpact'
 import { MediumImpactHero } from '@/heros/MediumImpact'
+import { POVHero } from '@/heros/POVHero'
 import { WorkHero } from '@/heros/WorkHero'
 
 const heroes = {
@@ -15,6 +16,7 @@ const heroes = {
   highImpact: HighImpactHero,
   lowImpact: LowImpactHero,
   mediumImpact: MediumImpactHero,
+  povHero: POVHero,
   workHero: WorkHero,
 }
 

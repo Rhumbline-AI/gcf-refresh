@@ -11,6 +11,7 @@ import { FormBlock } from '../../blocks/Form/config'
 import { LogoGrid } from '../../blocks/LogoGrid/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { Methodology } from '../../blocks/Methodology/config'
+import { POVArticles } from '../../blocks/POVArticles/config'
 import { Work } from '../../blocks/Work/config'
 import { Work2 } from '../../blocks/Work2/config'
 import { WorkWithUs } from '../../blocks/WorkWithUs/config'
@@ -91,6 +92,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 FormBlock,
                 LogoGrid,
                 Methodology,
+                POVArticles,
                 Work,
                 Work2,
                 WorkWithUs,
