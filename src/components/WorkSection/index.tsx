@@ -1,11 +1,60 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import dotMatrixBg from '@/images/dot-matrix-background.gif'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import type { Project } from '@/payload-types'
+
+function FloatingWrapper({
+  children,
+  className,
+  style,
+  entranceDelay = 0,
+  floatAmount = 8,
+  floatDuration = 4,
+}: {
+  children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+  entranceDelay?: number
+  floatAmount?: number
+  floatDuration?: number
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) return
+
+    gsap.fromTo(
+      ref.current,
+      { opacity: 0, scale: 0.8 },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        delay: entranceDelay,
+        ease: 'power2.out',
+        onComplete: () => {
+          if (!ref.current) return
+          gsap.to(ref.current, {
+            y: floatAmount,
+            duration: floatDuration,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+          })
+        },
+      },
+    )
+  }, [entranceDelay, floatAmount, floatDuration])
+
+  return (
+    <div ref={ref} className={className} style={{ opacity: 0, ...style }}>
+      {children}
+    </div>
+  )
+}
 
 export function WorkSection({ projects, title }: { projects: Project[]; title?: string | null }) {
   if (projects.length === 0) return null
@@ -19,12 +68,13 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
   return (
     <section 
-      className="relative py-8 md:py-12 -mt-8 md:-mt-12"
+      className="relative pt-8 pb-0 md:pt-12 md:pb-0"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
         backgroundRepeat: 'repeat',
         backgroundSize: '700px',
         backgroundPosition: '0 0',
+        backgroundColor: '#ffffff',
       }}
     >
       {/* Background SVG for all connecting lines - full viewport width */}
@@ -39,40 +89,40 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
         }}
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* LEFT CONNECTOR - from The Venetian circle (bottom-left edge) */}
+        {/* LEFT CONNECTOR - from left circle (bottom-left edge) */}
         <line 
           x1="26%" 
-          y1="38%" 
+          y1="32%" 
           x2="16%" 
-          y2="52%" 
+          y2="46%" 
           stroke="#307fe2" 
           strokeWidth="4"
         />
-        <circle cx="16%" cy="52%" r="6" fill="#307fe2" />
+        <circle cx="16%" cy="46%" r="6" fill="#307fe2" />
         <line 
           x1="16%" 
-          y1="52%" 
+          y1="46%" 
           x2="-2%" 
-          y2="68%" 
+          y2="62%" 
           stroke="#307fe2" 
           strokeWidth="4"
         />
         
-        {/* RIGHT CONNECTOR - from USAA circle (bottom-right edge) */}
+        {/* RIGHT CONNECTOR - from right circle (bottom-right edge) */}
         <line 
           x1="74%" 
-          y1="38%" 
+          y1="32%" 
           x2="84%" 
-          y2="52%" 
+          y2="46%" 
           stroke="#307fe2" 
           strokeWidth="4"
         />
-        <circle cx="84%" cy="52%" r="6" fill="#307fe2" />
+        <circle cx="84%" cy="46%" r="6" fill="#307fe2" />
         <line 
           x1="84%" 
-          y1="52%" 
+          y1="46%" 
           x2="102%" 
-          y2="62%" 
+          y2="56%" 
           stroke="#307fe2" 
           strokeWidth="4"
         />
@@ -80,7 +130,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
         {/* DECORATIVE PARTIAL CIRCLE - right side of screen */}
         <circle 
           cx="102%" 
-          cy="55%" 
+          cy="50%" 
           r="160" 
           fill="none"
           stroke="#307fe2" 
@@ -98,52 +148,44 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
       {/* Top Row - Two circles */}
       <div className="relative mx-auto w-full max-w-7xl -mb-32" style={{ minHeight: '380px' }}>
-        {/* Top Left Circle - The Venetian */}
+        {/* Top Left Circle */}
         {displayProjects[0] && (
-          <motion.div
+          <FloatingWrapper
             className="absolute"
-            style={{
-              top: '0%',
-              left: '10%',
-              zIndex: 2,
-            }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            style={{ top: '0%', left: '10%', zIndex: 2 }}
+            entranceDelay={0.1}
+            floatAmount={8}
+            floatDuration={3.8}
           >
             <ProjectCircle project={displayProjects[0]} size="medium" />
-          </motion.div>
+          </FloatingWrapper>
         )}
 
-        {/* Top Right Circle - Tecovas */}
+        {/* Top Right Circle */}
         {displayProjects[1] && (
-          <motion.div
+          <FloatingWrapper
             className="absolute"
-            style={{
-              top: '0%',
-              right: '10%',
-              zIndex: 2,
-            }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            style={{ top: '0%', right: '10%', zIndex: 2 }}
+            entranceDelay={0.2}
+            floatAmount={10}
+            floatDuration={4.2}
           >
             <ProjectCircle project={displayProjects[1]} size="medium" />
-          </motion.div>
+          </FloatingWrapper>
         )}
       </div>
 
       {/* Bottom Row - Large centered circle */}
-      <div className="relative w-full flex justify-center">
-        {/* Bottom Center Circle - USAA (larger) */}
+      <div className="relative w-full flex justify-center" style={{ zIndex: 2 }}>
+        {/* Bottom Center Circle - Large */}
         {displayProjects[2] && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+          <FloatingWrapper
+            entranceDelay={0.3}
+            floatAmount={12}
+            floatDuration={5}
           >
             <ProjectCircle project={displayProjects[2]} size="xlarge" />
-          </motion.div>
+          </FloatingWrapper>
         )}
       </div>
     </section>
@@ -173,6 +215,8 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
 
   const handleMouseEnter = () => {
     setIsHovered(true)
+
+    gsap.killTweensOf([blueCircleRef.current, imageRef.current, titleRef.current, hoverContentRef.current])
     
     gsap.to(blueCircleRef.current, {
       filter: 'blur(30px)',
@@ -205,6 +249,8 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
 
   const handleMouseLeave = () => {
     setIsHovered(false)
+
+    gsap.killTweensOf([blueCircleRef.current, imageRef.current, titleRef.current, hoverContentRef.current])
     
     gsap.to(blueCircleRef.current, {
       filter: 'blur(0px)',

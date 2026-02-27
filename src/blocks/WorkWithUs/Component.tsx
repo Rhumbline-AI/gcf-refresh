@@ -4,17 +4,17 @@ import dotMatrixBg from '@/images/dot-matrix-background.gif'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 
 export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => {
-  // Extract image URL from Media object
   const imageUrl = typeof image === 'object' && image !== null ? image.url : null
   
   return (
-    <div 
-      className="py-16 md:py-24 overflow-hidden relative -mt-16 md:-mt-24"
+    <div
+      className="py-16 md:py-24 relative"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
         backgroundRepeat: 'repeat',
         backgroundSize: '700px',
         backgroundPosition: '0 0',
+        backgroundColor: '#ffffff',
       }}
     >
       <div className="container relative z-10 flex flex-col items-center justify-center">
