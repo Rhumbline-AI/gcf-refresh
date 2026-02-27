@@ -21,11 +21,18 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
   if (!items || items.length === 0) return null
 
   return (
-    <div className="relative py-16 md:py-24 overflow-hidden bg-white">
-      {/* Large decorative gray circle outline, partially off-screen left */}
+    <div className="relative py-16 md:py-24 bg-white">
+      {/* Large decorative blue circle outline with film grain, positioned up and to the left */}
       <div
-        className="absolute -left-[200px] md:-left-[150px] top-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] lg:w-[900px] lg:h-[900px] rounded-full border-[30px] md:border-[40px] border-[#d4d0cb] pointer-events-none z-0"
+        className="absolute -left-[280px] md:-left-[220px] lg:-left-[180px] -top-[100px] md:-top-[80px] w-[600px] h-[600px] md:w-[800px] md:h-[800px] lg:w-[900px] lg:h-[900px] rounded-full pointer-events-none z-0"
         aria-hidden
+        style={{
+          background: `url(${circleBg.src})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          WebkitMask: 'radial-gradient(circle, transparent 65%, black 65%)',
+          mask: 'radial-gradient(circle, transparent 65%, black 65%)',
+        }}
       />
 
       <div className="container relative z-10">
