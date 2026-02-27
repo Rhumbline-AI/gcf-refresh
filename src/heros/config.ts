@@ -43,6 +43,10 @@ export const hero: Field = {
           label: 'Work',
           value: 'workHero',
         },
+        {
+          label: 'Contact',
+          value: 'contactHero',
+        },
       ],
       required: true,
     },
@@ -70,10 +74,20 @@ export const hero: Field = {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type } = {}) =>
+          ['highImpact', 'mediumImpact', 'contactHero'].includes(type),
       },
       relationTo: 'media',
       required: true,
+    },
+    {
+      name: 'form',
+      type: 'relationship',
+      relationTo: 'forms',
+      admin: {
+        condition: (_, { type } = {}) => type === 'contactHero',
+      },
+      label: 'Contact Form',
     },
   ],
   label: false,
