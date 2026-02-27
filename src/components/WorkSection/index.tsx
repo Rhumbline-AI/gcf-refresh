@@ -7,7 +7,7 @@ import dotMatrixBg from '@/images/dot-matrix-background.gif'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import type { Project } from '@/payload-types'
 
-export function WorkSection({ projects }: { projects: Project[] }) {
+export function WorkSection({ projects, title }: { projects: Project[]; title?: string | null }) {
   if (projects.length === 0) return null
 
   // For now, hardcode 3 projects layout - we'll expand this later
@@ -88,11 +88,13 @@ export function WorkSection({ projects }: { projects: Project[] }) {
         />
       </svg>
 
-      <div className="container">
-        <h2 className="mb-16 text-4xl md:text-5xl font-light text-center" style={{ fontFamily: 'var(--font-inter)' }}>
-          The work
-        </h2>
-      </div>
+      {title && (
+        <div className="container">
+          <h2 className="mb-16 text-4xl md:text-5xl font-light text-center" style={{ fontFamily: 'var(--font-inter)' }}>
+            {title}
+          </h2>
+        </div>
+      )}
 
       {/* Top Row - Two circles */}
       <div className="relative mx-auto w-full max-w-7xl -mb-32" style={{ minHeight: '380px' }}>

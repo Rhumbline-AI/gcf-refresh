@@ -7,7 +7,7 @@ import dotMatrixBg from '@/images/dot-matrix-background.gif'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import type { Project } from '@/payload-types'
 
-export function WorkSection2({ projects }: { projects: Project[] }) {
+export function WorkSection2({ projects, title }: { projects: Project[]; title?: string | null }) {
   if (projects.length === 0) return null
 
   // For now, hardcode 3 projects layout

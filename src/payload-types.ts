@@ -160,7 +160,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'aboutHero';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'aboutHero' | 'workHero';
     richText?: {
       root: {
         type: string;

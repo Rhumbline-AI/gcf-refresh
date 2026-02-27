@@ -39,6 +39,10 @@ export const hero: Field = {
           label: 'About',
           value: 'aboutHero',
         },
+        {
+          label: 'Work',
+          value: 'workHero',
+        },
       ],
       required: true,
     },

@@ -9,7 +9,7 @@ type Work2BlockProps = {
   projects?: (number | Project)[] | null
 }
 
-export const Work2Block = async ({ projects }: Work2BlockProps) => {
+export const Work2Block = async ({ title, projects }: Work2BlockProps) => {
   // Handle missing or empty projects
   if (!projects || projects.length === 0) {
     return null
@@ -39,5 +39,5 @@ export const Work2Block = async ({ projects }: Work2BlockProps) => {
     return null
   }
 
-  return <WorkSection2 projects={sortedProjects} />
+  return <WorkSection2 projects={sortedProjects} title={title} />
 }

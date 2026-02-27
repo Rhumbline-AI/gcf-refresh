@@ -41,7 +41,7 @@ export const CapabilitiesBlock: React.FC<CapabilitiesBlockProps> = ({ title, ite
           />
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12 md:gap-y-16 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 md:gap-y-16 max-w-3xl mx-auto">
           {items.map((item, i) => {
             const isLastOdd = items.length % 2 !== 0 && i === items.length - 1
             const buttonBg = i % 2 === 0 ? buttonRectangular : buttonCircular
@@ -49,17 +49,17 @@ export const CapabilitiesBlock: React.FC<CapabilitiesBlockProps> = ({ title, ite
             return (
               <div
                 key={i}
-                className={`text-center ${isLastOdd ? 'md:col-span-2 md:max-w-sm md:mx-auto' : ''}`}
+                className={`text-center max-w-[240px] mx-auto ${isLastOdd ? 'md:col-span-2' : ''}`}
               >
                 <h3
-                  className="text-xl md:text-2xl lg:text-3xl font-light text-white mb-2 leading-tight"
+                  className="text-xl md:text-2xl lg:text-[1.7rem] font-light text-white mb-3 leading-[1.2]"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {item.title}
                 </h3>
                 {item.description && (
                   <p
-                    className="text-sm md:text-base text-white font-semibold mb-4 leading-relaxed"
+                    className="text-sm md:text-base text-white font-semibold mb-5 leading-snug"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {item.description}
@@ -70,13 +70,13 @@ export const CapabilitiesBlock: React.FC<CapabilitiesBlockProps> = ({ title, ite
                     <Image
                       src={buttonBg}
                       alt=""
-                      className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                      className="absolute top-1/2 left-1/2 -translate-x-[46%] -translate-y-1/2 scale-[1.3] pointer-events-none"
                       aria-hidden
                     />
                     <CMSLink
                       {...item.link}
                       label={undefined}
-                      className="relative inline-flex items-center gap-2 text-xs md:text-sm font-bold text-white uppercase tracking-wider px-6 py-3"
+                      className="relative inline-flex items-center gap-2 text-sm md:text-base font-bold text-white uppercase tracking-wider px-6 py-3"
                     >
                       <span>{item.link.label}</span>
                       <svg
