@@ -25,7 +25,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { slugField } from 'payload'
+import formatSlug from '../../utilities/formatSlug'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -76,6 +76,12 @@ export const Posts: CollectionConfig<'posts'> = {
       tabs: [
         {
           fields: [
+            {
+              name: 'publicationLogo',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Publication Logo',
+            },
             {
               name: 'heroImage',
               type: 'upload',
@@ -214,7 +220,17 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
-    slugField(),
+    {
+      name: 'slug',
+      label: 'Slug',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+      hooks: {
+        beforeValidate: [formatSlug('title')],
+      },
+    },
   ],
   hooks: {
     afterChange: [revalidatePost],

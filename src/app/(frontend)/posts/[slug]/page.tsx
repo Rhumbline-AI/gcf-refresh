@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 
-import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -52,26 +51,20 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pt-16 pb-16">
+    <article className="pb-24" style={{ backgroundColor: '#ffffff' }}>
       <PageClient />
-
-      {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
-
       {draft && <LivePreviewListener />}
 
       <PostHero post={post} />
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-            />
-          )}
-        </div>
+      <div className="container">
+        <RichText
+          className="max-w-2xl [&_p]:text-base [&_p]:md:text-[1.05rem] [&_p]:leading-[1.75] [&_p]:text-[#333] [&_p]:font-light [&_p]:mb-6 [&_h2]:text-2xl [&_h2]:font-light [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:text-xl [&_h3]:font-light [&_h3]:mt-8 [&_h3]:mb-3"
+          data={post.content}
+          enableGutter={false}
+          enableProse={false}
+        />
       </div>
     </article>
   )

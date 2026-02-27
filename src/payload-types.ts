@@ -358,6 +358,7 @@ export interface Page {
 export interface Post {
   id: number;
   title: string;
+  publicationLogo?: (number | null) | Media;
   heroImage?: (number | null) | Media;
   content: {
     root: {
@@ -392,11 +393,7 @@ export interface Post {
         name?: string | null;
       }[]
     | null;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1482,6 +1479,7 @@ export interface FormBlockSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  publicationLogo?: T;
   heroImage?: T;
   content?: T;
   relatedPosts?: T;
@@ -1501,7 +1499,6 @@ export interface PostsSelect<T extends boolean = true> {
         id?: T;
         name?: T;
       };
-  generateSlug?: T;
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
