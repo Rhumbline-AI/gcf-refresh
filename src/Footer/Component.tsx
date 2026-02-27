@@ -7,6 +7,7 @@ import type { Footer } from '@/payload-types'
 
 import bbbLockup from '@/images/bbb-rating-lockup.png'
 import dotMatrixBg from '@/images/dot-matrix-background.gif'
+import footerRip from '@/images/footer-rip.png'
 import { BackToTop } from './BackToTop'
 
 export async function Footer() {
@@ -16,7 +17,7 @@ export async function Footer() {
 
   return (
     <footer 
-      className="relative py-12 -mt-16 md:-mt-24"
+      className="relative pt-20 pb-12 -mt-16 md:-mt-24 overflow-visible"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
         backgroundRepeat: 'repeat',
@@ -24,6 +25,13 @@ export async function Footer() {
         backgroundPosition: '0 0',
       }}
     >
+      <img
+        src={footerRip.src}
+        alt=""
+        className="absolute left-0 w-full pointer-events-none select-none"
+        style={{ height: 'auto', top: '-10px' }}
+        aria-hidden="true"
+      />
       <div className="container">
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
           {/* Left: Social Icons */}

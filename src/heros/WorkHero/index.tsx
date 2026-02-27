@@ -3,12 +3,22 @@
 import React from 'react'
 import RichText from '@/components/RichText'
 import type { Page } from '@/payload-types'
+import dotMatrixBg from '@/images/dot-matrix-background.gif'
 
 type WorkHeroProps = Page['hero']
 
 export const WorkHero: React.FC<WorkHeroProps> = ({ richText }) => {
   return (
-    <div className="relative pt-12 pb-8 md:pt-16 md:pb-12">
+    <div
+      className="relative pt-12 pb-8 md:pt-16 md:pb-12"
+      style={{
+        backgroundImage: `url(${dotMatrixBg.src})`,
+        backgroundRepeat: 'repeat',
+        backgroundSize: '700px',
+        backgroundPosition: '0 0',
+        backgroundColor: '#ffffff',
+      }}
+    >
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           {richText && (
