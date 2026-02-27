@@ -14,11 +14,13 @@ import { MethodologyBlock } from '@/blocks/Methodology/Component'
 import { WorkBlock } from '@/blocks/Work/Component'
 import { Work2Block } from '@/blocks/Work2/Component'
 import { WorkWithUsBlock } from '@/blocks/WorkWithUs/Component'
+import { FullWidthBackgroundBlock } from '@/blocks/FullWidthBackground/Component'
 
 const blockComponents = {
   aboutMethodology: AboutMethodologyBlock,
   archive: ArchiveBlock,
   capabilities: CapabilitiesBlock,
+  fullWidthBackground: FullWidthBackgroundBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,

@@ -248,6 +248,15 @@ export interface Page {
         blockType: 'capabilities';
       }
     | ContentBlock
+    | {
+        backgroundImage: number | Media;
+        height?: ('small' | 'medium' | 'large') | null;
+        grayscale?: boolean | null;
+        overlapPrevious?: boolean | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'fullWidthBackground';
+      }
     | MediaBlock
     | ArchiveBlock
     | FormBlock
@@ -1257,6 +1266,16 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         content?: T | ContentBlockSelect<T>;
+        fullWidthBackground?:
+          | T
+          | {
+              backgroundImage?: T;
+              height?: T;
+              grayscale?: T;
+              overlapPrevious?: T;
+              id?: T;
+              blockName?: T;
+            };
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;

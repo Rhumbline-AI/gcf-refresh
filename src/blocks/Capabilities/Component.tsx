@@ -1,6 +1,9 @@
 import React from 'react'
+import Image from 'next/image'
 import { CMSLink } from '@/components/Link'
 import type { Page, Post } from '@/payload-types'
+import buttonCircular from '@/images/button-background-circular.png'
+import buttonRectangular from '@/images/button-background-rectangular.png'
 
 type CapabilityItem = {
   title: string
@@ -27,52 +30,71 @@ export const CapabilitiesBlock: React.FC<CapabilitiesBlockProps> = ({ title, ite
 
   return (
     <div className="relative py-16 md:py-24 overflow-hidden" style={{ backgroundColor: '#307fe2' }}>
-      {/* Decorative partial circle at top */}
-      <div
-        className="absolute left-1/2 -translate-x-1/2 -top-[300px] md:-top-[400px] w-[600px] h-[600px] md:w-[800px] md:h-[800px] rounded-full border-[30px] md:border-[50px] border-white/10 pointer-events-none"
-        aria-hidden
-      />
-
       <div className="container relative z-10">
         {title && (
           <h2
-            className="text-3xl md:text-4xl lg:text-5xl text-white text-center mb-12 md:mb-16 font-light italic"
+            className="text-4xl md:text-5xl lg:text-6xl text-white text-center mb-12 md:mb-16 font-extralight"
             style={{ fontFamily: 'var(--font-inter)' }}
-          >
-            {title}
-          </h2>
+            dangerouslySetInnerHTML={{
+              __html: title.replace(/Growth/g, 'Growth<br />'),
+            }}
+          />
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12 md:gap-y-16 max-w-4xl mx-auto">
           {items.map((item, i) => {
             const isLastOdd = items.length % 2 !== 0 && i === items.length - 1
+            const buttonBg = i % 2 === 0 ? buttonRectangular : buttonCircular
 
             return (
               <div
                 key={i}
-                className={`border border-white/30 rounded-lg p-6 md:p-8 text-center ${
-                  isLastOdd ? 'md:col-span-2 md:max-w-md md:mx-auto' : ''
-                }`}
+                className={`text-center ${isLastOdd ? 'md:col-span-2 md:max-w-sm md:mx-auto' : ''}`}
               >
                 <h3
-                  className="text-lg md:text-xl font-semibold text-white mb-3"
+                  className="text-xl md:text-2xl lg:text-3xl font-light text-white mb-2 leading-tight"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {item.title}
                 </h3>
                 {item.description && (
                   <p
-                    className="text-sm text-white/70 mb-4 leading-relaxed"
+                    className="text-sm md:text-base text-white font-semibold mb-4 leading-relaxed"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {item.description}
                   </p>
                 )}
                 {item.enableLink && item.link && (
-                  <CMSLink
-                    {...item.link}
-                    className="inline-flex items-center gap-1 text-sm font-bold text-white uppercase tracking-wider border border-white px-4 py-2 rounded hover:bg-white hover:text-[#307fe2] transition-colors"
-                  />
+                  <div className="relative inline-block">
+                    <Image
+                      src={buttonBg}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                      aria-hidden
+                    />
+                    <CMSLink
+                      {...item.link}
+                      label={undefined}
+                      className="relative inline-flex items-center gap-2 text-xs md:text-sm font-bold text-white uppercase tracking-wider px-6 py-3"
+                    >
+                      <span>{item.link.label}</span>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M14 5l7 7-7 7"
+                        />
+                      </svg>
+                    </CMSLink>
+                  </div>
                 )}
               </div>
             )

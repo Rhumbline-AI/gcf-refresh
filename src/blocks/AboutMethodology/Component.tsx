@@ -24,7 +24,7 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
     <div className="relative py-16 md:py-24 bg-white">
       {/* Large decorative blue circle outline with film grain, positioned up and to the left */}
       <div
-        className="absolute -left-[280px] md:-left-[220px] lg:-left-[180px] -top-[100px] md:-top-[80px] w-[600px] h-[600px] md:w-[800px] md:h-[800px] lg:w-[900px] lg:h-[900px] rounded-full pointer-events-none z-0"
+        className="absolute -left-[220px] md:-left-[180px] lg:-left-[140px] -top-[180px] md:-top-[160px] w-[500px] h-[500px] md:w-[650px] md:h-[650px] lg:w-[750px] lg:h-[750px] rounded-full pointer-events-none z-0"
         aria-hidden
         style={{
           background: `url(${circleBg.src})`,

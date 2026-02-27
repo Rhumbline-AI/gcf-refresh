@@ -14,6 +14,7 @@ import { Methodology } from '../../blocks/Methodology/config'
 import { Work } from '../../blocks/Work/config'
 import { Work2 } from '../../blocks/Work2/config'
 import { WorkWithUs } from '../../blocks/WorkWithUs/config'
+import { FullWidthBackground } from '../../blocks/FullWidthBackground/config'
 import { hero } from '@/heros/config'
 import formatSlug from '../../utilities/formatSlug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -84,6 +85,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 CallToAction,
                 Capabilities,
                 Content,
+                FullWidthBackground,
                 MediaBlock,
                 Archive,
                 FormBlock,
