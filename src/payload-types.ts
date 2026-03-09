@@ -917,10 +917,47 @@ export interface Project {
   title: string;
   slug?: string | null;
   /**
-   * Project thumbnail image
+   * Project thumbnail image (for work circles)
    */
   thumbnail?: (number | null) | Media;
   description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * e.g. "The Venetian Resort Las Vegas"
+   */
+  clientName?: string | null;
+  /**
+   * e.g. "Dinner!"
+   */
+  campaignTitle?: string | null;
+  /**
+   * e.g. "Record growth from an under-appreciated experience."
+   */
+  subtitle?: string | null;
+  problem?: string | null;
+  spark?: string | null;
+  growthFuel?: string | null;
+  /**
+   * Text that appears inside the blue results circle
+   */
+  results?: string | null;
+  /**
+   * Additional content blocks below the case study sections
+   */
+  caseStudyContent?: {
     root: {
       type: string;
       children: {
@@ -1513,6 +1550,14 @@ export interface ProjectsSelect<T extends boolean = true> {
   slug?: T;
   thumbnail?: T;
   description?: T;
+  clientName?: T;
+  campaignTitle?: T;
+  subtitle?: T;
+  problem?: T;
+  spark?: T;
+  growthFuel?: T;
+  results?: T;
+  caseStudyContent?: T;
   updatedAt?: T;
   createdAt?: T;
 }
