@@ -955,6 +955,20 @@ export interface Project {
    */
   results?: string | null;
   /**
+   * Alternating image/video blocks with captions
+   */
+  contentBlocks?:
+    | {
+        media: number | Media;
+        aspectRatio: '16:9' | '9:16' | '1:1';
+        /**
+         * Optional text caption for this media block
+         */
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Additional content blocks below the case study sections
    */
   caseStudyContent?: {
@@ -1557,6 +1571,14 @@ export interface ProjectsSelect<T extends boolean = true> {
   spark?: T;
   growthFuel?: T;
   results?: T;
+  contentBlocks?:
+    | T
+    | {
+        media?: T;
+        aspectRatio?: T;
+        caption?: T;
+        id?: T;
+      };
   caseStudyContent?: T;
   updatedAt?: T;
   createdAt?: T;

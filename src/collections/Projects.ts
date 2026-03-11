@@ -116,6 +116,43 @@ export const Projects: CollectionConfig = {
               },
             },
             {
+              name: 'contentBlocks',
+              type: 'array',
+              label: 'Content Blocks',
+              admin: {
+                description: 'Alternating image/video blocks with captions',
+              },
+              fields: [
+                {
+                  name: 'media',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  label: 'Image or Video',
+                },
+                {
+                  name: 'aspectRatio',
+                  type: 'select',
+                  label: 'Aspect Ratio',
+                  required: true,
+                  defaultValue: '16:9',
+                  options: [
+                    { label: '16:9 (Landscape)', value: '16:9' },
+                    { label: '9:16 (Portrait)', value: '9:16' },
+                    { label: '1:1 (Square)', value: '1:1' },
+                  ],
+                },
+                {
+                  name: 'caption',
+                  type: 'text',
+                  label: 'Caption',
+                  admin: {
+                    description: 'Optional text caption for this media block',
+                  },
+                },
+              ],
+            },
+            {
               name: 'caseStudyContent',
               type: 'richText',
               label: 'Additional Content',
