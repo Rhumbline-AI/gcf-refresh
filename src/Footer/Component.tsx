@@ -7,7 +7,7 @@ import type { Footer } from '@/payload-types'
 
 import bbbLockup from '@/images/bbb-rating-lockup.png'
 import dotMatrixBg from '@/images/dot-matrix-background.gif'
-import footerRip from '@/images/footer-rip.png'
+import footerRip2 from '@/images/footer-rip2.png'
 import { BackToTop } from './BackToTop'
 
 export async function Footer() {
@@ -25,14 +25,27 @@ export async function Footer() {
         backgroundPosition: '0 0',
       }}
     >
-      <img
-        src={footerRip.src}
-        alt=""
-        className="absolute left-0 w-full pointer-events-none select-none"
-        style={{ height: 'auto', top: '-10px' }}
-        aria-hidden="true"
-      />
-      <div className="container">
+      {/* Rip image: fixed-height + object-fit for consistent sizing; object-position keeps torn edge visible */}
+      <div
+        className="absolute left-0 w-full pointer-events-none select-none z-20"
+        style={{
+          top: '-18%',
+          height: 'clamp(56px, 9vw, 88px)',
+        }}
+        aria-hidden
+      >
+        <img
+          src={footerRip2.src}
+          alt=""
+          className="w-full h-full object-cover object-[center_bottom]"
+          style={{ display: 'block' }}
+        />
+      </div>
+      {/* Content: negative margin pulls up into rip overlap zone; padding-top keeps actual content clear */}
+      <div
+        className="container relative z-10 pt-8 md:pt-10"
+        style={{ marginTop: '-clamp(20px, 4vw, 36px)' }}
+      >
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
           {/* Left: Social Icons */}
           <div className="flex gap-4">

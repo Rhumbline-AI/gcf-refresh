@@ -965,6 +965,10 @@ export interface Project {
          * Optional text caption for this media block
          */
         caption?: string | null;
+        /**
+         * Optional paragraph description below the caption
+         */
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1577,6 +1581,7 @@ export interface ProjectsSelect<T extends boolean = true> {
         media?: T;
         aspectRatio?: T;
         caption?: T;
+        description?: T;
         id?: T;
       };
   caseStudyContent?: T;

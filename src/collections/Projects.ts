@@ -150,6 +150,14 @@ export const Projects: CollectionConfig = {
                     description: 'Optional text caption for this media block',
                   },
                 },
+                {
+                  name: 'description',
+                  type: 'textarea',
+                  label: 'Description',
+                  admin: {
+                    description: 'Optional paragraph description below the caption',
+                  },
+                },
               ],
             },
             {
