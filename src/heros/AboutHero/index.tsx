@@ -1,10 +1,13 @@
 'use client'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import React, { useEffect, useRef } from 'react'
+import { gsap, registerGSAP } from '@/utilities/gsapSetup'
 
 import type { Page } from '@/payload-types'
 
 import RichText from '@/components/RichText'
+
+registerGSAP()
 
 export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
   const { setHeaderTheme } = useHeaderTheme()
@@ -42,6 +45,27 @@ export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
       })
     })
   }, [richText])
+
+  useEffect(() => {
+    if (!contentRef.current) return
+
+    const h1 = contentRef.current.querySelector('h1')
+    const paragraphs = contentRef.current.querySelectorAll('p')
+
+    const tl = gsap.timeline({ delay: 0.3 })
+
+    if (h1) {
+      gsap.set(h1, { y: 40, opacity: 0 })
+      tl.to(h1, { y: 0, opacity: 1, duration: 1, ease: 'power3.out' })
+    }
+
+    if (paragraphs.length > 0) {
+      gsap.set(paragraphs, { y: 30, opacity: 0 })
+      tl.to(paragraphs, { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out' }, '-=0.4')
+    }
+
+    return () => { tl.kill() }
+  }, [])
 
   return (
     <div

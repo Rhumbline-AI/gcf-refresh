@@ -1,6 +1,7 @@
 import React from 'react'
 import { Media } from '@/components/Media'
 import type { Media as MediaType } from '@/payload-types'
+import { Parallax } from '@/components/Parallax'
 
 type FullWidthBackgroundProps = {
   backgroundImage?: (number | null) | MediaType
@@ -29,11 +30,13 @@ export const FullWidthBackgroundBlock: React.FC<FullWidthBackgroundProps> = ({
     <div
       className={`relative w-full ${heightClass} ${overlapPrevious ? '-mt-64 md:-mt-80' : ''} overflow-hidden`}
     >
-      <Media
-        resource={backgroundImage}
-        fill
-        imgClassName={`object-cover scale-150 ${grayscale ? 'grayscale' : ''}`}
-      />
+      <Parallax speed={-0.15} className="absolute inset-0" style={{ top: '-15%', bottom: '-15%' }}>
+        <Media
+          resource={backgroundImage}
+          fill
+          imgClassName={`object-cover scale-150 ${grayscale ? 'grayscale' : ''}`}
+        />
+      </Parallax>
     </div>
   )
 }

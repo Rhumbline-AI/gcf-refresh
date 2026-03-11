@@ -51,8 +51,12 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
+              const anchorId = 'blockName' in block && typeof block.blockName === 'string' && block.blockName
+                ? block.blockName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+                : undefined
+
               return (
-                <div key={index}>
+                <div key={index} {...(anchorId ? { id: anchorId } : {})}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

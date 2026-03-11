@@ -9,6 +9,7 @@ import scribble2 from '@/images/scribble-case-study2.png'
 import shadow2 from '@/images/case-study-block2-shadow2.png'
 import arrowLeft from '@/images/scribble-arrow-left.png'
 import arrowRight from '@/images/scribble-arrow-right.png'
+import { ScrollReveal } from '@/components/ScrollReveal'
 
 type CaseStudyProps = {
   project: Project
@@ -96,71 +97,81 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
         <div className="container">
           {/* Client name with underline extending beyond text */}
           {clientName && (
-            <div className="mb-8 inline-block">
-              <p
-                className="text-xl md:text-2xl text-[#307fe2] font-medium pb-1"
-                style={{ fontFamily: 'var(--font-inter)' }}
-              >
-                {clientName}
-              </p>
-              <div className="w-full h-[2px] bg-[#307fe2]" />
-            </div>
+            <ScrollReveal animation="fadeUp" duration={0.7} delay={0.1}>
+              <div className="mb-8 inline-block">
+                <p
+                  className="text-xl md:text-2xl text-[#307fe2] font-medium pb-1"
+                  style={{ fontFamily: 'var(--font-inter)' }}
+                >
+                  {clientName}
+                </p>
+                <div className="w-full h-[2px] bg-[#307fe2]" />
+              </div>
+            </ScrollReveal>
           )}
 
           {/* Campaign title */}
           {campaignTitle && (
-            <h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extralight text-[#307fe2] leading-[1.05] mb-2"
-              style={{ fontFamily: 'var(--font-inter)' }}
-            >
-              {campaignTitle}
-            </h1>
+            <ScrollReveal animation="fadeUp" duration={1} delay={0.2}>
+              <h1
+                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extralight text-[#307fe2] leading-[1.05] mb-2"
+                style={{ fontFamily: 'var(--font-inter)' }}
+              >
+                {campaignTitle}
+              </h1>
+            </ScrollReveal>
           )}
 
           {/* Subtitle */}
           {subtitle && (
-            <p
-              className="text-sm md:text-base text-[#307fe2] font-light italic mb-12"
-              style={{ fontFamily: 'var(--font-inter)' }}
-            >
-              {subtitle}
-            </p>
+            <ScrollReveal animation="fadeUp" duration={0.8} delay={0.35}>
+              <p
+                className="text-sm md:text-base text-[#307fe2] font-light italic mb-12"
+                style={{ fontFamily: 'var(--font-inter)' }}
+              >
+                {subtitle}
+              </p>
+            </ScrollReveal>
           )}
 
           {/* Two column: sections + results circle */}
           <div className="flex flex-col md:flex-row gap-10 md:gap-20 items-start md:items-center">
             {/* Left column - text sections */}
-            <div className="flex-1 max-w-lg">
-              <Section heading="Problem" body={problem} />
-              <Section heading="Spark" body={spark} />
-              <Section heading="Growth Fuel" body={growthFuel} />
-            </div>
+            <ScrollReveal animation="fadeUp" staggerChildren stagger={0.15} duration={0.8} className="flex-1 max-w-lg">
+              <div>
+                <Section heading="Problem" body={problem} />
+                <Section heading="Spark" body={spark} />
+                <Section heading="Growth Fuel" body={growthFuel} />
+              </div>
+            </ScrollReveal>
 
             {/* Right column - results circle */}
             {results && (
-              <div className="flex-shrink-0 flex items-center justify-center">
-                <div
-                  className="w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full flex flex-col justify-center px-12 md:px-16 py-10 md:py-14 relative overflow-hidden"
-                  style={{
-                    backgroundImage: `url(${blueNoiseBg.src})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                >
-                  <h3
-                    className="text-xl md:text-2xl font-extrabold uppercase tracking-wider text-white mb-3 relative z-10"
-                    style={{ fontFamily: 'var(--font-inter)' }}
+              <ScrollReveal animation="scaleIn" duration={1} delay={0.2}>
+                <div className="flex-shrink-0 flex items-center justify-center">
+                  <div
+                    className="w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full flex flex-col justify-center px-12 md:px-16 py-10 md:py-14 relative overflow-hidden"
+                    style={{
+                      backgroundImage: `url(${blueNoiseBg.src})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
                   >
-                    Results
-                  </h3>
-                  <p
-                    className="text-sm md:text-base text-white font-medium leading-relaxed relative z-10"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    {results}
-                  </p>
+                    <h3
+                      className="text-xl md:text-2xl font-extrabold uppercase tracking-wider text-white mb-3 relative z-10"
+                      style={{ fontFamily: 'var(--font-inter)' }}
+                    >
+                      Results
+                    </h3>
+                    <p
+                      className="text-sm md:text-base text-white font-medium leading-relaxed relative z-10"
+                      style={{ fontFamily: 'var(--font-inter)' }}
+                    >
+                      {results}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </ScrollReveal>
             )}
           </div>
         </div>
@@ -188,8 +199,11 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                 const arrowDirection = arrowOnRight ? arrowLeft : arrowRight
 
                 return (
-                  <div
+                  <ScrollReveal
                     key={index}
+                    animation="fadeUp"
+                    duration={0.9}
+                    delay={0.05}
                     className={`relative flex flex-col ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 md:gap-16 items-center`}
                   >
                     {/* Arrow positioned per design reference: top-right when text is right, bottom-left when text is left. Only on blocks 1 and 4. */}
@@ -276,7 +290,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                         )}
                       </div>
                     )}
-                  </div>
+                  </ScrollReveal>
                 )
               })}
             </div>

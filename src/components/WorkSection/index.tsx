@@ -1,10 +1,12 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
+import { gsap, registerGSAP, ScrollTrigger } from '@/utilities/gsapSetup'
 import dotMatrixBg from '@/images/dot-matrix-background.gif'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import type { Project } from '@/payload-types'
+
+registerGSAP()
 
 function FloatingWrapper({
   children,
@@ -13,6 +15,8 @@ function FloatingWrapper({
   entranceDelay = 0,
   floatAmount = 8,
   floatDuration = 4,
+  swayAmount = 4,
+  rotateAmount = 1.5,
 }: {
   children: React.ReactNode
   className?: string
@@ -20,34 +24,59 @@ function FloatingWrapper({
   entranceDelay?: number
   floatAmount?: number
   floatDuration?: number
+  swayAmount?: number
+  rotateAmount?: number
 }) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!ref.current) return
+    const el = ref.current
+    const tweens: gsap.core.Tween[] = []
 
-    gsap.fromTo(
-      ref.current,
-      { opacity: 0, scale: 0.8 },
+    const entrance = gsap.fromTo(
+      el,
+      { opacity: 0, scale: 0.8, y: 20 },
       {
         opacity: 1,
         scale: 1,
-        duration: 0.6,
+        y: 0,
+        duration: 0.8,
         delay: entranceDelay,
         ease: 'power2.out',
         onComplete: () => {
-          if (!ref.current) return
-          gsap.to(ref.current, {
-            y: floatAmount,
-            duration: floatDuration,
-            ease: 'sine.inOut',
-            repeat: -1,
-            yoyo: true,
-          })
+          tweens.push(
+            gsap.to(el, {
+              y: floatAmount,
+              duration: floatDuration,
+              ease: 'sine.inOut',
+              repeat: -1,
+              yoyo: true,
+            }),
+            gsap.to(el, {
+              x: swayAmount,
+              duration: floatDuration * 1.3,
+              ease: 'sine.inOut',
+              repeat: -1,
+              yoyo: true,
+            }),
+            gsap.to(el, {
+              rotation: rotateAmount,
+              duration: floatDuration * 1.6,
+              ease: 'sine.inOut',
+              repeat: -1,
+              yoyo: true,
+            }),
+          )
         },
       },
     )
-  }, [entranceDelay, floatAmount, floatDuration])
+
+    return () => {
+      entrance.kill()
+      tweens.forEach((t) => t.kill())
+    }
+  }, [entranceDelay, floatAmount, floatDuration, swayAmount, rotateAmount])
 
   return (
     <div ref={ref} className={className} style={{ opacity: 0, ...style }}>
@@ -57,17 +86,48 @@ function FloatingWrapper({
 }
 
 export function WorkSection({ projects, title }: { projects: Project[]; title?: string | null }) {
+  const sectionRef = useRef<HTMLElement>(null)
+  const svgRef = useRef<SVGSVGElement>(null)
+
+  useEffect(() => {
+    if (!svgRef.current || !sectionRef.current) return
+
+    const lines = svgRef.current.querySelectorAll('line')
+    const circles = svgRef.current.querySelectorAll('circle')
+
+    lines.forEach((line) => {
+      const length = line.getTotalLength?.() || 300
+      gsap.set(line, { strokeDasharray: length, strokeDashoffset: length })
+    })
+    circles.forEach((circle) => {
+      gsap.set(circle, { scale: 0, transformOrigin: 'center', opacity: 0 })
+    })
+
+    const st = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top 70%',
+      once: true,
+      onEnter: () => {
+        const tl = gsap.timeline()
+        lines.forEach((line, i) => {
+          tl.to(line, { strokeDashoffset: 0, duration: 0.8, ease: 'power2.inOut' }, i * 0.15)
+        })
+        circles.forEach((circle, i) => {
+          tl.to(circle, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' }, 0.3 + i * 0.2)
+        })
+      },
+    })
+
+    return () => st.kill()
+  }, [])
+
   if (projects.length === 0) return null
 
-  // For now, hardcode 3 projects layout - we'll expand this later
   const displayProjects = projects.slice(0, 3)
-
-  // Circle sizes for reference
-  const mediumDiameter = 340
-  const xlargeDiameter = 575
 
   return (
     <section 
+      ref={sectionRef}
       className="relative pt-8 pb-0 md:pt-12 md:pb-0"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
@@ -79,6 +139,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
     >
       {/* Background SVG for all connecting lines - full viewport width */}
       <svg 
+        ref={svgRef}
         className="absolute pointer-events-none overflow-visible hidden md:block" 
         style={{ 
           top: 0,
@@ -154,8 +215,10 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
             className="absolute"
             style={{ top: '0%', left: '10%', zIndex: 2 }}
             entranceDelay={0.1}
-            floatAmount={8}
+            floatAmount={10}
             floatDuration={3.8}
+            swayAmount={5}
+            rotateAmount={1.2}
           >
             <ProjectCircle project={displayProjects[0]} size="medium" />
           </FloatingWrapper>
@@ -167,8 +230,10 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
             className="absolute"
             style={{ top: '0%', right: '10%', zIndex: 2 }}
             entranceDelay={0.2}
-            floatAmount={10}
+            floatAmount={12}
             floatDuration={4.2}
+            swayAmount={6}
+            rotateAmount={1.8}
           >
             <ProjectCircle project={displayProjects[1]} size="medium" />
           </FloatingWrapper>
@@ -181,8 +246,10 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
         {displayProjects[2] && (
           <FloatingWrapper
             entranceDelay={0.3}
-            floatAmount={12}
+            floatAmount={14}
             floatDuration={5}
+            swayAmount={4}
+            rotateAmount={1}
           >
             <ProjectCircle project={displayProjects[2]} size="xlarge" />
           </FloatingWrapper>
@@ -283,10 +350,11 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
   return (
     <div
       ref={containerRef}
-      className="relative flex items-center justify-center cursor-pointer"
+      className="relative flex items-center justify-center cursor-pointer rounded-full"
       style={{
         width: `${diameter}px`,
         height: `${diameter}px`,
+        filter: `drop-shadow(0 12px 28px rgba(0,0,0,0.12)) drop-shadow(0 4px 10px rgba(0,0,0,0.06))`,
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

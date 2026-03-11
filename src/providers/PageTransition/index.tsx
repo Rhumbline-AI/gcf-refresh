@@ -39,6 +39,10 @@ export const PageTransitionProvider: React.FC<{ children: React.ReactNode }> = (
       if (href.startsWith('#')) return
       if (href.startsWith('/admin')) return
 
+      const [hrefPath] = href.split('#')
+      const hasHash = href.includes('#')
+      if (hasHash && (hrefPath === pathname || hrefPath === '')) return
+
       e.preventDefault()
       e.stopPropagation()
 
