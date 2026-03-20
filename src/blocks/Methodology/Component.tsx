@@ -1,6 +1,8 @@
 import React from 'react'
+import Image from 'next/image'
 import dotMatrixBg from '@/images/dot-matrix-background.gif'
 import circleBg from '@/images/how-we-do-it-bg.jpg'
+import hand1 from '@/images/hand1.gif'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
 type MethodologyProps = {
@@ -33,6 +35,18 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
         <ScrollReveal animation="scaleIn" duration={1.2} className="w-full max-w-[990px]">
           {/* Desktop: aspect-square with rotating text ring. Mobile: auto-height circle only */}
           <div className="relative w-full md:aspect-square flex items-center justify-center">
+            {/* Hand holding the circle from the right */}
+            <div
+              className="absolute hidden md:block"
+              style={{
+                right: '-8%',
+                top: '18%',
+                width: 'clamp(140px, 18vw, 260px)',
+                zIndex: 20,
+              }}
+            >
+              <Image src={hand1} alt="" className="w-full h-auto" unoptimized />
+            </div>
             <svg 
               className="hidden md:block absolute inset-0 w-full h-full overflow-visible animate-[spin_60s_linear_infinite]" 
               viewBox="0 0 100 100"
