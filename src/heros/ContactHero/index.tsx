@@ -92,7 +92,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
       )}
 
       {/* Content */}
-      <div className="container relative z-10 pt-32 pb-16 md:pt-40 md:pb-24">
+      <div className="container relative z-10 pt-20 pb-16 md:pt-28 md:pb-24">
         <div className="max-w-xl">
           {/* Title & subtitle */}
           {richText && (

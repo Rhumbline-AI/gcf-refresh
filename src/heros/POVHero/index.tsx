@@ -20,7 +20,7 @@ export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
   const quote = quoteList[currentQuote]
 
   return (
-    <div className="relative pt-8 pb-6 md:pt-10 md:pb-8" style={{ backgroundColor: '#ffffff' }}>
+    <div className="relative pt-4 pb-3 md:pt-6 md:pb-4" style={{ backgroundColor: '#ffffff' }}>
       <div className="container">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-16">
           {/* Left side - Title */}

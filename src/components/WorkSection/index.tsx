@@ -128,7 +128,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
   return (
     <section 
       ref={sectionRef}
-      className="relative pt-8 pb-0 md:pt-12 md:pb-0"
+      className="relative pt-4 pb-0 md:pt-6 md:pb-0"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
         backgroundRepeat: 'repeat',
@@ -201,7 +201,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
       {title && (
         <div className="container">
-          <h2 className="mb-16 text-4xl md:text-5xl font-light text-center" style={{ fontFamily: 'var(--font-inter)' }}>
+          <h2 className="mb-8 text-4xl md:text-5xl font-light text-center" style={{ fontFamily: 'var(--font-inter)' }}>
             {title}
           </h2>
         </div>
