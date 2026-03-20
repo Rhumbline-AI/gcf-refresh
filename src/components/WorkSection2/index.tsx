@@ -133,34 +133,47 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
 
   useEffect(() => {
     if (!svgRef.current || !sectionRef.current) return
+    const svg = svgRef.current
+    const section = sectionRef.current
+    let animated = false
 
-    const lines = svgRef.current.querySelectorAll('line')
-    const circles = svgRef.current.querySelectorAll('circle')
+    const recalcDash = () => {
+      const lines = svg.querySelectorAll('line')
+      lines.forEach((line) => {
+        const length = line.getTotalLength?.() || 300
+        if (!animated) {
+          gsap.set(line, { strokeDasharray: length, strokeDashoffset: length })
+        } else {
+          gsap.set(line, { strokeDasharray: length, strokeDashoffset: 0 })
+        }
+      })
+    }
 
-    lines.forEach((line) => {
-      const length = line.getTotalLength?.() || 300
-      gsap.set(line, { strokeDasharray: length, strokeDashoffset: length })
-    })
-    circles.forEach((circle) => {
-      gsap.set(circle, { scale: 0, transformOrigin: 'center', opacity: 0 })
-    })
+    const dots = svg.querySelectorAll('circle')
+    dots.forEach((c) => gsap.set(c, { scale: 0, transformOrigin: 'center', opacity: 0 }))
+    recalcDash()
+
+    const ro = new ResizeObserver(() => recalcDash())
+    ro.observe(section)
 
     const st = ScrollTrigger.create({
-      trigger: sectionRef.current,
+      trigger: section,
       start: 'top 70%',
       once: true,
       onEnter: () => {
+        animated = true
+        const lines = svg.querySelectorAll('line')
         const tl = gsap.timeline()
         lines.forEach((line, i) => {
           tl.to(line, { strokeDashoffset: 0, duration: 0.8, ease: 'power2.inOut' }, i * 0.15)
         })
-        circles.forEach((circle, i) => {
+        dots.forEach((circle, i) => {
           tl.to(circle, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' }, 0.3 + i * 0.2)
         })
       },
     })
 
-    return () => st.kill()
+    return () => { st.kill(); ro.disconnect() }
   }, [])
 
   if (projects.length === 0) return null
@@ -230,16 +243,19 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
           strokeWidth="4"
         />
         
-        {/* DECORATIVE PARTIAL CIRCLE - left side of screen */}
-        <circle 
-          cx="-2%" 
-          cy="75%" 
-          r="160" 
-          fill="none"
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
       </svg>
+
+      {/* Decorative open circle - overlaps top-left orb (Venn style) */}
+      <div
+        className="absolute pointer-events-none hidden md:block rounded-full border-[3px] border-[#307fe2]"
+        style={{
+          width: 'clamp(260px, 22vw, 380px)',
+          height: 'clamp(260px, 22vw, 380px)',
+          top: '-5%',
+          left: '5%',
+          zIndex: 0,
+        }}
+      />
 
       {/* MOBILE: staggered cascade layout */}
       <div className="flex flex-col gap-4 px-4 md:hidden">
