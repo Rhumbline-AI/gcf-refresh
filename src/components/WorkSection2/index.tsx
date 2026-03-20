@@ -17,6 +17,7 @@ function FloatingWrapper({
   floatDuration = 4,
   swayAmount = 4,
   rotateAmount = 1.5,
+  cursorFactor = 0.04,
 }: {
   children: React.ReactNode
   className?: string
@@ -26,60 +27,101 @@ function FloatingWrapper({
   floatDuration?: number
   swayAmount?: number
   rotateAmount?: number
+  cursorFactor?: number
 }) {
   const ref = useRef<HTMLDivElement>(null)
+  const cursorOffset = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
     if (!ref.current) return
     const el = ref.current
     const tweens: gsap.core.Tween[] = []
+    let st: ScrollTrigger | null = null
 
-    const entrance = gsap.fromTo(
-      el,
-      { opacity: 0, scale: 0.8, y: 20 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.8,
-        delay: entranceDelay,
-        ease: 'power2.out',
-        onComplete: () => {
-          tweens.push(
-            gsap.to(el, {
-              y: floatAmount,
-              duration: floatDuration,
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
-            }),
-            gsap.to(el, {
-              x: swayAmount,
-              duration: floatDuration * 1.3,
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
-            }),
-            gsap.to(el, {
-              rotation: rotateAmount,
-              duration: floatDuration * 1.6,
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
-            }),
-          )
-        },
+    gsap.set(el, { opacity: 0, scale: 0.8, y: 20 })
+
+    st = ScrollTrigger.create({
+      trigger: el,
+      start: 'top 90%',
+      once: true,
+      onEnter: () => {
+        gsap.to(el, {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.8,
+          delay: entranceDelay,
+          ease: 'power2.out',
+          onComplete: () => {
+            tweens.push(
+              gsap.to(el, {
+                y: floatAmount,
+                duration: floatDuration,
+                ease: 'sine.inOut',
+                repeat: -1,
+                yoyo: true,
+              }),
+              gsap.to(el, {
+                x: swayAmount,
+                duration: floatDuration * 1.3,
+                ease: 'sine.inOut',
+                repeat: -1,
+                yoyo: true,
+              }),
+              gsap.to(el, {
+                rotation: rotateAmount,
+                duration: floatDuration * 1.6,
+                ease: 'sine.inOut',
+                repeat: -1,
+                yoyo: true,
+              }),
+            )
+          },
+        })
       },
-    )
+    })
+
+    const isTouch = window.matchMedia('(pointer: coarse)').matches
+    const handleMouseMove = (e: MouseEvent) => {
+      const cx = window.innerWidth / 2
+      const cy = window.innerHeight / 2
+      const dx = -(e.clientX - cx) * cursorFactor
+      const dy = -(e.clientY - cy) * cursorFactor
+      const maxD = 80
+      cursorOffset.current = {
+        x: Math.max(-maxD, Math.min(maxD, dx)),
+        y: Math.max(-maxD, Math.min(maxD, dy)),
+      }
+      gsap.to(el, {
+        '--cx': `${cursorOffset.current.x}px`,
+        '--cy': `${cursorOffset.current.y}px`,
+        duration: 0.6,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      } as gsap.TweenVars)
+    }
+
+    if (!isTouch) {
+      window.addEventListener('mousemove', handleMouseMove)
+    }
 
     return () => {
-      entrance.kill()
+      st?.kill()
       tweens.forEach((t) => t.kill())
+      if (!isTouch) window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [entranceDelay, floatAmount, floatDuration, swayAmount, rotateAmount])
+  }, [entranceDelay, floatAmount, floatDuration, swayAmount, rotateAmount, cursorFactor])
 
   return (
-    <div ref={ref} className={className} style={{ opacity: 0, ...style }}>
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: 0,
+        translate: 'var(--cx, 0px) var(--cy, 0px)',
+        ...style,
+      }}
+    >
       {children}
     </div>
   )
@@ -228,6 +270,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
               floatDuration={3.8}
               swayAmount={5}
               rotateAmount={1.2}
+              cursorFactor={0.05}
             >
               <ProjectCircle project={displayProjects[1]} size="medium" />
             </FloatingWrapper>
@@ -242,6 +285,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
               floatDuration={4.2}
               swayAmount={6}
               rotateAmount={1.8}
+              cursorFactor={0.035}
             >
               <ProjectCircle project={displayProjects[2]} size="medium" />
             </FloatingWrapper>
@@ -256,6 +300,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
               floatDuration={5}
               swayAmount={4}
               rotateAmount={1}
+              cursorFactor={0.025}
             >
               <ProjectCircle project={displayProjects[0]} size="xlarge" />
             </FloatingWrapper>
