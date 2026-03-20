@@ -32,8 +32,9 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
               style={{ 
                 backgroundColor: '#307fe2',
                 backgroundImage: `url(${blueNoiseBg.src})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                backgroundSize: '200%',
+                backgroundPosition: '0% 0%',
+                animation: 'blueNoiseShift 25s ease-in-out infinite',
               }}
             >
               {imageUrl && (

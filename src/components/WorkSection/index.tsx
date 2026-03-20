@@ -413,9 +413,10 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
           height: `${blueCircleSize}px`,
           backgroundColor: '#307fe2',
           backgroundImage: `url(${blueNoiseBg.src})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: '200%',
+          backgroundPosition: '0% 0%',
           backgroundBlendMode: 'overlay',
+          animation: 'blueNoiseShift 25s ease-in-out infinite',
           zIndex: 1,
         }}
       >

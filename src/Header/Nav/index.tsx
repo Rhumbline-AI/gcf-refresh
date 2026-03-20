@@ -61,9 +61,10 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
           className="fixed inset-0 z-50 flex flex-col items-center justify-center md:hidden"
           style={{
             backgroundImage: `url(${blueNoiseBg.src})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundSize: '200%',
+            backgroundPosition: '0% 0%',
             backgroundColor: '#307fe2',
+            animation: 'blueNoiseShift 25s ease-in-out infinite',
           }}
         >
           {/* Close button */}

@@ -29,8 +29,9 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
         aria-hidden
         style={{
           background: `url(${circleBg.src})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: '200%',
+          backgroundPosition: '0% 0%',
+          animation: 'blueNoiseShift 25s ease-in-out infinite',
           WebkitMask: 'radial-gradient(circle, transparent 65%, black 65%)',
           mask: 'radial-gradient(circle, transparent 65%, black 65%)',
         }}
@@ -45,8 +46,9 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
                 style={{
                   backgroundColor: '#307fe2',
                   backgroundImage: `url(${circleBg.src})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
+                  backgroundSize: '200%',
+                  backgroundPosition: '0% 0%',
+                  animation: 'blueNoiseShift 25s ease-in-out infinite',
                 }}
               >
                 <div className="w-full px-14 sm:px-20 md:px-28 lg:px-36">

@@ -242,6 +242,14 @@ html {
   opacity: 0;
 }
 
+@keyframes blueNoiseShift {
+  0% { background-position: 0% 0%; }
+  25% { background-position: 60% 40%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 40% 60%; }
+  100% { background-position: 0% 0%; }
+}
+
 html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;

@@ -153,8 +153,9 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                     className="w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full flex flex-col justify-center px-12 md:px-16 py-10 md:py-14 relative overflow-hidden"
                     style={{
                       backgroundImage: `url(${blueNoiseBg.src})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
+                      backgroundSize: '200%',
+                      backgroundPosition: '0% 0%',
+                      animation: 'blueNoiseShift 25s ease-in-out infinite',
                     }}
                   >
                     <h3
