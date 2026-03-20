@@ -113,7 +113,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
                       key={index}
                       type={field.blockType === 'email' ? 'email' : 'text'}
                       placeholder={field.label || ''}
-                      className="w-full rounded-full px-6 py-3 md:py-4 text-sm md:text-base text-white placeholder:text-white font-medium outline-none border-none"
+                      className="w-full rounded-full px-6 py-3 md:py-4 text-base text-white placeholder:text-white font-medium outline-none border-none"
                       style={{ backgroundColor: '#307fe2', fontFamily: 'var(--font-inter)' }}
                       {...register(field.name, { required: field.required })}
                     />
@@ -126,22 +126,23 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
                       key={index}
                       placeholder={field.label || ''}
                       rows={4}
-                      className="w-full rounded-2xl px-6 py-3 md:py-4 text-sm md:text-base text-white placeholder:text-white font-medium outline-none border-none resize-none"
+                      className="w-full rounded-2xl px-6 py-3 md:py-4 text-base text-white placeholder:text-white font-medium outline-none border-none resize-none"
                       style={{ backgroundColor: '#307fe2', fontFamily: 'var(--font-inter)' }}
                       {...register(field.name, { required: field.required })}
                     />
                   )
                 }
 
-                if (field.blockType === 'number') {
+                if ((field.blockType as string) === 'number') {
+                  const f = field as unknown as { label?: string; name: string; required?: boolean }
                   return (
                     <input
                       key={index}
                       type="tel"
-                      placeholder={field.label || ''}
-                      className="w-full rounded-full px-6 py-3 md:py-4 text-sm md:text-base text-white placeholder:text-white font-medium outline-none border-none"
+                      placeholder={f.label || ''}
+                      className="w-full rounded-full px-6 py-3 md:py-4 text-base text-white placeholder:text-white font-medium outline-none border-none"
                       style={{ backgroundColor: '#307fe2', fontFamily: 'var(--font-inter)' }}
-                      {...register(field.name, { required: field.required })}
+                      {...register(f.name, { required: f.required })}
                     />
                   )
                 }
