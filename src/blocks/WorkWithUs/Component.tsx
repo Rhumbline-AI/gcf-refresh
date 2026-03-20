@@ -1,8 +1,14 @@
 import React from 'react'
-import type { WorkWithUs as WorkWithUsProps } from '@/payload-types'
+import Link from 'next/link'
+import type { Media as MediaType } from '@/payload-types'
 import dotMatrixBg from '@/images/dot-matrix-background.gif'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import { ScrollReveal } from '@/components/ScrollReveal'
+
+type WorkWithUsProps = {
+  title?: string | null
+  image?: number | MediaType | null
+}
 
 export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => {
   const imageUrl = typeof image === 'object' && image !== null ? image.url : null
@@ -20,9 +26,9 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
     >
       <div className="container relative z-10 flex flex-col items-center justify-center">
         <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[396px]">
-          <div className="relative w-full aspect-square">
+          <Link href="/contact" className="block relative w-full aspect-square group">
             <div 
-              className="w-full h-full rounded-full flex flex-col items-center justify-center p-8 md:p-16 overflow-hidden"
+              className="w-full h-full rounded-full flex flex-col items-center justify-center p-8 md:p-16 overflow-hidden transition-transform duration-300 ease-out group-hover:scale-105"
               style={{ 
                 backgroundColor: '#307fe2',
                 backgroundImage: `url(${blueNoiseBg.src})`,
@@ -42,7 +48,7 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
                 />
               )}
             </div>
-          </div>
+          </Link>
         </ScrollReveal>
       </div>
     </div>
