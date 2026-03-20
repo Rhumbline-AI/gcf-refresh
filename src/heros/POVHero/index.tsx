@@ -1,29 +1,63 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import type { Page } from '@/payload-types'
 
 type POVHeroProps = Page['hero']
 
 export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
   const [currentQuote, setCurrentQuote] = useState(0)
+  const [isFading, setIsFading] = useState(false)
   const quoteList = quotes ?? []
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const currentRef = useRef(currentQuote)
+  currentRef.current = currentQuote
 
-  const goNext = () => {
-    setCurrentQuote((prev) => (prev + 1) % quoteList.length)
+  const cycleTo = useCallback((next: number) => {
+    setIsFading(true)
+    setTimeout(() => {
+      setCurrentQuote(next)
+      setIsFading(false)
+    }, 400)
+  }, [])
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current)
+    if (quoteList.length <= 1) return
+    timerRef.current = setInterval(() => {
+      const next = (currentRef.current + 1) % quoteList.length
+      setIsFading(true)
+      setTimeout(() => {
+        setCurrentQuote(next)
+        currentRef.current = next
+        setIsFading(false)
+      }, 400)
+    }, 5500)
+  }, [quoteList.length])
+
+  useEffect(() => {
+    startTimer()
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current)
+    }
+  }, [startTimer])
+
+  const handlePrev = () => {
+    cycleTo((currentQuote - 1 + quoteList.length) % quoteList.length)
+    startTimer()
   }
 
-  const goPrev = () => {
-    setCurrentQuote((prev) => (prev - 1 + quoteList.length) % quoteList.length)
+  const handleNext = () => {
+    cycleTo((currentQuote + 1) % quoteList.length)
+    startTimer()
   }
 
   const quote = quoteList[currentQuote]
 
   return (
-    <div className="relative pt-4 pb-3 md:pt-6 md:pb-4" style={{ backgroundColor: '#ffffff' }}>
+    <div className="relative pt-4 pb-3 md:pt-6 md:pb-4 bg-background">
       <div className="container">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-16">
-          {/* Left side - Title */}
           <div className="flex-1">
             <h1
               className="text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a] leading-[1.2] font-light"
@@ -33,37 +67,42 @@ export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
             </h1>
           </div>
 
-          {/* Right side - Quote circle with carousel */}
           {quoteList.length > 0 && quote && (
             <div className="flex flex-col items-center gap-3">
               <div
-                className="w-[240px] h-[240px] md:w-[280px] md:h-[280px] rounded-full flex flex-col items-center justify-center p-10 md:p-12 text-center"
-                style={{
-                  backgroundColor: '#307fe2',
-                }}
+                className="w-[240px] h-[240px] md:w-[280px] md:h-[280px] rounded-full flex flex-col items-center justify-center p-10 md:p-12 text-center relative overflow-hidden"
+                style={{ backgroundColor: '#307fe2' }}
               >
-                <p
-                  className="text-white text-lg md:text-xl italic leading-snug mb-3 font-extralight"
-                  style={{ fontFamily: 'var(--font-inter)' }}
+                <div
+                  className="flex flex-col items-center justify-center transition-all duration-400"
+                  style={{
+                    opacity: isFading ? 0 : 1,
+                    transform: isFading ? 'translateY(12px)' : 'translateY(0)',
+                    transition: 'opacity 0.4s ease, transform 0.4s ease',
+                  }}
                 >
-                  &ldquo;{quote.text}&rdquo;
-                </p>
-                <p className="text-white/80 text-xs md:text-sm" style={{ fontFamily: 'var(--font-inter)' }}>
-                  ~ {quote.attribution}
-                  {quote.role && (
-                    <>
-                      <br />
-                      {quote.role}
-                    </>
-                  )}
-                </p>
+                  <p
+                    className="text-white text-lg md:text-xl italic leading-snug mb-3 font-extralight"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    &ldquo;{quote.text}&rdquo;
+                  </p>
+                  <p className="text-white/80 text-xs md:text-sm" style={{ fontFamily: 'var(--font-inter)' }}>
+                    ~ {quote.attribution}
+                    {quote.role && (
+                      <>
+                        <br />
+                        {quote.role}
+                      </>
+                    )}
+                  </p>
+                </div>
               </div>
 
-              {/* Navigation arrows */}
               {quoteList.length > 1 && (
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={goPrev}
+                    onClick={handlePrev}
                     className="w-8 h-8 rounded-full border-2 border-[#307fe2] text-[#307fe2] flex items-center justify-center hover:bg-[#307fe2] hover:text-white transition-colors"
                     aria-label="Previous quote"
                   >
@@ -72,7 +111,7 @@ export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
                     </svg>
                   </button>
                   <button
-                    onClick={goNext}
+                    onClick={handleNext}
                     className="w-8 h-8 rounded-full border-2 border-[#307fe2] text-[#307fe2] flex items-center justify-center hover:bg-[#307fe2] hover:text-white transition-colors"
                     aria-label="Next quote"
                   >
