@@ -9,6 +9,7 @@ import scribble2 from '@/images/scribble-case-study2.png'
 import shadow2 from '@/images/case-study-block2-shadow2.png'
 import arrowLeft from '@/images/scribble-arrow-left.png'
 import arrowRight from '@/images/scribble-arrow-right.png'
+import hand2 from '@/images/hand2.gif'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
 type CaseStudyProps = {
@@ -148,7 +149,19 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
             {/* Right column - results circle */}
             {results && (
               <ScrollReveal animation="scaleIn" duration={1} delay={0.2}>
-                <div className="flex-shrink-0 flex items-center justify-center">
+                <div className="flex-shrink-0 flex items-center justify-center relative">
+                  {/* Hand holding the results circle from the left */}
+                  <div
+                    className="absolute hidden md:block"
+                    style={{
+                      left: '-22%',
+                      top: '12%',
+                      width: 'clamp(100px, 12vw, 160px)',
+                      zIndex: 20,
+                    }}
+                  >
+                    <Image src={hand2} alt="" className="w-full h-auto" unoptimized />
+                  </div>
                   <div
                     className="w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full flex flex-col justify-center px-12 md:px-16 py-10 md:py-14 relative overflow-hidden"
                     style={{
