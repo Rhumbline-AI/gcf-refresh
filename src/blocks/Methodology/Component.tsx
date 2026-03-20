@@ -1,8 +1,14 @@
 import React from 'react'
-import type { Methodology as MethodologyProps } from '@/payload-types'
 import dotMatrixBg from '@/images/dot-matrix-background.gif'
 import circleBg from '@/images/how-we-do-it-bg.jpg'
 import { ScrollReveal } from '@/components/ScrollReveal'
+
+type MethodologyProps = {
+  title?: string | null
+  subtitle?: string | null
+  definition?: string | null
+  items?: { label: string; description: string; id?: string | null }[] | null
+}
 
 export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, definition, items }) => {
   const capitalizeWords = (str: string) => {
@@ -25,9 +31,10 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
     >
       <div className="container relative z-10 flex flex-col items-center justify-center">
         <ScrollReveal animation="scaleIn" duration={1.2} className="w-full max-w-[990px]">
-          <div className="relative w-full aspect-square">
+          {/* Desktop: aspect-square with rotating text ring. Mobile: auto-height circle only */}
+          <div className="relative w-full md:aspect-square flex items-center justify-center">
             <svg 
-              className="absolute inset-0 w-full h-full overflow-visible animate-[spin_60s_linear_infinite]" 
+              className="hidden md:block absolute inset-0 w-full h-full overflow-visible animate-[spin_60s_linear_infinite]" 
               viewBox="0 0 100 100"
             >
               <defs>
@@ -46,41 +53,42 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
             </svg>
 
             <div 
-              className="absolute inset-[4%] rounded-full flex flex-col items-center justify-center p-8 md:p-16 text-white text-center overflow-hidden"
+              className="relative md:absolute md:inset-[4%] w-[92%] md:w-auto rounded-full flex flex-col items-center justify-center px-6 py-10 sm:p-8 md:p-16 text-white text-center overflow-hidden"
               style={{ 
                 backgroundColor: '#307fe2',
                 backgroundImage: `url(${circleBg.src})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
+                aspectRatio: '1 / 1',
               }}
             >
-              <h2 className="text-2xl md:text-4xl lg:text-5xl font-light mb-2 md:mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
+              <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-light mb-1 sm:mb-2 md:mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                 {title}
               </h2>
-              <p className="text-lg md:text-2xl lg:text-3xl font-normal mb-6 md:mb-8" style={{ fontFamily: 'var(--font-inter)' }}>
+              <p className="text-sm sm:text-lg md:text-2xl lg:text-3xl font-normal mb-3 sm:mb-6 md:mb-8" style={{ fontFamily: 'var(--font-inter)' }}>
                 {subtitle}
               </p>
 
               {definition && (
-                <p className="text-xs md:text-sm lg:text-base mb-6 md:mb-8 max-w-md opacity-90 leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
+                <p className="text-[10px] sm:text-xs md:text-sm lg:text-base mb-3 sm:mb-6 md:mb-8 max-w-md opacity-90 leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
                   {definition}
                 </p>
               )}
 
-              <div className="flex gap-4 mb-8 md:mb-12">
-                <button className="bg-white text-[#307fe2] px-6 py-2 rounded-full font-bold text-sm md:text-base uppercase tracking-wide hover:bg-opacity-90 transition-all" style={{ fontFamily: 'var(--font-inter)' }}>
+              <div className="flex gap-2 sm:gap-4 mb-4 sm:mb-8 md:mb-12">
+                <button className="bg-white text-[#307fe2] px-3 sm:px-6 py-1.5 sm:py-2 rounded-full font-bold text-[10px] sm:text-sm md:text-base uppercase tracking-wide hover:bg-opacity-90 transition-all" style={{ fontFamily: 'var(--font-inter)' }}>
                   We Identify
                 </button>
-                <button className="bg-white text-[#307fe2] px-6 py-2 rounded-full font-bold text-sm md:text-base uppercase tracking-wide hover:bg-opacity-90 transition-all" style={{ fontFamily: 'var(--font-inter)' }}>
+                <button className="bg-white text-[#307fe2] px-3 sm:px-6 py-1.5 sm:py-2 rounded-full font-bold text-[10px] sm:text-sm md:text-base uppercase tracking-wide hover:bg-opacity-90 transition-all" style={{ fontFamily: 'var(--font-inter)' }}>
                   Growth Fuel
                 </button>
               </div>
 
-              <div className="w-full max-w-lg space-y-6 md:space-y-8">
+              <div className="w-full max-w-lg space-y-3 sm:space-y-6 md:space-y-8">
                 {items?.map((item, i) => (
-                  <div key={i} className="flex flex-col md:flex-row gap-2 md:gap-4 items-start text-left">
+                  <div key={i} className="flex flex-col sm:flex-row gap-1 sm:gap-2 md:gap-4 items-start text-left">
                     <div className="flex-1">
-                      <h3 className="text-sm md:text-base lg:text-lg font-bold mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
+                      <h3 className="text-[10px] sm:text-sm md:text-base lg:text-lg font-bold mb-0.5 sm:mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
                         {item.label}
                       </h3>
                     </div>
@@ -88,7 +96,7 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
                       <svg className="hidden md:block w-8 h-4 flex-shrink-0" viewBox="0 0 32 16" fill="none">
                         <path d="M0 8H30M30 8L24 2M30 8L24 14" stroke="white" strokeWidth="2"/>
                       </svg>
-                      <p className="text-xs md:text-sm lg:text-base opacity-90 leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
+                      <p className="text-[9px] sm:text-xs md:text-sm lg:text-base opacity-90 leading-snug sm:leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
                         {item.description}
                       </p>
                     </div>
