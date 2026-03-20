@@ -23,11 +23,15 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
 
   return (
     <div className="relative py-16 md:py-24 bg-white">
-      {/* Large decorative blue circle outline */}
+      {/* Large decorative blue circle outline — Venn-overlaps the filled circle */}
       <div
-        className="absolute -left-[220px] md:-left-[180px] lg:-left-[140px] -top-[180px] md:-top-[160px] w-[500px] h-[500px] md:w-[650px] md:h-[650px] lg:w-[750px] lg:h-[750px] rounded-full pointer-events-none z-0"
+        className="absolute rounded-full pointer-events-none z-[5]"
         aria-hidden
         style={{
+          width: 'clamp(400px, 50vw, 750px)',
+          height: 'clamp(400px, 50vw, 750px)',
+          top: 'clamp(-80px, 2vw, 40px)',
+          left: 'clamp(-320px, -18vw, -100px)',
           background: `url(${circleBg.src})`,
           backgroundSize: '200%',
           backgroundPosition: '0% 0%',
