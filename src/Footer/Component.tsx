@@ -9,7 +9,6 @@ import bbbLockup from '@/images/bbb-rating-lockup.png'
 import dotMatrixBg from '@/images/dot-matrix-background2.gif'
 import footerRip2 from '@/images/footer-rip2.png'
 import { BackToTop } from './BackToTop'
-import { ScrollReveal } from '@/components/ScrollReveal'
 
 export async function Footer() {
   const footerData: Footer = await getCachedGlobal('footer', 1)()
@@ -47,7 +46,6 @@ export async function Footer() {
         className="container relative z-10 pt-8 md:pt-10"
         style={{ marginTop: '-clamp(20px, 4vw, 36px)' }}
       >
-        <ScrollReveal animation="fadeUp" staggerChildren stagger={0.12} duration={0.7} start="top 95%">
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
             <div className="flex gap-4">
               <Link
@@ -85,7 +83,6 @@ export async function Footer() {
             </div>
             <BackToTop />
           </div>
-        </ScrollReveal>
       </div>
     </footer>
   )

@@ -69,7 +69,7 @@ export const PageTransitionProvider: React.FC<{ children: React.ReactNode }> = (
   }, [handleClick])
 
   return (
-    <div ref={contentRef}>
+    <div ref={contentRef} className="flex-1">
       {children}
     </div>
   )

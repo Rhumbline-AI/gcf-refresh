@@ -32,10 +32,10 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
           height: 'clamp(400px, 50vw, 750px)',
           top: 'clamp(-80px, 2vw, 40px)',
           left: 'clamp(-320px, -18vw, -100px)',
-          background: `url(${circleBg.src})`,
-          backgroundSize: '200%',
+          backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${circleBg.src})`,
+          backgroundSize: 'auto, 200%',
           backgroundPosition: '0% 0%',
-          animation: 'blueNoiseShift 25s ease-in-out infinite',
+          animation: 'blueNoiseShift 2s steps(10) infinite',
           WebkitMask: 'radial-gradient(circle, transparent 65%, black 65%)',
           mask: 'radial-gradient(circle, transparent 65%, black 65%)',
         }}
@@ -49,10 +49,10 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
                 className="relative w-[380px] h-[380px] sm:w-[500px] sm:h-[500px] md:w-[650px] md:h-[650px] lg:w-[780px] lg:h-[780px] rounded-full flex items-center justify-center overflow-hidden"
                 style={{
                   backgroundColor: '#307fe2',
-                  backgroundImage: `url(${circleBg.src})`,
-                  backgroundSize: '200%',
+                  backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${circleBg.src})`,
+                  backgroundSize: 'auto, 200%',
                   backgroundPosition: '0% 0%',
-                  animation: 'blueNoiseShift 25s ease-in-out infinite',
+                  animation: 'blueNoiseShift 2s steps(10) infinite',
                 }}
               >
                 <div className="w-full px-14 sm:px-20 md:px-28 lg:px-36">

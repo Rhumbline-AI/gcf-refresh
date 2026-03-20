@@ -55,7 +55,7 @@ export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
   const quote = quoteList[currentQuote]
 
   return (
-    <div className="relative pt-4 pb-3 md:pt-6 md:pb-4 bg-background">
+    <div className="relative pt-4 pb-3 md:pt-6 md:pb-4 bg-white">
       <div className="container">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-16">
           <div className="flex-1">

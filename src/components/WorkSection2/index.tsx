@@ -431,31 +431,6 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
       onMouseEnter={size !== 'mobile' ? handleMouseEnter : undefined}
       onMouseLeave={size !== 'mobile' ? handleMouseLeave : undefined}
     >
-      <svg className="absolute w-0 h-0">
-        <defs>
-          <filter id={`grain2-${project.id}`}>
-            <feTurbulence 
-              type="fractalNoise" 
-              baseFrequency="0.8" 
-              numOctaves="4" 
-              stitchTiles="stitch"
-              result="noise"
-            />
-            <feColorMatrix
-              type="saturate"
-              values="0"
-              in="noise"
-              result="monoNoise"
-            />
-            <feBlend 
-              in="SourceGraphic" 
-              in2="monoNoise" 
-              mode="multiply" 
-            />
-          </filter>
-        </defs>
-      </svg>
-      
       <div
         ref={blueCircleRef}
         className="absolute rounded-full overflow-hidden"
@@ -463,21 +438,13 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
           width: `${blueCircleSize}px`,
           height: `${blueCircleSize}px`,
           backgroundColor: '#307fe2',
-          backgroundImage: `url(${blueNoiseBg.src})`,
-          backgroundSize: '200%',
+          backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${blueNoiseBg.src})`,
+          backgroundSize: 'auto, 200%',
           backgroundPosition: '0% 0%',
-          backgroundBlendMode: 'overlay',
-          animation: 'blueNoiseShift 25s ease-in-out infinite',
+          animation: 'blueNoiseShift 2s steps(10) infinite',
           zIndex: 1,
         }}
       >
-        <div 
-          className="absolute inset-0 rounded-full opacity-30 mix-blend-overlay pointer-events-none"
-          style={{
-            filter: `url(#grain2-${project.id})`,
-            backgroundColor: '#fff',
-          }}
-        />
       </div>
       
       {thumbnailUrl && (

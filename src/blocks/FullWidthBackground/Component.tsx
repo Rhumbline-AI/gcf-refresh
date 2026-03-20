@@ -35,6 +35,7 @@ export const FullWidthBackgroundBlock: React.FC<FullWidthBackgroundProps> = ({
           resource={backgroundImage}
           fill
           imgClassName={`object-cover scale-150 ${grayscale ? 'grayscale' : ''}`}
+          videoClassName={`absolute inset-0 w-full h-full object-cover ${grayscale ? 'grayscale' : ''}`}
         />
       </Parallax>
     </div>

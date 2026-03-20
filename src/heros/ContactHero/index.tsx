@@ -78,7 +78,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
   )
 
   return (
-    <div className="relative min-h-[100vh] flex items-start" style={{ marginBottom: '-1px' }}>
+    <div className="relative w-full flex items-start overflow-hidden" style={{ minHeight: 'calc(100vh + 6rem)', marginBottom: '-6rem' }}>
       {/* Background video */}
       <video
         autoPlay
@@ -104,7 +104,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
       )}
 
       {/* Content */}
-      <div className="container relative z-10 pt-16 pb-16 md:pt-24 md:pb-24">
+      <div className="container relative z-10 pt-8 pb-16 md:pt-12 md:pb-24">
         <div className="max-w-xl">
           {/* Title & subtitle */}
           {richText && (
