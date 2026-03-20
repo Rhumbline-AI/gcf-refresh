@@ -78,21 +78,33 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
   )
 
   return (
-    <div className="relative min-h-[100vh] flex items-start">
-      {/* Background image */}
+    <div className="relative min-h-[100vh] flex items-start" style={{ marginBottom: '-1px' }}>
+      {/* Background video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        style={{ zIndex: 0 }}
+      >
+        <source src="/videos/rocket-control-web.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-black/50" style={{ zIndex: 1 }} />
+
+      {/* Fallback background image (behind video) */}
       {mediaData && (
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0" style={{ zIndex: -1 }}>
           <Media
             resource={mediaData}
             fill
             imgClassName="object-cover grayscale"
           />
-          <div className="absolute inset-0 bg-black/40" />
         </div>
       )}
 
       {/* Content */}
-      <div className="container relative z-10 pt-20 pb-16 md:pt-28 md:pb-24">
+      <div className="container relative z-10 pt-16 pb-16 md:pt-24 md:pb-24">
         <div className="max-w-xl">
           {/* Title & subtitle */}
           {richText && (
