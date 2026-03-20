@@ -13,7 +13,6 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
   }
 
   body {
@@ -243,10 +242,16 @@ html {
 }
 
 @keyframes blueNoiseShift {
-  0% { background-position: 0% 0%; }
-  25% { background-position: 60% 40%; }
-  50% { background-position: 100% 100%; }
-  75% { background-position: 40% 60%; }
+  0%   { background-position: 0% 0%; }
+  10%  { background-position: 73% 18%; }
+  20%  { background-position: 12% 85%; }
+  30%  { background-position: 91% 42%; }
+  40%  { background-position: 37% 67%; }
+  50%  { background-position: 58% 5%; }
+  60%  { background-position: 4% 53%; }
+  70%  { background-position: 82% 91%; }
+  80%  { background-position: 45% 29%; }
+  90%  { background-position: 19% 74%; }
   100% { background-position: 0% 0%; }
 }
 

@@ -28,28 +28,28 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
     >
       <div className="container relative z-10 flex flex-col items-center justify-center">
         <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[396px]">
-          <div className="relative">
-            {/* Hand holding the circle from the left */}
+          {/* Link is the positioning context — hand sits inside at circle-relative percentages */}
+          <Link href="/contact" className="block relative w-full aspect-square group">
+            {/* Hand holding the circle from the left — percentage-based so it scales with circle */}
             <div
-              className="absolute hidden md:block"
+              className="absolute hidden md:block pointer-events-none"
               style={{
-                left: '-18%',
-                top: '15%',
-                width: 'clamp(100px, 14vw, 180px)',
+                left: '-33%',
+                top: '38%',
+                width: '32%',
                 zIndex: 20,
               }}
             >
               <Image src={hand2} alt="" className="w-full h-auto" unoptimized />
             </div>
-          <Link href="/contact" className="block relative w-full aspect-square group">
             <div 
               className="w-full h-full rounded-full flex flex-col items-center justify-center p-8 md:p-16 overflow-hidden transition-transform duration-300 ease-out group-hover:scale-105"
               style={{ 
                 backgroundColor: '#307fe2',
-                backgroundImage: `url(${blueNoiseBg.src})`,
-                backgroundSize: '200%',
+                backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${blueNoiseBg.src})`,
+                backgroundSize: 'auto, 200%',
                 backgroundPosition: '0% 0%',
-                animation: 'blueNoiseShift 25s ease-in-out infinite',
+                animation: 'blueNoiseShift 2s steps(10) infinite',
               }}
             >
               {imageUrl && (
@@ -65,7 +65,6 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
               )}
             </div>
           </Link>
-          </div>
         </ScrollReveal>
       </div>
     </div>
