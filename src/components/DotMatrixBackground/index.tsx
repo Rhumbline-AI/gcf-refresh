@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import dotMatrixBg from '@/images/dot-matrix-background.gif'
+import dotMatrixBg from '@/images/dot-matrix-background2.gif'
 
 export const DotMatrixBackground: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,

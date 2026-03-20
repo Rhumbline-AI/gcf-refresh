@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { gsap, registerGSAP, ScrollTrigger } from '@/utilities/gsapSetup'
-import dotMatrixBg from '@/images/dot-matrix-background.gif'
+import dotMatrixBg from '@/images/dot-matrix-background2.gif'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import type { Project } from '@/payload-types'
 

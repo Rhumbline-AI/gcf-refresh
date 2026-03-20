@@ -6,7 +6,7 @@ import Image from 'next/image'
 import type { Footer } from '@/payload-types'
 
 import bbbLockup from '@/images/bbb-rating-lockup.png'
-import dotMatrixBg from '@/images/dot-matrix-background.gif'
+import dotMatrixBg from '@/images/dot-matrix-background2.gif'
 import footerRip2 from '@/images/footer-rip2.png'
 import { BackToTop } from './BackToTop'
 import { ScrollReveal } from '@/components/ScrollReveal'

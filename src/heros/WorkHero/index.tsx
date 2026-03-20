@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react'
 import RichText from '@/components/RichText'
 import type { Page } from '@/payload-types'
-import dotMatrixBg from '@/images/dot-matrix-background.gif'
+import dotMatrixBg from '@/images/dot-matrix-background2.gif'
 import { gsap, registerGSAP } from '@/utilities/gsapSetup'
 
 registerGSAP()
