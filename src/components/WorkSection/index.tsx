@@ -207,53 +207,68 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
         </div>
       )}
 
-      {/* Top Row - Two circles */}
-      <div className="relative mx-auto w-full max-w-7xl -mb-32" style={{ minHeight: '380px' }}>
-        {/* Top Left Circle */}
-        {displayProjects[0] && (
+      {/* MOBILE: staggered cascade layout */}
+      <div className="flex flex-col gap-4 px-4 md:hidden">
+        {displayProjects.map((project, i) => (
           <FloatingWrapper
-            className="absolute"
-            style={{ top: '0%', left: '10%', zIndex: 2 }}
-            entranceDelay={0.1}
-            floatAmount={10}
-            floatDuration={3.8}
-            swayAmount={5}
-            rotateAmount={1.2}
-          >
-            <ProjectCircle project={displayProjects[0]} size="medium" />
-          </FloatingWrapper>
-        )}
-
-        {/* Top Right Circle */}
-        {displayProjects[1] && (
-          <FloatingWrapper
-            className="absolute"
-            style={{ top: '0%', right: '10%', zIndex: 2 }}
-            entranceDelay={0.2}
-            floatAmount={12}
-            floatDuration={4.2}
-            swayAmount={6}
-            rotateAmount={1.8}
-          >
-            <ProjectCircle project={displayProjects[1]} size="medium" />
-          </FloatingWrapper>
-        )}
-      </div>
-
-      {/* Bottom Row - Large centered circle */}
-      <div className="relative w-full flex justify-center" style={{ zIndex: 2 }}>
-        {/* Bottom Center Circle - Large */}
-        {displayProjects[2] && (
-          <FloatingWrapper
-            entranceDelay={0.3}
-            floatAmount={14}
-            floatDuration={5}
-            swayAmount={4}
+            key={project.id}
+            className={i % 2 === 0 ? 'self-start' : 'self-end'}
+            entranceDelay={0.1 + i * 0.15}
+            floatAmount={6}
+            floatDuration={3.5 + i * 0.4}
+            swayAmount={3}
             rotateAmount={1}
           >
-            <ProjectCircle project={displayProjects[2]} size="xlarge" />
+            <ProjectCircle project={project} size="mobile" />
           </FloatingWrapper>
-        )}
+        ))}
+      </div>
+
+      {/* DESKTOP: absolute positioned layout */}
+      <div className="hidden md:block">
+        <div className="relative mx-auto w-full max-w-7xl -mb-32" style={{ minHeight: '380px' }}>
+          {displayProjects[0] && (
+            <FloatingWrapper
+              className="absolute"
+              style={{ top: '0%', left: '10%', zIndex: 2 }}
+              entranceDelay={0.1}
+              floatAmount={10}
+              floatDuration={3.8}
+              swayAmount={5}
+              rotateAmount={1.2}
+            >
+              <ProjectCircle project={displayProjects[0]} size="medium" />
+            </FloatingWrapper>
+          )}
+
+          {displayProjects[1] && (
+            <FloatingWrapper
+              className="absolute"
+              style={{ top: '0%', right: '10%', zIndex: 2 }}
+              entranceDelay={0.2}
+              floatAmount={12}
+              floatDuration={4.2}
+              swayAmount={6}
+              rotateAmount={1.8}
+            >
+              <ProjectCircle project={displayProjects[1]} size="medium" />
+            </FloatingWrapper>
+          )}
+        </div>
+
+        <div className="relative w-full flex justify-center" style={{ zIndex: 2 }}>
+          {displayProjects[2] && (
+            <FloatingWrapper
+              entranceDelay={0.3}
+              floatAmount={14}
+              floatDuration={5}
+              swayAmount={4}
+              rotateAmount={1}
+            >
+              <ProjectCircle project={displayProjects[2]} size="xlarge" />
+            </FloatingWrapper>
+          )}
+        </div>
       </div>
     </section>
   )
@@ -261,13 +276,17 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
 type ProjectCircleProps = {
   project: Project
-  size: 'medium' | 'xlarge'
+  size: 'mobile' | 'medium' | 'xlarge'
+}
+
+const circleSizes = {
+  mobile: { diameter: 190, image: 182, blue: 176 },
+  medium: { diameter: 374, image: 363, blue: 341 },
+  xlarge: { diameter: 575, image: 564, blue: 540 },
 }
 
 function ProjectCircle({ project, size }: ProjectCircleProps) {
-  const diameter = size === 'xlarge' ? 575 : 374
-  const imageSize = size === 'xlarge' ? 564 : 363
-  const blueCircleSize = size === 'xlarge' ? 540 : 341
+  const { diameter, image: imageSize, blue: blueCircleSize } = circleSizes[size]
   
   const containerRef = useRef<HTMLDivElement>(null)
   const blueCircleRef = useRef<HTMLDivElement>(null)
@@ -347,7 +366,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
     })
   }
   
-  return (
+  const circleContent = (
     <div
       ref={containerRef}
       className="relative flex items-center justify-center cursor-pointer rounded-full"
@@ -356,8 +375,8 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         height: `${diameter}px`,
         filter: `drop-shadow(0 12px 28px rgba(0,0,0,0.12)) drop-shadow(0 4px 10px rgba(0,0,0,0.06))`,
       }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={size !== 'mobile' ? handleMouseEnter : undefined}
+      onMouseLeave={size !== 'mobile' ? handleMouseLeave : undefined}
     >
       {/* SVG filter for film grain effect */}
       <svg className="absolute w-0 h-0">
@@ -428,9 +447,10 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
       {/* Title overlay - visible by default */}
       <div
         ref={titleRef}
-        className="absolute inset-0 flex items-center justify-start px-12 text-white font-bold"
+        className="absolute inset-0 flex items-center justify-start text-white font-bold"
         style={{
-          fontSize: size === 'xlarge' ? '2.5rem' : '1.75rem',
+          fontSize: size === 'xlarge' ? '2.5rem' : size === 'mobile' ? '1rem' : '1.75rem',
+          padding: size === 'mobile' ? '0 1.25rem' : '0 3rem',
           fontFamily: 'var(--font-inter)',
           textShadow: '0 2px 8px rgba(0,0,0,0.5)',
           zIndex: 3,
@@ -439,13 +459,14 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         {project.title}
       </div>
       
-      {/* Hover content - hidden by default */}
+      {/* Hover content - hidden by default (skip on mobile) */}
       <div
         ref={hoverContentRef}
-        className="absolute inset-0 flex flex-col items-start justify-center px-12 pl-16"
+        className={`absolute inset-0 flex flex-col items-start justify-center ${size === 'mobile' ? 'hidden' : ''}`}
         style={{
           opacity: 0,
           transform: 'translateY(20px)',
+          padding: '0 3rem 0 4rem',
           zIndex: 4,
         }}
       >
@@ -478,4 +499,14 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
       </div>
     </div>
   )
+
+  if (size === 'mobile') {
+    return (
+      <a href={`/work/${project.slug || ''}`} className="block rounded-full">
+        {circleContent}
+      </a>
+    )
+  }
+
+  return circleContent
 }
