@@ -39,10 +39,21 @@ export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
 
   return (
     <div
-      className="relative -mt-[10.4rem] pt-56 pb-16 md:pt-64 md:pb-24"
+      className="relative -mt-[10.4rem] pt-56 pb-16 md:pt-64 md:pb-24 overflow-hidden"
       style={{ backgroundColor: '#ffffff' }}
     >
-      <div className="container">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        style={{ zIndex: 0, opacity: 0.08 }}
+      >
+        <source src="/videos/rocket-launch-web.mp4" type="video/mp4" />
+      </video>
+
+      <div className="container relative" style={{ zIndex: 1 }}>
         <div className="flex flex-col items-center text-center" style={{ fontFamily: 'var(--font-inter)' }}>
           <div ref={imgRef} className="w-full max-w-4xl mx-auto">
             <Image
