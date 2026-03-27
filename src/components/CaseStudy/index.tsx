@@ -94,7 +94,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
 
   return (
     <div>
-      <div className="pt-10 pb-8 md:pt-14 md:pb-10" style={{ backgroundColor: '#f5f0eb' }}>
+      <div className="pt-20 pb-8 md:pt-28 md:pb-10" style={{ backgroundColor: '#f5f0eb' }}>
         <div className="container">
           {/* Client name with underline extending beyond text */}
           {clientName && (
@@ -127,7 +127,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
           {subtitle && (
             <ScrollReveal animation="fadeUp" duration={0.8} delay={0.35}>
               <p
-                className="text-sm md:text-base text-[#307fe2] font-light italic mb-12"
+                className="text-sm md:text-base text-[#307fe2] font-light italic mb-4"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
                 {subtitle}
