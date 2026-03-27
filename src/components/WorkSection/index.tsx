@@ -282,7 +282,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
       {title && (
         <div className="container">
-          <h2 className="mb-8 text-4xl md:text-5xl font-light text-center" style={{ fontFamily: 'var(--font-inter)' }}>
+          <h2 className="mb-2 text-4xl md:text-5xl font-light text-center" style={{ fontFamily: 'var(--font-inter)' }}>
             {title}
           </h2>
         </div>
