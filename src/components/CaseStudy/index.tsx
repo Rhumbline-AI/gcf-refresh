@@ -154,10 +154,11 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                   <div
                     className="absolute hidden md:block"
                     style={{
-                      left: '-22%',
-                      top: '12%',
-                      width: 'clamp(100px, 12vw, 160px)',
+                      left: '91%',
+                      top: '58%',
+                      width: '49%',
                       zIndex: 20,
+                      transform: 'rotateY(180deg)',
                     }}
                   >
                     <Image src={hand2} alt="" className="w-full h-auto" unoptimized />
