@@ -6,7 +6,6 @@ import Image from 'next/image'
 import type { Footer } from '@/payload-types'
 
 import bbbLockup from '@/images/bbb-rating-lockup.png'
-import dotMatrixBg from '@/images/dot-matrix-background2.gif'
 import footerRip2 from '@/images/footer-rip2.png'
 import { BackToTop } from './BackToTop'
 
@@ -17,13 +16,7 @@ export async function Footer() {
 
   return (
     <footer 
-      className="relative pt-20 pb-12 -mt-16 md:-mt-24 overflow-visible"
-      style={{
-        backgroundImage: `url(${dotMatrixBg.src})`,
-        backgroundRepeat: 'repeat',
-        backgroundSize: '700px',
-        backgroundPosition: '0 0',
-      }}
+      className="relative pt-20 pb-12 -mt-16 md:-mt-24 overflow-visible bg-white"
     >
       {/* Rip image: fixed-height + object-fit for consistent sizing; object-position keeps torn edge visible */}
       <div
