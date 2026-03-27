@@ -78,7 +78,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
   )
 
   return (
-    <div className="relative w-full flex items-start overflow-hidden" style={{ minHeight: 'calc(100vh + 6rem)', marginBottom: '-6rem' }}>
+    <div className="relative w-full flex items-start overflow-hidden" style={{ minHeight: 'calc(72vh + 6rem)', marginBottom: '-6rem' }}>
       {/* Background video */}
       <video
         autoPlay
@@ -125,8 +125,8 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
                       key={index}
                       type={field.blockType === 'email' ? 'email' : 'text'}
                       placeholder={field.label || ''}
-                      className="w-full rounded-full px-6 py-3 md:py-4 text-base text-white placeholder:text-white font-medium outline-none border-none"
-                      style={{ backgroundColor: '#307fe2', fontFamily: 'var(--font-inter)' }}
+                      className="w-full rounded-full px-6 py-3 md:py-4 text-base font-medium outline-none border-none transition-colors duration-200 bg-[#307fe2] text-white placeholder:text-white focus:bg-white focus:text-[#307fe2] focus:placeholder:text-[#307fe2]/50"
+                      style={{ fontFamily: 'var(--font-inter)' }}
                       {...register(field.name, { required: field.required })}
                     />
                   )
@@ -138,8 +138,8 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
                       key={index}
                       placeholder={field.label || ''}
                       rows={4}
-                      className="w-full rounded-2xl px-6 py-3 md:py-4 text-base text-white placeholder:text-white font-medium outline-none border-none resize-none"
-                      style={{ backgroundColor: '#307fe2', fontFamily: 'var(--font-inter)' }}
+                      className="w-full rounded-2xl px-6 py-3 md:py-4 text-base font-medium outline-none border-none resize-none transition-colors duration-200 bg-[#307fe2] text-white placeholder:text-white focus:bg-white focus:text-[#307fe2] focus:placeholder:text-[#307fe2]/50"
+                      style={{ fontFamily: 'var(--font-inter)' }}
                       {...register(field.name, { required: field.required })}
                     />
                   )
@@ -152,8 +152,8 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
                       key={index}
                       type="tel"
                       placeholder={f.label || ''}
-                      className="w-full rounded-full px-6 py-3 md:py-4 text-base text-white placeholder:text-white font-medium outline-none border-none"
-                      style={{ backgroundColor: '#307fe2', fontFamily: 'var(--font-inter)' }}
+                      className="w-full rounded-full px-6 py-3 md:py-4 text-base font-medium outline-none border-none transition-colors duration-200 bg-[#307fe2] text-white placeholder:text-white focus:bg-white focus:text-[#307fe2] focus:placeholder:text-[#307fe2]/50"
+                      style={{ fontFamily: 'var(--font-inter)' }}
                       {...register(f.name, { required: f.required })}
                     />
                   )
