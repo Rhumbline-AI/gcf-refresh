@@ -165,12 +165,12 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       const o3 = getOrb(orb3Ref) // center xlarge orb
 
       if (o1) {
-        // LEFT connector: screen-left-edge → bend-dot → left-orb bottom-left edge
-        const lBendX = o1.cx - o1.r * 0.42
-        const lBendY = o1.cy + o1.r * 0.52
-        const lOrbX  = o1.cx - o1.r * 0.28
-        const lOrbY  = o1.cy + o1.r * 0.35
-        sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.38, x2: lBendX, y2: lBendY })
+        // LEFT connector: screen-left-edge → elbow-dot → left-orb surface
+        const lOrbX  = o1.cx - o1.r * 0.72
+        const lOrbY  = o1.cy + o1.r * 0.48
+        const lBendX = o1.cx - o1.r * 1.40   // elbow clearly outside orb
+        const lBendY = o1.cy + o1.r * 0.82
+        sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.40, x2: lBendX, y2: lBendY })
         sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
         sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
 
@@ -180,12 +180,12 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       }
 
       if (o3) {
-        // BOTTOM connector: center-large-orb bottom-right edge → bend-dot → screen-right-edge
-        const bBendX = o3.cx + o3.r * 0.42
-        const bBendY = o3.cy + o3.r * 0.52
-        const bOrbX  = o3.cx + o3.r * 0.28
-        const bOrbY  = o3.cy + o3.r * 0.35
-        sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.9, x2: bBendX, y2: bBendY })
+        // BOTTOM connector: screen-right-edge → elbow-dot → center-large-orb surface
+        const bOrbX  = o3.cx + o3.r * 0.72
+        const bOrbY  = o3.cy + o3.r * 0.48
+        const bBendX = o3.cx + o3.r * 1.40   // elbow clearly outside orb
+        const bBendY = o3.cy + o3.r * 0.82
+        sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.88, x2: bBendX, y2: bBendY })
         sa(svg.querySelector('.bl2'), { x1: bBendX, y1: bBendY, x2: bOrbX, y2: bOrbY })
         sa(svg.querySelector('.db'),  { cx: bBendX, cy: bBendY })
       }
@@ -215,7 +215,8 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       once: true,
       onEnter: () => {
         animated = true
-        const tl = gsap.timeline({ delay: 0.9 })
+        // Orbs animate in via FloatingWrapper (0–1.0s). Lines draw after.
+        const tl = gsap.timeline({ delay: 1.2 })
 
         // All element references scoped to this section's SVG
         const ll1 = svg.querySelector('.ll1')

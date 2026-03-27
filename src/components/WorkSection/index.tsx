@@ -165,22 +165,22 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       const o2 = getOrb(orb2Ref)
       if (!o1 || !o2) return
 
-      // LEFT connector: screen-left-edge → bend-dot → left-orb bottom-left edge
-      // Line draws FROM screen edge TOWARD orb (x1=edge, x2=bend)
-      const lBendX = o1.cx - o1.r * 0.42
-      const lBendY = o1.cy + o1.r * 0.52
-      const lOrbX  = o1.cx - o1.r * 0.28
-      const lOrbY  = o1.cy + o1.r * 0.35
-      sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.72, x2: lBendX, y2: lBendY })
+      // LEFT connector: screen-left-edge → elbow-dot → left-orb surface
+      // Elbow is OUTSIDE the orb (> 1x radius from center), so the kink is visible
+      const lOrbX  = o1.cx - o1.r * 0.72   // point on orb surface, lower-left
+      const lOrbY  = o1.cy + o1.r * 0.48
+      const lBendX = o1.cx - o1.r * 1.40   // elbow: clearly outside orb to the left
+      const lBendY = o1.cy + o1.r * 0.82   // elbow: below orb center
+      sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.74, x2: lBendX, y2: lBendY })
       sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
       sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
 
-      // RIGHT connector: screen-right-edge → bend-dot → right-orb bottom-right edge
-      const rBendX = o2.cx + o2.r * 0.42
-      const rBendY = o2.cy + o2.r * 0.52
-      const rOrbX  = o2.cx + o2.r * 0.28
-      const rOrbY  = o2.cy + o2.r * 0.35
-      sa(svg.querySelector('.rl1'), { x1: W + 80, y1: H * 0.66, x2: rBendX, y2: rBendY })
+      // RIGHT connector: screen-right-edge → elbow-dot → right-orb surface
+      const rOrbX  = o2.cx + o2.r * 0.72
+      const rOrbY  = o2.cy + o2.r * 0.48
+      const rBendX = o2.cx + o2.r * 1.40
+      const rBendY = o2.cy + o2.r * 0.82
+      sa(svg.querySelector('.rl1'), { x1: W + 80, y1: H * 0.68, x2: rBendX, y2: rBendY })
       sa(svg.querySelector('.rl2'), { x1: rBendX, y1: rBendY, x2: rOrbX, y2: rOrbY })
       sa(svg.querySelector('.dr'),  { cx: rBendX, cy: rBendY })
 
@@ -215,9 +215,8 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       once: true,
       onEnter: () => {
         animated = true
-        // Orbs are already animating in via FloatingWrapper (0–0.8s)
-        // Lines + ring draw after orbs have appeared
-        const tl = gsap.timeline({ delay: 0.9 })
+        // Orbs animate in via FloatingWrapper (0–1.0s). Lines draw after.
+        const tl = gsap.timeline({ delay: 1.2 })
 
         // Long segments first (from screen edges toward bend dots)
         const ll1 = svg.querySelector('.ll1')
