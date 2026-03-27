@@ -146,6 +146,15 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, String(v)))
     }
 
+    // Manual line length — more reliable than getTotalLength() on <line> elements
+    const lineLen = (line: Element) => {
+      const x1 = parseFloat(line.getAttribute('x1') || '0')
+      const y1 = parseFloat(line.getAttribute('y1') || '0')
+      const x2 = parseFloat(line.getAttribute('x2') || '0')
+      const y2 = parseFloat(line.getAttribute('y2') || '0')
+      return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+    }
+
     const calcConnectors = () => {
       const sRect = section.getBoundingClientRect()
       const W = sRect.width
@@ -168,7 +177,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
         // LEFT connector: screen-left-edge → elbow-dot → left-orb surface
         const lOrbX  = o1.cx - o1.r * 0.72
         const lOrbY  = o1.cy + o1.r * 0.48
-        const lBendX = o1.cx - o1.r * 1.40   // elbow clearly outside orb
+        const lBendX = o1.cx - o1.r * 1.40
         const lBendY = o1.cy + o1.r * 0.82
         sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.40, x2: lBendX, y2: lBendY })
         sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
@@ -183,18 +192,21 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
         // BOTTOM connector: screen-right-edge → elbow-dot → center-large-orb surface
         const bOrbX  = o3.cx + o3.r * 0.72
         const bOrbY  = o3.cy + o3.r * 0.48
-        const bBendX = o3.cx + o3.r * 1.40   // elbow clearly outside orb
+        const bBendX = o3.cx + o3.r * 1.40
         const bBendY = o3.cy + o3.r * 0.82
         sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.88, x2: bBendX, y2: bBendY })
         sa(svg.querySelector('.bl2'), { x1: bBendX, y1: bBendY, x2: bOrbX, y2: bOrbY })
         sa(svg.querySelector('.db'),  { cx: bBendX, cy: bBendY })
       }
 
+      // Set initial hidden state AFTER coordinates are correct
       if (!animated) {
-        svg.querySelectorAll('line').forEach(line => {
-          const len = line.getTotalLength?.() || 300
+        svg.querySelectorAll<SVGLineElement>('line').forEach(line => {
+          const len = lineLen(line)
           gsap.set(line, { strokeDasharray: len, strokeDashoffset: len })
         })
+        // Dots: opacity only — avoids SVG transform-origin issues with scale
+        svg.querySelectorAll('.dot').forEach(d => gsap.set(d, { opacity: 0 }))
         const ring = svg.querySelector('.dec-ring')
         if (ring && o1) {
           const len = 2 * Math.PI * (o1.r * 0.78)
@@ -203,7 +215,6 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       }
     }
 
-    svg.querySelectorAll('.dot').forEach(d => gsap.set(d, { scale: 0, transformOrigin: 'center', opacity: 0 }))
     calcConnectors()
 
     const ro = new ResizeObserver(calcConnectors)
@@ -231,9 +242,9 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
         if (ll1) tl.to(ll1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0)
         if (bl1) tl.to(bl1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0.1)
 
-        // Dots at bend
-        if (dl) tl.to(dl, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, 0.85)
-        if (db) tl.to(db, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, 0.95)
+        // Dots fade in at bend points
+        if (dl) tl.to(dl, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.85)
+        if (db) tl.to(db, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.95)
 
         // Short segments to orbs
         if (ll2) tl.to(ll2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.0)

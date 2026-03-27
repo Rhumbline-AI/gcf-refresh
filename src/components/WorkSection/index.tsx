@@ -145,6 +145,15 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, String(v)))
     }
 
+    // Manual line length — more reliable than getTotalLength() on <line> elements
+    const lineLen = (line: Element) => {
+      const x1 = parseFloat(line.getAttribute('x1') || '0')
+      const y1 = parseFloat(line.getAttribute('y1') || '0')
+      const x2 = parseFloat(line.getAttribute('x2') || '0')
+      const y2 = parseFloat(line.getAttribute('y2') || '0')
+      return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+    }
+
     // Recalculate all SVG positions based on actual orb DOM positions
     const calcConnectors = () => {
       const sRect = section.getBoundingClientRect()
@@ -166,11 +175,10 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       if (!o1 || !o2) return
 
       // LEFT connector: screen-left-edge → elbow-dot → left-orb surface
-      // Elbow is OUTSIDE the orb (> 1x radius from center), so the kink is visible
-      const lOrbX  = o1.cx - o1.r * 0.72   // point on orb surface, lower-left
+      const lOrbX  = o1.cx - o1.r * 0.72
       const lOrbY  = o1.cy + o1.r * 0.48
-      const lBendX = o1.cx - o1.r * 1.40   // elbow: clearly outside orb to the left
-      const lBendY = o1.cy + o1.r * 0.82   // elbow: below orb center
+      const lBendX = o1.cx - o1.r * 1.40   // elbow outside orb
+      const lBendY = o1.cy + o1.r * 0.82
       sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.74, x2: lBendX, y2: lBendY })
       sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
       sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
@@ -184,16 +192,18 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       sa(svg.querySelector('.rl2'), { x1: rBendX, y1: rBendY, x2: rOrbX, y2: rOrbY })
       sa(svg.querySelector('.dr'),  { cx: rBendX, cy: rBendY })
 
-      // Decorative ring: anchored to right orb, Venn-overlapping it
+      // Decorative ring: anchored to right orb
       const dcR = o2.r * 0.78
       sa(svg.querySelector('.dec-ring'), { cx: o2.cx + o2.r * 0.48, cy: o2.cy - o2.r * 0.42, r: dcR })
 
-      // Update dash lengths (only before animation fires)
+      // Set initial hidden state — AFTER coordinates are correct so GSAP internals are right
       if (!animated) {
-        svg.querySelectorAll('line').forEach(line => {
-          const len = line.getTotalLength?.() || 300
+        svg.querySelectorAll<SVGLineElement>('line').forEach(line => {
+          const len = lineLen(line)
           gsap.set(line, { strokeDasharray: len, strokeDashoffset: len })
         })
+        // Dots: use opacity only (no scale — avoids SVG transform-origin issues)
+        svg.querySelectorAll('.dot').forEach(d => gsap.set(d, { opacity: 0 }))
         const ring = svg.querySelector('.dec-ring')
         if (ring) {
           const len = 2 * Math.PI * dcR
@@ -202,8 +212,6 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       }
     }
 
-    // Hide dots + ring initially
-    svg.querySelectorAll('.dot').forEach(d => gsap.set(d, { scale: 0, transformOrigin: 'center', opacity: 0 }))
     calcConnectors()
 
     const ro = new ResizeObserver(calcConnectors)
@@ -230,9 +238,9 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
         if (ll1) tl.to(ll1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0)
         if (rl1) tl.to(rl1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0.1)
 
-        // Bend dots pop in when long segments reach them
-        if (dl) tl.to(dl, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, 0.85)
-        if (dr) tl.to(dr, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, 0.95)
+        // Bend dots fade in when long segments reach them
+        if (dl) tl.to(dl, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.85)
+        if (dr) tl.to(dr, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.95)
 
         // Short segments (bend → orb) draw after dots appear
         if (ll2) tl.to(ll2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.0)
