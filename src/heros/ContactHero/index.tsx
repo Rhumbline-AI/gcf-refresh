@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
@@ -28,6 +28,23 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // iOS Safari zooms in on input focus and doesn't zoom back out on keyboard dismiss.
+  // Reset the viewport scale on every input blur to undo the iOS zoom.
+  useEffect(() => {
+    const resetZoom = () => {
+      const viewport = document.querySelector<HTMLMetaElement>('meta[name="viewport"]')
+      if (!viewport) return
+      // Briefly set maximum-scale=1 to snap back, then restore normal
+      viewport.content = 'width=device-width, initial-scale=1, maximum-scale=1'
+      setTimeout(() => {
+        viewport.content = 'width=device-width, initial-scale=1'
+      }, 100)
+    }
+    const fields = document.querySelectorAll<HTMLElement>('input, textarea, select')
+    fields.forEach(f => f.addEventListener('blur', resetZoom))
+    return () => fields.forEach(f => f.removeEventListener('blur', resetZoom))
+  }, [])
 
   const onSubmit = useCallback(
     (data: Record<string, unknown>) => {
@@ -125,8 +142,8 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
                       key={index}
                       type={field.blockType === 'email' ? 'email' : 'text'}
                       placeholder={field.label || ''}
-                      className="w-full rounded-full px-6 py-3 md:py-4 text-base font-medium outline-none border-none transition-colors duration-200 bg-[#307fe2] text-white placeholder:text-white focus:bg-white focus:text-[#307fe2] focus:placeholder:text-[#307fe2]/50"
-                      style={{ fontFamily: 'var(--font-inter)' }}
+                      className="w-full rounded-full px-6 py-3 md:py-4 font-medium outline-none border-none transition-colors duration-200 bg-[#307fe2] text-white placeholder:text-white focus:bg-white focus:text-[#307fe2] focus:placeholder:text-[#307fe2]/50"
+                      style={{ fontFamily: 'var(--font-inter)', fontSize: '16px' }}
                       {...register(field.name, { required: field.required })}
                     />
                   )
@@ -138,8 +155,8 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
                       key={index}
                       placeholder={field.label || ''}
                       rows={4}
-                      className="w-full rounded-2xl px-6 py-3 md:py-4 text-base font-medium outline-none border-none resize-none transition-colors duration-200 bg-[#307fe2] text-white placeholder:text-white focus:bg-white focus:text-[#307fe2] focus:placeholder:text-[#307fe2]/50"
-                      style={{ fontFamily: 'var(--font-inter)' }}
+                      className="w-full rounded-2xl px-6 py-3 md:py-4 font-medium outline-none border-none resize-none transition-colors duration-200 bg-[#307fe2] text-white placeholder:text-white focus:bg-white focus:text-[#307fe2] focus:placeholder:text-[#307fe2]/50"
+                      style={{ fontFamily: 'var(--font-inter)', fontSize: '16px' }}
                       {...register(field.name, { required: field.required })}
                     />
                   )
@@ -152,8 +169,8 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
                       key={index}
                       type="tel"
                       placeholder={f.label || ''}
-                      className="w-full rounded-full px-6 py-3 md:py-4 text-base font-medium outline-none border-none transition-colors duration-200 bg-[#307fe2] text-white placeholder:text-white focus:bg-white focus:text-[#307fe2] focus:placeholder:text-[#307fe2]/50"
-                      style={{ fontFamily: 'var(--font-inter)' }}
+                      className="w-full rounded-full px-6 py-3 md:py-4 font-medium outline-none border-none transition-colors duration-200 bg-[#307fe2] text-white placeholder:text-white focus:bg-white focus:text-[#307fe2] focus:placeholder:text-[#307fe2]/50"
+                      style={{ fontFamily: 'var(--font-inter)', fontSize: '16px' }}
                       {...register(f.name, { required: f.required })}
                     />
                   )
