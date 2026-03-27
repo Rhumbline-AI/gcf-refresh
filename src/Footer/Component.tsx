@@ -6,7 +6,7 @@ import Image from 'next/image'
 import type { Footer } from '@/payload-types'
 
 import bbbLockup from '@/images/bbb-rating-lockup.png'
-import footerRip2 from '@/images/footer-rip3.png'
+import footerRip2 from '@/images/footer-rip2.png'
 import { BackToTop } from './BackToTop'
 
 export async function Footer() {
