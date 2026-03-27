@@ -475,9 +475,9 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         {project.title}
       </div>
       
-      <div
+      {size !== 'mobile' && <div
         ref={hoverContentRef}
-        className={`absolute inset-0 flex flex-col items-start justify-center ${size === 'mobile' ? 'hidden' : ''}`}
+        className="absolute inset-0 flex flex-col items-start justify-center"
         style={{
           opacity: 0,
           transform: 'translateY(20px)',
@@ -511,7 +511,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         >
           See Case Study &gt;
         </a>
-      </div>
+      </div>}
     </div>
   )
 

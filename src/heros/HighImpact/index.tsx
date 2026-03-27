@@ -39,12 +39,15 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
 
   return (
     <div
-      className="relative -mt-[10.4rem] flex items-center justify-center text-white"
+      className="relative w-full overflow-hidden flex items-center justify-center text-white select-none aspect-[4/5] md:aspect-[16/9]"
       data-theme="dark"
     >
+      {media && typeof media === 'object' && (
+        <Media fill imgClassName="object-cover" priority resource={media} />
+      )}
       <div ref={contentRef} className="container z-10 relative flex items-center justify-center">
-        <div className="max-w-full md:text-center whitespace-nowrap" style={{ fontFamily: 'var(--font-inter)' }}>
-          {richText && <RichText className="rich-text-animate mb-6 [&_h1]:font-bold [&_h1]:whitespace-nowrap" data={richText} enableGutter={false} />}
+        <div className="max-w-full md:text-center md:whitespace-nowrap" style={{ fontFamily: 'var(--font-inter)' }}>
+          {richText && <RichText className="rich-text-animate mb-6 [&_h1]:font-bold md:[&_h1]:whitespace-nowrap [&_h1]:text-3xl md:[&_h1]:text-5xl lg:[&_h1]:text-6xl" data={richText} enableGutter={false} />}
           {Array.isArray(links) && links.length > 0 && (
             <ul className="flex md:justify-center gap-4">
               {links.map(({ link }, i) => {
@@ -57,11 +60,6 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
             </ul>
           )}
         </div>
-      </div>
-      <div className="min-h-[80vh] select-none">
-        {media && typeof media === 'object' && (
-          <Media fill imgClassName="-z-10 object-cover" priority resource={media} />
-        )}
       </div>
     </div>
   )

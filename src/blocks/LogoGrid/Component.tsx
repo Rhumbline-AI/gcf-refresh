@@ -8,7 +8,7 @@ export const LogoGridBlock: React.FC<LogoGridProps> = ({ logos }) => {
     <div className="py-12 md:py-16 bg-background">
       <div className="container">
         <ScrollReveal animation="fadeUp" staggerChildren stagger={0.06} duration={0.6}>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-4 md:gap-y-10 items-center justify-items-center">
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-4 md:gap-y-10 items-center justify-items-center">
             {logos?.map((item, i) => {
               if (typeof item.logo === 'object') {
                 return (
