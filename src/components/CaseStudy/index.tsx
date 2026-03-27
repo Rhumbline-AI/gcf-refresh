@@ -94,7 +94,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
 
   return (
     <div>
-      <div className="pt-20 pb-8 md:pt-28 md:pb-10" style={{ backgroundColor: '#f5f0eb' }}>
+      <div className="pt-10 pb-8 md:pt-14 md:pb-10" style={{ backgroundColor: '#f5f0eb' }}>
         <div className="container">
           {/* Client name with underline extending beyond text */}
           {clientName && (
@@ -127,7 +127,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
           {subtitle && (
             <ScrollReveal animation="fadeUp" duration={0.8} delay={0.35}>
               <p
-                className="text-sm md:text-base text-[#307fe2] font-light italic mb-4"
+                className="text-sm md:text-base text-[#307fe2] font-light italic mb-12"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
                 {subtitle}
@@ -165,10 +165,11 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                   <div
                     className="w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full flex flex-col justify-center px-12 md:px-16 py-10 md:py-14 relative overflow-hidden"
                     style={{
-                      backgroundImage: `url(${blueNoiseBg.src})`,
-                      backgroundSize: '200%',
+                      backgroundColor: '#307fe2',
+                      backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${blueNoiseBg.src})`,
+                      backgroundSize: 'auto, 200%',
                       backgroundPosition: '0% 0%',
-                      animation: 'blueNoiseShift 25s ease-in-out infinite',
+                      animation: 'blueNoiseShift 2s steps(10) infinite',
                     }}
                   >
                     <h3
