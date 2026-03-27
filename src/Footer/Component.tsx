@@ -16,7 +16,7 @@ export async function Footer() {
 
   return (
     <footer 
-      className="relative pt-20 pb-12 -mt-16 md:-mt-24 overflow-visible bg-white"
+      className="relative pt-32 pb-12 -mt-16 md:-mt-24 overflow-visible bg-white"
     >
       {/* Rip image: fixed-height + object-fit for consistent sizing; object-position keeps torn edge visible */}
       <div
