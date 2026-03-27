@@ -130,6 +130,10 @@ function FloatingWrapper({
 export function WorkSection2({ projects, title }: { projects: Project[]; title?: string | null }) {
   const sectionRef = useRef<HTMLElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
+  // Refs on wrapper divs around each orb for dynamic position tracking
+  const orb1Ref = useRef<HTMLDivElement>(null) // left medium orb (displayProjects[1])
+  const orb2Ref = useRef<HTMLDivElement>(null) // right medium orb (displayProjects[2])
+  const orb3Ref = useRef<HTMLDivElement>(null) // center xlarge orb (displayProjects[0])
 
   useEffect(() => {
     if (!svgRef.current || !sectionRef.current) return
@@ -137,39 +141,105 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
     const section = sectionRef.current
     let animated = false
 
-    const recalcDash = () => {
-      const lines = svg.querySelectorAll('line')
-      lines.forEach((line) => {
-        const length = line.getTotalLength?.() || 300
-        if (!animated) {
-          gsap.set(line, { strokeDasharray: length, strokeDashoffset: length })
-        } else {
-          gsap.set(line, { strokeDasharray: length, strokeDashoffset: 0 })
-        }
-      })
+    const sa = (el: Element | null, attrs: Record<string, string | number>) => {
+      if (!el) return
+      Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, String(v)))
     }
 
-    const dots = svg.querySelectorAll('circle')
-    dots.forEach((c) => gsap.set(c, { scale: 0, transformOrigin: 'center', opacity: 0 }))
-    recalcDash()
+    const calcConnectors = () => {
+      const sRect = section.getBoundingClientRect()
+      const W = sRect.width
+      const H = sRect.height
 
-    const ro = new ResizeObserver(() => recalcDash())
+      const getOrb = (ref: React.RefObject<HTMLDivElement | null>) => {
+        if (!ref.current) return null
+        const r = ref.current.getBoundingClientRect()
+        return {
+          cx: r.left - sRect.left + r.width / 2,
+          cy: r.top - sRect.top + r.height / 2,
+          r: r.width / 2,
+        }
+      }
+
+      const o1 = getOrb(orb1Ref) // left medium orb
+      const o3 = getOrb(orb3Ref) // center xlarge orb
+
+      if (o1) {
+        // LEFT connector: screen-left-edge → bend-dot → left-orb bottom-left edge
+        const lBendX = o1.cx - o1.r * 0.42
+        const lBendY = o1.cy + o1.r * 0.52
+        const lOrbX  = o1.cx - o1.r * 0.28
+        const lOrbY  = o1.cy + o1.r * 0.35
+        sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.38, x2: lBendX, y2: lBendY })
+        sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
+        sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
+
+        // Decorative ring: anchored to left orb
+        const dcR = o1.r * 0.78
+        sa(svg.querySelector('.dec-ring'), { cx: o1.cx - o1.r * 0.48, cy: o1.cy - o1.r * 0.42, r: dcR })
+      }
+
+      if (o3) {
+        // BOTTOM connector: center-large-orb bottom-right edge → bend-dot → screen-right-edge
+        const bBendX = o3.cx + o3.r * 0.42
+        const bBendY = o3.cy + o3.r * 0.52
+        const bOrbX  = o3.cx + o3.r * 0.28
+        const bOrbY  = o3.cy + o3.r * 0.35
+        sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.9, x2: bBendX, y2: bBendY })
+        sa(svg.querySelector('.bl2'), { x1: bBendX, y1: bBendY, x2: bOrbX, y2: bOrbY })
+        sa(svg.querySelector('.db'),  { cx: bBendX, cy: bBendY })
+      }
+
+      if (!animated) {
+        svg.querySelectorAll('line').forEach(line => {
+          const len = line.getTotalLength?.() || 300
+          gsap.set(line, { strokeDasharray: len, strokeDashoffset: len })
+        })
+        const ring = svg.querySelector('.dec-ring')
+        if (ring && o1) {
+          const len = 2 * Math.PI * (o1.r * 0.78)
+          gsap.set(ring, { strokeDasharray: len, strokeDashoffset: len, opacity: 0 })
+        }
+      }
+    }
+
+    svg.querySelectorAll('.dot').forEach(d => gsap.set(d, { scale: 0, transformOrigin: 'center', opacity: 0 }))
+    calcConnectors()
+
+    const ro = new ResizeObserver(calcConnectors)
     ro.observe(section)
 
     const st = ScrollTrigger.create({
       trigger: section,
-      start: 'top 70%',
+      start: 'top 68%',
       once: true,
       onEnter: () => {
         animated = true
-        const lines = svg.querySelectorAll('line')
-        const tl = gsap.timeline()
-        lines.forEach((line, i) => {
-          tl.to(line, { strokeDashoffset: 0, duration: 0.8, ease: 'power2.inOut' }, i * 0.15)
-        })
-        dots.forEach((circle, i) => {
-          tl.to(circle, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' }, 0.3 + i * 0.2)
-        })
+        const tl = gsap.timeline({ delay: 0.9 })
+
+        // All element references scoped to this section's SVG
+        const ll1 = svg.querySelector('.ll1')
+        const ll2 = svg.querySelector('.ll2')
+        const bl1 = svg.querySelector('.bl1')
+        const bl2 = svg.querySelector('.bl2')
+        const dl  = svg.querySelector('.dl')
+        const db  = svg.querySelector('.db')
+        const ring = svg.querySelector('.dec-ring')
+
+        // Long segments from edges
+        if (ll1) tl.to(ll1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0)
+        if (bl1) tl.to(bl1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0.1)
+
+        // Dots at bend
+        if (dl) tl.to(dl, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, 0.85)
+        if (db) tl.to(db, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, 0.95)
+
+        // Short segments to orbs
+        if (ll2) tl.to(ll2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.0)
+        if (bl2) tl.to(bl2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.1)
+
+        // Decorative ring draws on
+        if (ring) tl.to(ring, { strokeDashoffset: 0, opacity: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
       },
     })
 
@@ -181,7 +251,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
   const displayProjects = projects.slice(0, 3)
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       className="relative pt-0 pb-0 md:pt-0 md:pb-0"
       style={{
@@ -192,70 +262,23 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
         backgroundColor: '#ffffff',
       }}
     >
-      {/* Background SVG for all connecting lines - full viewport width */}
-      <svg 
+      {/* SVG: lines + decorative ring — positions calculated dynamically from orb refs */}
+      <svg
         ref={svgRef}
-        className="absolute pointer-events-none overflow-visible hidden md:block" 
-        style={{ 
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: 1 
-        }}
-        preserveAspectRatio="xMidYMid meet"
+        className="absolute pointer-events-none overflow-visible hidden md:block"
+        style={{ top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
       >
-        {/* LEFT CONNECTOR - from top-left circle (bottom-left edge) */}
-        <line 
-          x1="26%" 
-          y1="32%" 
-          x2="16%" 
-          y2="46%" 
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
-        <circle cx="16%" cy="46%" r="6" fill="#307fe2" />
-        <line 
-          x1="16%" 
-          y1="46%" 
-          x2="-2%" 
-          y2="62%" 
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
-        
-        {/* BOTTOM CONNECTOR - from large center circle (bottom-right edge) */}
-        <line 
-          x1="58%" 
-          y1="80%" 
-          x2="66%" 
-          y2="88%" 
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
-        <circle cx="66%" cy="88%" r="6" fill="#307fe2" />
-        <line 
-          x1="66%" 
-          y1="88%" 
-          x2="102%" 
-          y2="96%" 
-          stroke="#307fe2" 
-          strokeWidth="4"
-        />
-        
+        {/* Left connector */}
+        <line className="ll1" stroke="#307fe2" strokeWidth="4" x1="0" y1="0" x2="0" y2="0" />
+        <line className="ll2" stroke="#307fe2" strokeWidth="4" x1="0" y1="0" x2="0" y2="0" />
+        <circle className="dl dot" r="6" fill="#307fe2" cx="0" cy="0" />
+        {/* Bottom connector */}
+        <line className="bl1" stroke="#307fe2" strokeWidth="4" x1="0" y1="0" x2="0" y2="0" />
+        <line className="bl2" stroke="#307fe2" strokeWidth="4" x1="0" y1="0" x2="0" y2="0" />
+        <circle className="db dot" r="6" fill="#307fe2" cx="0" cy="0" />
+        {/* Decorative ring — anchored to left orb */}
+        <circle className="dec-ring" fill="none" stroke="#307fe2" strokeWidth="3" cx="0" cy="0" r="200" />
       </svg>
-
-      {/* Decorative open circle - overlaps top-left orb (Venn style) */}
-      <div
-        className="absolute pointer-events-none hidden md:block rounded-full border-[3px] border-[#307fe2]"
-        style={{
-          width: 'clamp(260px, 22vw, 380px)',
-          height: 'clamp(260px, 22vw, 380px)',
-          top: '-5%',
-          left: '5%',
-          zIndex: 0,
-        }}
-      />
 
       {/* MOBILE: staggered cascade layout */}
       <div className="flex flex-col gap-4 px-4 md:hidden">
@@ -277,50 +300,52 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       {/* DESKTOP: absolute positioned layout */}
       <div className="hidden md:block">
         <div className="relative mx-auto w-full max-w-7xl -mb-32" style={{ minHeight: '380px' }}>
-          {displayProjects[1] && (
-            <FloatingWrapper
-              className="absolute"
-              style={{ top: '0%', left: '10%', zIndex: 2 }}
-              entranceDelay={0.1}
-              floatAmount={10}
-              floatDuration={3.8}
-              swayAmount={5}
-              rotateAmount={1.2}
-              cursorFactor={0.05}
-            >
-              <ProjectCircle project={displayProjects[1]} size="medium" />
-            </FloatingWrapper>
-          )}
+          <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '10%', zIndex: 2 }}>
+            {displayProjects[1] && (
+              <FloatingWrapper
+                entranceDelay={0.1}
+                floatAmount={10}
+                floatDuration={3.8}
+                swayAmount={5}
+                rotateAmount={1.2}
+                cursorFactor={0.05}
+              >
+                <ProjectCircle project={displayProjects[1]} size="medium" />
+              </FloatingWrapper>
+            )}
+          </div>
 
-          {displayProjects[2] && (
-            <FloatingWrapper
-              className="absolute"
-              style={{ top: '0%', right: '10%', zIndex: 2 }}
-              entranceDelay={0.2}
-              floatAmount={12}
-              floatDuration={4.2}
-              swayAmount={6}
-              rotateAmount={1.8}
-              cursorFactor={0.035}
-            >
-              <ProjectCircle project={displayProjects[2]} size="medium" />
-            </FloatingWrapper>
-          )}
+          <div ref={orb2Ref} className="absolute" style={{ top: '0%', right: '10%', zIndex: 2 }}>
+            {displayProjects[2] && (
+              <FloatingWrapper
+                entranceDelay={0.2}
+                floatAmount={12}
+                floatDuration={4.2}
+                swayAmount={6}
+                rotateAmount={1.8}
+                cursorFactor={0.035}
+              >
+                <ProjectCircle project={displayProjects[2]} size="medium" />
+              </FloatingWrapper>
+            )}
+          </div>
         </div>
 
         <div className="relative w-full flex justify-center" style={{ zIndex: 2 }}>
-          {displayProjects[0] && (
-            <FloatingWrapper
-              entranceDelay={0.3}
-              floatAmount={14}
-              floatDuration={5}
-              swayAmount={4}
-              rotateAmount={1}
-              cursorFactor={0.025}
-            >
-              <ProjectCircle project={displayProjects[0]} size="xlarge" />
-            </FloatingWrapper>
-          )}
+          <div ref={orb3Ref} className="inline-block">
+            {displayProjects[0] && (
+              <FloatingWrapper
+                entranceDelay={0.3}
+                floatAmount={14}
+                floatDuration={5}
+                swayAmount={4}
+                rotateAmount={1}
+                cursorFactor={0.025}
+              >
+                <ProjectCircle project={displayProjects[0]} size="xlarge" />
+              </FloatingWrapper>
+            )}
+          </div>
         </div>
       </div>
     </section>
