@@ -35,7 +35,7 @@ export const WorkHero: React.FC<WorkHeroProps> = ({ richText }) => {
 
   return (
     <div
-      className="relative pt-8 pb-4 md:pt-10 md:pb-6"
+      className="relative pt-8 pb-0 md:pt-10 md:pb-0"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
         backgroundRepeat: 'repeat',

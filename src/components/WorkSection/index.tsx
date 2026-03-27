@@ -253,7 +253,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
   return (
     <section
       ref={sectionRef}
-      className="relative pt-4 pb-0 md:pt-6 md:pb-0"
+      className="relative pt-0 pb-0"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
         backgroundRepeat: 'repeat',
