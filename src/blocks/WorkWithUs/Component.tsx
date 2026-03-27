@@ -34,9 +34,9 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
             <div
               className="absolute hidden md:block pointer-events-none"
               style={{
-                left: '-33%',
-                top: '38%',
-                width: '32%',
+                left: '-40%',
+                top: '53%',
+                width: '48%',
                 zIndex: 20,
               }}
             >

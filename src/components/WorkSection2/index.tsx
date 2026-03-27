@@ -38,11 +38,11 @@ function FloatingWrapper({
     const tweens: gsap.core.Tween[] = []
     let st: ScrollTrigger | null = null
 
-    gsap.set(el, { opacity: 0, scale: 0.8, y: 20 })
+    gsap.set(el, { opacity: 0, scale: 0.85, y: 40 })
 
     st = ScrollTrigger.create({
       trigger: el,
-      start: 'top 90%',
+      start: 'top 68%',
       once: true,
       onEnter: () => {
         gsap.to(el, {

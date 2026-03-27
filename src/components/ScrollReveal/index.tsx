@@ -8,12 +8,12 @@ registerGSAP()
 type Animation = 'fadeUp' | 'fadeIn' | 'fadeLeft' | 'fadeRight' | 'scaleUp' | 'scaleIn'
 
 const presets: Record<Animation, gsap.TweenVars> = {
-  fadeUp: { y: 50, opacity: 0 },
+  fadeUp: { y: 70, opacity: 0 },
   fadeIn: { opacity: 0 },
-  fadeLeft: { x: -50, opacity: 0 },
-  fadeRight: { x: 50, opacity: 0 },
-  scaleUp: { y: 30, scale: 0.92, opacity: 0 },
-  scaleIn: { scale: 0.85, opacity: 0 },
+  fadeLeft: { x: -60, opacity: 0 },
+  fadeRight: { x: 60, opacity: 0 },
+  scaleUp: { y: 40, scale: 0.9, opacity: 0 },
+  scaleIn: { scale: 0.82, opacity: 0 },
 }
 
 type Props = {
@@ -31,11 +31,11 @@ type Props = {
 export const ScrollReveal: React.FC<Props> = ({
   children,
   animation = 'fadeUp',
-  duration = 0.9,
+  duration = 1.2,
   delay = 0,
-  stagger = 0.1,
+  stagger = 0.12,
   staggerChildren = false,
-  start = 'top 85%',
+  start = 'top 68%',
   className,
   style,
 }) => {

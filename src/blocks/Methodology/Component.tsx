@@ -39,8 +39,8 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
             <div
               className="absolute hidden md:block"
               style={{
-                right: '-8%',
-                top: '18%',
+                right: '-5%',
+                top: '77%',
                 width: 'clamp(140px, 18vw, 260px)',
                 zIndex: 20,
               }}
