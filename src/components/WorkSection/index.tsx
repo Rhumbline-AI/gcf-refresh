@@ -209,15 +209,15 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
           gsap.set(ring, { strokeDasharray: len, strokeDashoffset: len, opacity: 0 })
         }
       } else {
-        // Animation already played — remove dash attrs so lines always render fully at any width
-        svg.querySelectorAll('line').forEach(line => {
-          line.removeAttribute('stroke-dasharray')
-          line.removeAttribute('stroke-dashoffset')
+        // Animation already played — clear GSAP CSS styles so lines render at full length always
+        svg.querySelectorAll<SVGLineElement>('line').forEach(line => {
+          line.style.strokeDasharray = ''
+          line.style.strokeDashoffset = ''
         })
-        const ring = svg.querySelector('.dec-ring')
+        const ring = svg.querySelector<SVGElement>('.dec-ring')
         if (ring) {
-          ring.removeAttribute('stroke-dasharray')
-          ring.removeAttribute('stroke-dashoffset')
+          ring.style.strokeDasharray = ''
+          ring.style.strokeDashoffset = ''
         }
       }
     }
@@ -234,7 +234,13 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       onEnter: () => {
         animated = true
         // Orbs animate in via FloatingWrapper (0–1.0s). Lines draw after.
-        const tl = gsap.timeline({ delay: 1.2 })
+        // onComplete: clear GSAP CSS styles so lines stay fully drawn at any width
+        const clearDash = () => {
+          svg.querySelectorAll<SVGLineElement>('line').forEach(l => { l.style.strokeDasharray = ''; l.style.strokeDashoffset = '' })
+          const r = svg.querySelector<SVGElement>('.dec-ring')
+          if (r) { r.style.strokeDasharray = ''; r.style.strokeDashoffset = '' }
+        }
+        const tl = gsap.timeline({ delay: 1.2, onComplete: clearDash })
 
         // Long segments first (from screen edges toward bend dots)
         const ll1 = svg.querySelector('.ll1')
