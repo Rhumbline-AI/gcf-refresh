@@ -196,18 +196,28 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       const dcR = o2.r * 0.78
       sa(svg.querySelector('.dec-ring'), { cx: o2.cx + o2.r * 0.48, cy: o2.cy - o2.r * 0.42, r: dcR })
 
-      // Set initial hidden state — AFTER coordinates are correct so GSAP internals are right
       if (!animated) {
+        // Set initial hidden state AFTER coordinates are correct
         svg.querySelectorAll<SVGLineElement>('line').forEach(line => {
           const len = lineLen(line)
           gsap.set(line, { strokeDasharray: len, strokeDashoffset: len })
         })
-        // Dots: use opacity only (no scale — avoids SVG transform-origin issues)
         svg.querySelectorAll('.dot').forEach(d => gsap.set(d, { opacity: 0 }))
         const ring = svg.querySelector('.dec-ring')
         if (ring) {
           const len = 2 * Math.PI * dcR
           gsap.set(ring, { strokeDasharray: len, strokeDashoffset: len, opacity: 0 })
+        }
+      } else {
+        // Animation already played — remove dash attrs so lines always render fully at any width
+        svg.querySelectorAll('line').forEach(line => {
+          line.removeAttribute('stroke-dasharray')
+          line.removeAttribute('stroke-dashoffset')
+        })
+        const ring = svg.querySelector('.dec-ring')
+        if (ring) {
+          ring.removeAttribute('stroke-dasharray')
+          ring.removeAttribute('stroke-dashoffset')
         }
       }
     }

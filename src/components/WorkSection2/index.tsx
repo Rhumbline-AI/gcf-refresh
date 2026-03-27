@@ -199,18 +199,28 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
         sa(svg.querySelector('.db'),  { cx: bBendX, cy: bBendY })
       }
 
-      // Set initial hidden state AFTER coordinates are correct
       if (!animated) {
+        // Set initial hidden state AFTER coordinates are correct
         svg.querySelectorAll<SVGLineElement>('line').forEach(line => {
           const len = lineLen(line)
           gsap.set(line, { strokeDasharray: len, strokeDashoffset: len })
         })
-        // Dots: opacity only — avoids SVG transform-origin issues with scale
         svg.querySelectorAll('.dot').forEach(d => gsap.set(d, { opacity: 0 }))
         const ring = svg.querySelector('.dec-ring')
         if (ring && o1) {
           const len = 2 * Math.PI * (o1.r * 0.78)
           gsap.set(ring, { strokeDasharray: len, strokeDashoffset: len, opacity: 0 })
+        }
+      } else {
+        // Animation already played — remove dash attrs so lines always render fully at any width
+        svg.querySelectorAll('line').forEach(line => {
+          line.removeAttribute('stroke-dasharray')
+          line.removeAttribute('stroke-dashoffset')
+        })
+        const ring = svg.querySelector('.dec-ring')
+        if (ring) {
+          ring.removeAttribute('stroke-dasharray')
+          ring.removeAttribute('stroke-dashoffset')
         }
       }
     }
