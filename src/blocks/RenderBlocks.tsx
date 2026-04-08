@@ -7,6 +7,7 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { CapabilitiesBlock } from '@/blocks/Capabilities/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
+import { FAQBlock } from '@/blocks/FAQ/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { LogoGridBlock } from '@/blocks/LogoGrid/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
@@ -24,6 +25,7 @@ const blockComponents = {
   fullWidthBackground: FullWidthBackgroundBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
+  faq: FAQBlock,
   formBlock: FormBlock,
   logoGrid: LogoGridBlock,
   mediaBlock: MediaBlock,
