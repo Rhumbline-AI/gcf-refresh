@@ -389,7 +389,7 @@ type ProjectCircleProps = {
 }
 
 const circleSizes = {
-  mobile: { diameter: 190, image: 182, blue: 176 },
+  mobile: { diameter: 140, image: 134, blue: 128 },
   medium: { diameter: 374, image: 363, blue: 341 },
   xlarge: { diameter: 575, image: 564, blue: 540 },
 }
@@ -524,8 +524,8 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         ref={titleRef}
         className="absolute inset-0 flex items-center justify-start text-white font-bold"
         style={{
-          fontSize: size === 'xlarge' ? '2.5rem' : size === 'mobile' ? '1rem' : '1.75rem',
-          padding: size === 'mobile' ? '0 1.25rem' : '0 3rem',
+          fontSize: size === 'xlarge' ? '2.5rem' : size === 'mobile' ? '0.8rem' : '1.75rem',
+          padding: size === 'mobile' ? '0 0.75rem' : '0 3rem',
           fontFamily: 'var(--font-inter)',
           textShadow: '0 2px 8px rgba(0,0,0,0.5)',
           zIndex: 3,
