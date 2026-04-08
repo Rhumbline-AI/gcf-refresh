@@ -185,12 +185,12 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       const o3 = getOrb(orb3Ref) // center xlarge orb
 
       if (o1) {
-        // LEFT connector: elbow at orb-level, arm goes nearly horizontal then up
-        const lBendX = o1.cx - o1.r * 1.45
-        const lBendY = o1.cy + o1.r * 0.50
-        const lOrbX  = o1.cx - o1.r * 0.72
-        const lOrbY  = o1.cy + o1.r * 0.48
-        sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.55, x2: lBendX, y2: lBendY })
+        // LEFT connector: comes from LOW, elbow BELOW orb, arm angles UP into orb bottom
+        const lBendX = o1.cx - o1.r * 1.30
+        const lBendY = o1.cy + o1.r * 1.15
+        const lOrbX  = o1.cx - o1.r * 0.48
+        const lOrbY  = o1.cy + o1.r * 0.72
+        sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.85, x2: lBendX, y2: lBendY })
         sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
         sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
 
@@ -200,12 +200,12 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       }
 
       if (o3) {
-        // BOTTOM connector: elbow HIGH, arm drops steeply down into orb top
-        const bBendX = o3.cx + o3.r * 1.35
-        const bBendY = o3.cy - o3.r * 0.20
-        const bOrbX  = o3.cx + o3.r * 0.50
-        const bOrbY  = o3.cy + o3.r * 0.70
-        sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.40, x2: bBendX, y2: bBendY })
+        // RIGHT connector: comes from HIGH, elbow far out at orb-level, arm goes horizontal into orb side
+        const bBendX = o3.cx + o3.r * 1.50
+        const bBendY = o3.cy + o3.r * 0.35
+        const bOrbX  = o3.cx + o3.r * 0.80
+        const bOrbY  = o3.cy + o3.r * 0.38
+        sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.15, x2: bBendX, y2: bBendY })
         sa(svg.querySelector('.bl2'), { x1: bBendX, y1: bBendY, x2: bOrbX, y2: bOrbY })
         sa(svg.querySelector('.db'),  { cx: bBendX, cy: bBendY })
       }
