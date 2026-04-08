@@ -186,21 +186,21 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       const o2 = getOrb(orb2Ref)
       if (!o1 || !o2) return
 
-      // LEFT connector: enters orb mid-left, elbow higher
-      const lOrbX  = o1.cx - o1.r * 0.85
-      const lOrbY  = o1.cy + o1.r * 0.30
-      const lBendX = o1.cx - o1.r * 1.50
-      const lBendY = o1.cy + o1.r * 0.55
-      sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.58, x2: lBendX, y2: lBendY })
+      // LEFT connector: comes from high, bends down into orb bottom-left
+      const lOrbX  = o1.cx - o1.r * 0.78
+      const lOrbY  = o1.cy + o1.r * 0.42
+      const lBendX = o1.cx - o1.r * 1.45
+      const lBendY = o1.cy + o1.r * 0.70
+      sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.42, x2: lBendX, y2: lBendY })
       sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
       sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
 
-      // RIGHT connector: enters orb lower-right, elbow further out
-      const rOrbX  = o2.cx + o2.r * 0.60
-      const rOrbY  = o2.cy + o2.r * 0.62
-      const rBendX = o2.cx + o2.r * 1.30
-      const rBendY = o2.cy + o2.r * 0.95
-      sa(svg.querySelector('.rl1'), { x1: W + 80, y1: H * 0.80, x2: rBendX, y2: rBendY })
+      // RIGHT connector: comes from low, sweeps up into orb mid-right
+      const rOrbX  = o2.cx + o2.r * 0.65
+      const rOrbY  = o2.cy + o2.r * 0.58
+      const rBendX = o2.cx + o2.r * 1.35
+      const rBendY = o2.cy + o2.r * 0.90
+      sa(svg.querySelector('.rl1'), { x1: W + 80, y1: H * 0.85, x2: rBendX, y2: rBendY })
       sa(svg.querySelector('.rl2'), { x1: rBendX, y1: rBendY, x2: rOrbX, y2: rOrbY })
       sa(svg.querySelector('.dr'),  { cx: rBendX, cy: rBendY })
 
@@ -358,7 +358,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
           </div>
         </div>
 
-        <div className="relative w-full flex justify-center" style={{ zIndex: 2 }}>
+        <div className="relative w-full flex justify-center" style={{ zIndex: 2, transform: 'translateX(-5%)' }}>
           {displayProjects[2] && (
             <FloatingWrapper
               entranceDelay={0.3}
@@ -385,8 +385,8 @@ type ProjectCircleProps = {
 const circleSizes = {
   mobile: { diameter: 180, image: 172, blue: 164 },
   mobileLarge: { diameter: 300, image: 290, blue: 278 },
-  medium: { diameter: 374, image: 363, blue: 341 },
-  xlarge: { diameter: 575, image: 564, blue: 540 },
+  medium: { diameter: 430, image: 417, blue: 392 },
+  xlarge: { diameter: 660, image: 648, blue: 621 },
 }
 
 function ProjectCircle({ project, size }: ProjectCircleProps) {
@@ -519,7 +519,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         ref={titleRef}
         className="absolute inset-0 flex items-center justify-start text-white font-bold"
         style={{
-          fontSize: size === 'xlarge' ? '2.5rem' : size === 'mobile' ? '1.05rem' : size === 'mobileLarge' ? '1.4rem' : '1.75rem',
+          fontSize: size === 'xlarge' ? '3rem' : size === 'mobile' ? '1.05rem' : size === 'mobileLarge' ? '1.4rem' : '2.1rem',
           padding: size === 'mobile' ? '0 1.25rem' : size === 'mobileLarge' ? '0 1.75rem' : '0 3rem',
           fontFamily: 'var(--font-inter)',
           textShadow: '0 2px 8px rgba(0,0,0,0.5)',

@@ -185,12 +185,12 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       const o3 = getOrb(orb3Ref) // center xlarge orb
 
       if (o1) {
-        // LEFT connector: low entry, wide elbow
-        const lOrbX  = o1.cx - o1.r * 0.68
-        const lOrbY  = o1.cy + o1.r * 0.55
-        const lBendX = o1.cx - o1.r * 1.45
-        const lBendY = o1.cy + o1.r * 0.90
-        sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.46, x2: lBendX, y2: lBendY })
+        // LEFT connector: nearly horizontal from left edge, slight dip
+        const lOrbX  = o1.cx - o1.r * 0.88
+        const lOrbY  = o1.cy + o1.r * 0.20
+        const lBendX = o1.cx - o1.r * 1.50
+        const lBendY = o1.cy + o1.r * 0.45
+        sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.32, x2: lBendX, y2: lBendY })
         sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
         sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
 
@@ -200,12 +200,12 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       }
 
       if (o3) {
-        // BOTTOM connector: steep from far right
-        const bOrbX  = o3.cx + o3.r * 0.80
-        const bOrbY  = o3.cy + o3.r * 0.35
-        const bBendX = o3.cx + o3.r * 1.35
-        const bBendY = o3.cy + o3.r * 0.65
-        sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.92, x2: bBendX, y2: bBendY })
+        // BOTTOM connector: drops steeply from right edge
+        const bOrbX  = o3.cx + o3.r * 0.50
+        const bOrbY  = o3.cy + o3.r * 0.72
+        const bBendX = o3.cx + o3.r * 1.20
+        const bBendY = o3.cy + o3.r * 1.05
+        sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.72, x2: bBendX, y2: bBendY })
         sa(svg.querySelector('.bl2'), { x1: bBendX, y1: bBendY, x2: bOrbX, y2: bOrbY })
         sa(svg.querySelector('.db'),  { cx: bBendX, cy: bBendY })
       }
@@ -352,7 +352,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
           </div>
         </div>
 
-        <div className="relative w-full flex justify-center" style={{ zIndex: 2 }}>
+        <div className="relative w-full flex justify-center" style={{ zIndex: 2, transform: 'translateX(-5%)' }}>
           <div ref={orb3Ref} className="inline-block">
             {displayProjects[0] && (
               <FloatingWrapper
@@ -381,8 +381,8 @@ type ProjectCircleProps = {
 const circleSizes = {
   mobile: { diameter: 180, image: 172, blue: 164 },
   mobileLarge: { diameter: 300, image: 290, blue: 278 },
-  medium: { diameter: 374, image: 363, blue: 341 },
-  xlarge: { diameter: 575, image: 564, blue: 540 },
+  medium: { diameter: 430, image: 417, blue: 392 },
+  xlarge: { diameter: 660, image: 648, blue: 621 },
 }
 
 function ProjectCircle({ project, size }: ProjectCircleProps) {
@@ -512,7 +512,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         ref={titleRef}
         className="absolute inset-0 flex items-center justify-start text-white font-bold"
         style={{
-          fontSize: size === 'xlarge' ? '2.5rem' : size === 'mobile' ? '1.05rem' : size === 'mobileLarge' ? '1.4rem' : '1.75rem',
+          fontSize: size === 'xlarge' ? '3rem' : size === 'mobile' ? '1.05rem' : size === 'mobileLarge' ? '1.4rem' : '2.1rem',
           padding: size === 'mobile' ? '0 1.25rem' : size === 'mobileLarge' ? '0 1.75rem' : '0 3rem',
           fontFamily: 'var(--font-inter)',
           textShadow: '0 2px 8px rgba(0,0,0,0.5)',
