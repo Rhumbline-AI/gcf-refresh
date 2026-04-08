@@ -186,27 +186,27 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       const o2 = getOrb(orb2Ref)
       if (!o1 || !o2) return
 
-      // LEFT connector: very steep drop from upper-left
-      const lOrbX  = o1.cx - o1.r * 0.70
-      const lOrbY  = o1.cy + o1.r * 0.52
+      // LEFT connector: elbow HIGH, arm drops down into orb from above
       const lBendX = o1.cx - o1.r * 1.40
-      const lBendY = o1.cy + o1.r * 0.80
-      sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.15, x2: lBendX, y2: lBendY })
+      const lBendY = o1.cy - o1.r * 0.30
+      const lOrbX  = o1.cx - o1.r * 0.55
+      const lOrbY  = o1.cy + o1.r * 0.65
+      sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.18, x2: lBendX, y2: lBendY })
       sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
       sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
 
-      // RIGHT connector: moderate angle from mid-right
-      const rOrbX  = o2.cx + o2.r * 0.75
-      const rOrbY  = o2.cy + o2.r * 0.45
-      const rBendX = o2.cx + o2.r * 1.40
-      const rBendY = o2.cy + o2.r * 0.75
-      sa(svg.querySelector('.rl1'), { x1: W + 80, y1: H * 0.55, x2: rBendX, y2: rBendY })
+      // RIGHT connector: elbow LOW-RIGHT, arm reaches up into orb side
+      const rBendX = o2.cx + o2.r * 1.30
+      const rBendY = o2.cy + o2.r * 1.00
+      const rOrbX  = o2.cx + o2.r * 0.78
+      const rOrbY  = o2.cy + o2.r * 0.40
+      sa(svg.querySelector('.rl1'), { x1: W + 80, y1: H * 0.78, x2: rBendX, y2: rBendY })
       sa(svg.querySelector('.rl2'), { x1: rBendX, y1: rBendY, x2: rOrbX, y2: rOrbY })
       sa(svg.querySelector('.dr'),  { cx: rBendX, cy: rBendY })
 
-      // Decorative ring: anchored to LEFT orb (Venetian)
-      const dcR = o1.r * 0.78
-      sa(svg.querySelector('.dec-ring'), { cx: o1.cx + o1.r * 0.48, cy: o1.cy - o1.r * 0.42, r: dcR })
+      // Decorative ring: anchored to RIGHT orb (USAA) — upper-right
+      const dcR = o2.r * 0.78
+      sa(svg.querySelector('.dec-ring'), { cx: o2.cx + o2.r * 0.48, cy: o2.cy - o2.r * 0.42, r: dcR })
 
       if (!animated) {
         // Set initial hidden state AFTER coordinates are correct
