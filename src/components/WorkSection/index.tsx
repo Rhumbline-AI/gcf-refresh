@@ -326,7 +326,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
       {/* Responsive layout — same structure at all widths, sizes adapt */}
       <div>
-        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '200px' : '380px' }}>
+        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '225px' : '405px' }}>
           <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '5%', zIndex: 2 }}>
             {displayProjects[0] && (
               <FloatingWrapper
