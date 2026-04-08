@@ -291,7 +291,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
   return (
     <section
       ref={sectionRef}
-      className="relative pt-0 pb-0 md:pt-0 md:pb-0"
+      className="relative pt-0 pb-0 -mb-8 md:mb-0"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
         backgroundRepeat: 'repeat',
@@ -307,20 +307,20 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
         style={{ top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
       >
         {/* Left connector */}
-        <line className="ll1" stroke="#307fe2" strokeWidth="4" x1="0" y1="0" x2="0" y2="0" />
-        <line className="ll2" stroke="#307fe2" strokeWidth="4" x1="0" y1="0" x2="0" y2="0" />
-        <circle className="dl dot" r="6" fill="#307fe2" cx="0" cy="0" />
+        <line className="ll1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
+        <line className="ll2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
+        <circle className="dl dot" r={sizeKey.small === 'mobile' ? 4 : 6} fill="#307fe2" cx="0" cy="0" />
         {/* Bottom connector */}
-        <line className="bl1" stroke="#307fe2" strokeWidth="4" x1="0" y1="0" x2="0" y2="0" />
-        <line className="bl2" stroke="#307fe2" strokeWidth="4" x1="0" y1="0" x2="0" y2="0" />
-        <circle className="db dot" r="6" fill="#307fe2" cx="0" cy="0" />
+        <line className="bl1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
+        <line className="bl2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
+        <circle className="db dot" r={sizeKey.small === 'mobile' ? 4 : 6} fill="#307fe2" cx="0" cy="0" />
         {/* Decorative ring — anchored to left orb */}
-        <circle className="dec-ring" fill="none" stroke="#307fe2" strokeWidth="3" cx="0" cy="0" r="200" />
+        <circle className="dec-ring" fill="none" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 3} cx="0" cy="0" r="200" />
       </svg>
 
       {/* Responsive layout — same structure at all widths, sizes adapt */}
       <div>
-        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '150px' : '380px' }}>
+        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '200px' : '380px' }}>
           <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '5%', zIndex: 2 }}>
             {displayProjects[1] && (
               <FloatingWrapper
