@@ -312,21 +312,34 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
         </div>
       )}
 
-      {/* MOBILE: staggered cascade layout */}
-      <div className="flex flex-col gap-4 px-4 md:hidden">
-        {displayProjects.map((project, i) => (
-          <FloatingWrapper
-            key={project.id}
-            className={i % 2 === 0 ? 'self-start' : 'self-end'}
-            entranceDelay={0.1 + i * 0.15}
-            floatAmount={6}
-            floatDuration={3.5 + i * 0.4}
-            swayAmount={3}
-            rotateAmount={1}
-          >
-            <ProjectCircle project={project} size="mobile" />
-          </FloatingWrapper>
-        ))}
+      {/* MOBILE: two small + one large, mirroring desktop layout */}
+      <div className="md:hidden">
+        <div className="relative mx-auto" style={{ maxWidth: '380px', minHeight: '340px' }}>
+          {/* Top-left */}
+          {displayProjects[0] && (
+            <div className="absolute" style={{ top: 0, left: '2%', zIndex: 2 }}>
+              <FloatingWrapper entranceDelay={0.1} floatAmount={4} floatDuration={3.5} swayAmount={2} rotateAmount={0.8}>
+                <ProjectCircle project={displayProjects[0]} size="mobile" />
+              </FloatingWrapper>
+            </div>
+          )}
+          {/* Top-right */}
+          {displayProjects[1] && (
+            <div className="absolute" style={{ top: 0, right: '2%', zIndex: 2 }}>
+              <FloatingWrapper entranceDelay={0.2} floatAmount={4} floatDuration={3.8} swayAmount={2} rotateAmount={0.8}>
+                <ProjectCircle project={displayProjects[1]} size="mobile" />
+              </FloatingWrapper>
+            </div>
+          )}
+          {/* Center large */}
+          {displayProjects[2] && (
+            <div className="absolute" style={{ top: '100px', left: '50%', transform: 'translateX(-50%)', zIndex: 3 }}>
+              <FloatingWrapper entranceDelay={0.3} floatAmount={5} floatDuration={4} swayAmount={2} rotateAmount={0.6}>
+                <ProjectCircle project={displayProjects[2]} size="mobileLarge" />
+              </FloatingWrapper>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* DESKTOP: absolute positioned layout */}
@@ -385,11 +398,12 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
 type ProjectCircleProps = {
   project: Project
-  size: 'mobile' | 'medium' | 'xlarge'
+  size: 'mobile' | 'mobileLarge' | 'medium' | 'xlarge'
 }
 
 const circleSizes = {
   mobile: { diameter: 140, image: 134, blue: 128 },
+  mobileLarge: { diameter: 210, image: 202, blue: 194 },
   medium: { diameter: 374, image: 363, blue: 341 },
   xlarge: { diameter: 575, image: 564, blue: 540 },
 }
@@ -484,8 +498,8 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         height: `${diameter}px`,
         filter: `drop-shadow(0 12px 28px rgba(0,0,0,0.12)) drop-shadow(0 4px 10px rgba(0,0,0,0.06))`,
       }}
-      onMouseEnter={size !== 'mobile' ? handleMouseEnter : undefined}
-      onMouseLeave={size !== 'mobile' ? handleMouseLeave : undefined}
+      onMouseEnter={size !== 'mobile' && size !== 'mobileLarge' ? handleMouseEnter : undefined}
+      onMouseLeave={size !== 'mobile' && size !== 'mobileLarge' ? handleMouseLeave : undefined}
     >
       {/* Solid blue circle with noise texture */}
       <div
@@ -524,8 +538,8 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         ref={titleRef}
         className="absolute inset-0 flex items-center justify-start text-white font-bold"
         style={{
-          fontSize: size === 'xlarge' ? '2.5rem' : size === 'mobile' ? '0.8rem' : '1.75rem',
-          padding: size === 'mobile' ? '0 0.75rem' : '0 3rem',
+          fontSize: size === 'xlarge' ? '2.5rem' : size === 'mobile' ? '0.8rem' : size === 'mobileLarge' ? '1.1rem' : '1.75rem',
+          padding: size === 'mobile' || size === 'mobileLarge' ? '0 0.75rem' : '0 3rem',
           fontFamily: 'var(--font-inter)',
           textShadow: '0 2px 8px rgba(0,0,0,0.5)',
           zIndex: 3,
@@ -535,7 +549,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
       </div>
       
       {/* Hover content - hidden by default (skip on mobile) */}
-      {size !== 'mobile' && <div
+      {size !== 'mobile' && size !== 'mobileLarge' && <div
         ref={hoverContentRef}
         className="absolute inset-0 flex flex-col items-start justify-center"
         style={{
@@ -575,7 +589,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
     </div>
   )
 
-  if (size === 'mobile') {
+  if (size === 'mobile' || size === 'mobileLarge') {
     return (
       <a href={`/work/${project.slug || ''}`} className="block rounded-full">
         {circleContent}
