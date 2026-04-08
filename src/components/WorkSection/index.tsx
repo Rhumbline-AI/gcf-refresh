@@ -314,10 +314,17 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
       {/* MOBILE: two small + one large, mirroring desktop layout */}
       <div className="md:hidden">
-        <div className="relative mx-auto" style={{ maxWidth: '380px', minHeight: '340px' }}>
+        <div className="relative mx-auto" style={{ maxWidth: '400px', minHeight: '370px' }}>
+          {/* Mobile connector lines */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ zIndex: 1 }}>
+            {/* Left orb → center orb */}
+            <line x1="20%" y1="40%" x2="38%" y2="58%" stroke="#307fe2" strokeWidth="2" />
+            {/* Right orb → center orb */}
+            <line x1="80%" y1="40%" x2="62%" y2="58%" stroke="#307fe2" strokeWidth="2" />
+          </svg>
           {/* Top-left */}
           {displayProjects[0] && (
-            <div className="absolute" style={{ top: 0, left: '2%', zIndex: 2 }}>
+            <div className="absolute" style={{ top: 0, left: '0%', zIndex: 2 }}>
               <FloatingWrapper entranceDelay={0.1} floatAmount={4} floatDuration={3.5} swayAmount={2} rotateAmount={0.8}>
                 <ProjectCircle project={displayProjects[0]} size="mobile" />
               </FloatingWrapper>
@@ -325,7 +332,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
           )}
           {/* Top-right */}
           {displayProjects[1] && (
-            <div className="absolute" style={{ top: 0, right: '2%', zIndex: 2 }}>
+            <div className="absolute" style={{ top: 0, right: '0%', zIndex: 2 }}>
               <FloatingWrapper entranceDelay={0.2} floatAmount={4} floatDuration={3.8} swayAmount={2} rotateAmount={0.8}>
                 <ProjectCircle project={displayProjects[1]} size="mobile" />
               </FloatingWrapper>
@@ -333,7 +340,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
           )}
           {/* Center large */}
           {displayProjects[2] && (
-            <div className="absolute" style={{ top: '100px', left: '50%', transform: 'translateX(-50%)', zIndex: 3 }}>
+            <div className="absolute" style={{ top: '110px', left: '50%', transform: 'translateX(-50%)', zIndex: 3 }}>
               <FloatingWrapper entranceDelay={0.3} floatAmount={5} floatDuration={4} swayAmount={2} rotateAmount={0.6}>
                 <ProjectCircle project={displayProjects[2]} size="mobileLarge" />
               </FloatingWrapper>
@@ -402,8 +409,8 @@ type ProjectCircleProps = {
 }
 
 const circleSizes = {
-  mobile: { diameter: 140, image: 134, blue: 128 },
-  mobileLarge: { diameter: 210, image: 202, blue: 194 },
+  mobile: { diameter: 155, image: 148, blue: 142 },
+  mobileLarge: { diameter: 235, image: 226, blue: 218 },
   medium: { diameter: 374, image: 363, blue: 341 },
   xlarge: { diameter: 575, image: 564, blue: 540 },
 }
@@ -536,9 +543,9 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
       {/* Title overlay - visible by default */}
       <div
         ref={titleRef}
-        className="absolute inset-0 flex items-center justify-start text-white font-bold"
+        className={`absolute inset-0 flex items-center ${size === 'mobile' || size === 'mobileLarge' ? 'justify-center text-center' : 'justify-start'} text-white font-bold`}
         style={{
-          fontSize: size === 'xlarge' ? '2.5rem' : size === 'mobile' ? '0.8rem' : size === 'mobileLarge' ? '1.1rem' : '1.75rem',
+          fontSize: size === 'xlarge' ? '2.5rem' : size === 'mobile' ? '0.85rem' : size === 'mobileLarge' ? '1.15rem' : '1.75rem',
           padding: size === 'mobile' || size === 'mobileLarge' ? '0 0.75rem' : '0 3rem',
           fontFamily: 'var(--font-inter)',
           textShadow: '0 2px 8px rgba(0,0,0,0.5)',
