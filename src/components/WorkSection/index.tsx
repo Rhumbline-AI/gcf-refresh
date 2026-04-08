@@ -186,21 +186,21 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       const o2 = getOrb(orb2Ref)
       if (!o1 || !o2) return
 
-      // LEFT connector: screen-left-edge → elbow-dot → left-orb surface
-      const lOrbX  = o1.cx - o1.r * 0.72
-      const lOrbY  = o1.cy + o1.r * 0.48
-      const lBendX = o1.cx - o1.r * 1.40   // elbow outside orb
-      const lBendY = o1.cy + o1.r * 0.82
-      sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.60, x2: lBendX, y2: lBendY })
+      // LEFT connector: enters orb mid-left, elbow higher
+      const lOrbX  = o1.cx - o1.r * 0.85
+      const lOrbY  = o1.cy + o1.r * 0.30
+      const lBendX = o1.cx - o1.r * 1.50
+      const lBendY = o1.cy + o1.r * 0.55
+      sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.58, x2: lBendX, y2: lBendY })
       sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
       sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
 
-      // RIGHT connector: screen-right-edge → elbow-dot → right-orb surface
-      const rOrbX  = o2.cx + o2.r * 0.72
-      const rOrbY  = o2.cy + o2.r * 0.48
-      const rBendX = o2.cx + o2.r * 1.40
-      const rBendY = o2.cy + o2.r * 0.82
-      sa(svg.querySelector('.rl1'), { x1: W + 80, y1: H * 0.82, x2: rBendX, y2: rBendY })
+      // RIGHT connector: enters orb lower-right, elbow further out
+      const rOrbX  = o2.cx + o2.r * 0.60
+      const rOrbY  = o2.cy + o2.r * 0.62
+      const rBendX = o2.cx + o2.r * 1.30
+      const rBendY = o2.cy + o2.r * 0.95
+      sa(svg.querySelector('.rl1'), { x1: W + 80, y1: H * 0.80, x2: rBendX, y2: rBendY })
       sa(svg.querySelector('.rl2'), { x1: rBendX, y1: rBendY, x2: rOrbX, y2: rOrbY })
       sa(svg.querySelector('.dr'),  { cx: rBendX, cy: rBendY })
 
