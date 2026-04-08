@@ -510,10 +510,10 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
       
       <div
         ref={titleRef}
-        className={`absolute inset-0 flex items-center ${size === 'mobile' || size === 'mobileLarge' ? 'justify-center text-center' : 'justify-start'} text-white font-bold`}
+        className="absolute inset-0 flex items-center justify-start text-white font-bold"
         style={{
           fontSize: size === 'xlarge' ? '2.5rem' : size === 'mobile' ? '0.85rem' : size === 'mobileLarge' ? '1.15rem' : '1.75rem',
-          padding: size === 'mobile' || size === 'mobileLarge' ? '0 0.75rem' : '0 3rem',
+          padding: size === 'mobile' ? '0 1.25rem' : size === 'mobileLarge' ? '0 1.75rem' : '0 3rem',
           fontFamily: 'var(--font-inter)',
           textShadow: '0 2px 8px rgba(0,0,0,0.5)',
           zIndex: 3,

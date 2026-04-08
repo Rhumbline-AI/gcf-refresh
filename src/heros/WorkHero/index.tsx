@@ -48,7 +48,7 @@ export const WorkHero: React.FC<WorkHeroProps> = ({ richText }) => {
         <div ref={contentRef} className="max-w-3xl mx-auto text-center">
           {richText && (
             <RichText
-              className="[&_h1]:text-4xl [&_h1]:md:text-5xl [&_h1]:lg:text-6xl [&_h1]:font-extralight [&_h1]:text-[#343434] [&_h1]:mb-4 [&_h1]:leading-tight [&_p]:text-base [&_p]:md:text-lg [&_p]:text-[#343434] [&_p]:font-light"
+              className="[&_h1]:text-4xl [&_h1]:md:text-5xl [&_h1]:lg:text-6xl [&_h1]:font-extralight [&_h1]:text-[#343434] [&_h1]:mb-1 [&_h1]:leading-tight [&_p]:text-base [&_p]:md:text-lg [&_p]:text-[#343434] [&_p]:font-light"
               data={richText}
               enableGutter={false}
             />
