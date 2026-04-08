@@ -185,27 +185,27 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       const o3 = getOrb(orb3Ref) // center xlarge orb
 
       if (o1) {
-        // LEFT connector: nearly horizontal from left edge, slight dip
-        const lOrbX  = o1.cx - o1.r * 0.88
-        const lOrbY  = o1.cy + o1.r * 0.20
-        const lBendX = o1.cx - o1.r * 1.50
-        const lBendY = o1.cy + o1.r * 0.45
-        sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.32, x2: lBendX, y2: lBendY })
+        // LEFT connector: steep diagonal from low-left
+        const lOrbX  = o1.cx - o1.r * 0.62
+        const lOrbY  = o1.cy + o1.r * 0.60
+        const lBendX = o1.cx - o1.r * 1.35
+        const lBendY = o1.cy + o1.r * 0.95
+        sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.65, x2: lBendX, y2: lBendY })
         sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
         sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
 
-        // Decorative ring: anchored to left orb
+        // Decorative ring: anchored to left orb, upper-left
         const dcR = o1.r * 0.78
         sa(svg.querySelector('.dec-ring'), { cx: o1.cx - o1.r * 0.48, cy: o1.cy - o1.r * 0.42, r: dcR })
       }
 
       if (o3) {
-        // BOTTOM connector: drops steeply from right edge
-        const bOrbX  = o3.cx + o3.r * 0.50
-        const bOrbY  = o3.cy + o3.r * 0.72
-        const bBendX = o3.cx + o3.r * 1.20
-        const bBendY = o3.cy + o3.r * 1.05
-        sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.72, x2: bBendX, y2: bBendY })
+        // BOTTOM connector: steep plunge from upper-right
+        const bOrbX  = o3.cx + o3.r * 0.82
+        const bOrbY  = o3.cy + o3.r * 0.30
+        const bBendX = o3.cx + o3.r * 1.45
+        const bBendY = o3.cy + o3.r * 0.60
+        sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.25, x2: bBendX, y2: bBendY })
         sa(svg.querySelector('.bl2'), { x1: bBendX, y1: bBendY, x2: bOrbX, y2: bOrbY })
         sa(svg.querySelector('.db'),  { cx: bBendX, cy: bBendY })
       }
@@ -309,13 +309,13 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
         {/* Left connector */}
         <line className="ll1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
         <line className="ll2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
-        <circle className="dl dot" r={sizeKey.small === 'mobile' ? 4 : 6} fill="#307fe2" cx="0" cy="0" />
+        <circle className="dl dot" r={sizeKey.small === 'mobile' ? 5 : 8} fill="#307fe2" cx="0" cy="0" />
         {/* Bottom connector */}
         <line className="bl1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
         <line className="bl2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
-        <circle className="db dot" r={sizeKey.small === 'mobile' ? 4 : 6} fill="#307fe2" cx="0" cy="0" />
+        <circle className="db dot" r={sizeKey.small === 'mobile' ? 5 : 8} fill="#307fe2" cx="0" cy="0" />
         {/* Decorative ring — anchored to left orb */}
-        <circle className="dec-ring" fill="none" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 3} cx="0" cy="0" r="200" />
+        <circle className="dec-ring" fill="none" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 3 : 5} cx="0" cy="0" r="200" />
       </svg>
 
       {/* Responsive layout — same structure at all widths, sizes adapt */}
