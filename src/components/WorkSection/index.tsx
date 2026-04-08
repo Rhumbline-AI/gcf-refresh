@@ -326,7 +326,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
       {/* Responsive layout — same structure at all widths, sizes adapt */}
       <div>
-        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '320px' : '380px' }}>
+        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '150px' : '380px' }}>
           <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '5%', zIndex: 2 }}>
             {displayProjects[0] && (
               <FloatingWrapper
@@ -383,8 +383,8 @@ type ProjectCircleProps = {
 }
 
 const circleSizes = {
-  mobile: { diameter: 170, image: 162, blue: 154 },
-  mobileLarge: { diameter: 260, image: 250, blue: 240 },
+  mobile: { diameter: 180, image: 172, blue: 164 },
+  mobileLarge: { diameter: 300, image: 290, blue: 278 },
   medium: { diameter: 374, image: 363, blue: 341 },
   xlarge: { diameter: 575, image: 564, blue: 540 },
 }
