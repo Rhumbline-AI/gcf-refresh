@@ -130,10 +130,21 @@ function FloatingWrapper({
 export function WorkSection2({ projects, title }: { projects: Project[]; title?: string | null }) {
   const sectionRef = useRef<HTMLElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
-  // Refs on wrapper divs around each orb for dynamic position tracking
-  const orb1Ref = useRef<HTMLDivElement>(null) // left medium orb (displayProjects[1])
-  const orb2Ref = useRef<HTMLDivElement>(null) // right medium orb (displayProjects[2])
-  const orb3Ref = useRef<HTMLDivElement>(null) // center xlarge orb (displayProjects[0])
+  const orb1Ref = useRef<HTMLDivElement>(null)
+  const orb2Ref = useRef<HTMLDivElement>(null)
+  const orb3Ref = useRef<HTMLDivElement>(null)
+
+  const [sizeKey, setSizeKey] = useState<{ small: 'mobile' | 'mobileLarge' | 'medium'; large: 'mobileLarge' | 'xlarge' }>({ small: 'medium', large: 'xlarge' })
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth
+      if (w < 768) setSizeKey({ small: 'mobile', large: 'mobileLarge' })
+      else setSizeKey({ small: 'medium', large: 'xlarge' })
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
 
   useEffect(() => {
     if (!svgRef.current || !sectionRef.current) return
@@ -292,7 +303,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       {/* SVG: lines + decorative ring — positions calculated dynamically from orb refs */}
       <svg
         ref={svgRef}
-        className="absolute pointer-events-none overflow-visible hidden md:block"
+        className="absolute pointer-events-none overflow-visible"
         style={{ top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
       >
         {/* Left connector */}
@@ -307,70 +318,35 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
         <circle className="dec-ring" fill="none" stroke="#307fe2" strokeWidth="3" cx="0" cy="0" r="200" />
       </svg>
 
-      {/* MOBILE: two small + one large, mirroring desktop layout */}
-      <div className="md:hidden">
-        <div className="relative mx-auto" style={{ maxWidth: '400px', minHeight: '370px' }}>
-          {/* Mobile connector lines */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ zIndex: 1 }}>
-            <line x1="20%" y1="40%" x2="38%" y2="58%" stroke="#307fe2" strokeWidth="2" />
-            <line x1="80%" y1="40%" x2="62%" y2="58%" stroke="#307fe2" strokeWidth="2" />
-          </svg>
-          {/* Top-left */}
-          {displayProjects[1] && (
-            <div className="absolute" style={{ top: 0, left: '0%', zIndex: 2 }}>
-              <FloatingWrapper entranceDelay={0.1} floatAmount={4} floatDuration={3.5} swayAmount={2} rotateAmount={0.8}>
-                <ProjectCircle project={displayProjects[1]} size="mobile" />
-              </FloatingWrapper>
-            </div>
-          )}
-          {/* Top-right */}
-          {displayProjects[2] && (
-            <div className="absolute" style={{ top: 0, right: '0%', zIndex: 2 }}>
-              <FloatingWrapper entranceDelay={0.2} floatAmount={4} floatDuration={3.8} swayAmount={2} rotateAmount={0.8}>
-                <ProjectCircle project={displayProjects[2]} size="mobile" />
-              </FloatingWrapper>
-            </div>
-          )}
-          {/* Center large */}
-          {displayProjects[0] && (
-            <div className="absolute" style={{ top: '110px', left: '50%', transform: 'translateX(-50%)', zIndex: 3 }}>
-              <FloatingWrapper entranceDelay={0.3} floatAmount={5} floatDuration={4} swayAmount={2} rotateAmount={0.6}>
-                <ProjectCircle project={displayProjects[0]} size="mobileLarge" />
-              </FloatingWrapper>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* DESKTOP: absolute positioned layout */}
-      <div className="hidden md:block">
-        <div className="relative mx-auto w-full max-w-7xl -mb-32" style={{ minHeight: '380px' }}>
-          <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '10%', zIndex: 2 }}>
+      {/* Responsive layout — same structure at all widths, sizes adapt */}
+      <div>
+        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '320px' : '380px' }}>
+          <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '5%', zIndex: 2 }}>
             {displayProjects[1] && (
               <FloatingWrapper
                 entranceDelay={0.1}
-                floatAmount={10}
+                floatAmount={sizeKey.small === 'mobile' ? 4 : 10}
                 floatDuration={3.8}
-                swayAmount={5}
+                swayAmount={sizeKey.small === 'mobile' ? 2 : 5}
                 rotateAmount={1.2}
                 cursorFactor={0.05}
               >
-                <ProjectCircle project={displayProjects[1]} size="medium" />
+                <ProjectCircle project={displayProjects[1]} size={sizeKey.small} />
               </FloatingWrapper>
             )}
           </div>
 
-          <div ref={orb2Ref} className="absolute" style={{ top: '0%', right: '10%', zIndex: 2 }}>
+          <div ref={orb2Ref} className="absolute" style={{ top: '0%', right: '5%', zIndex: 2 }}>
             {displayProjects[2] && (
               <FloatingWrapper
                 entranceDelay={0.2}
-                floatAmount={12}
+                floatAmount={sizeKey.small === 'mobile' ? 4 : 12}
                 floatDuration={4.2}
-                swayAmount={6}
+                swayAmount={sizeKey.small === 'mobile' ? 2 : 6}
                 rotateAmount={1.8}
                 cursorFactor={0.035}
               >
-                <ProjectCircle project={displayProjects[2]} size="medium" />
+                <ProjectCircle project={displayProjects[2]} size={sizeKey.small} />
               </FloatingWrapper>
             )}
           </div>
@@ -381,13 +357,13 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
             {displayProjects[0] && (
               <FloatingWrapper
                 entranceDelay={0.3}
-                floatAmount={14}
+                floatAmount={sizeKey.small === 'mobile' ? 5 : 14}
                 floatDuration={5}
-                swayAmount={4}
+                swayAmount={sizeKey.small === 'mobile' ? 2 : 4}
                 rotateAmount={1}
                 cursorFactor={0.025}
               >
-                <ProjectCircle project={displayProjects[0]} size="xlarge" />
+                <ProjectCircle project={displayProjects[0]} size={sizeKey.large} />
               </FloatingWrapper>
             )}
           </div>
@@ -403,8 +379,8 @@ type ProjectCircleProps = {
 }
 
 const circleSizes = {
-  mobile: { diameter: 155, image: 148, blue: 142 },
-  mobileLarge: { diameter: 235, image: 226, blue: 218 },
+  mobile: { diameter: 170, image: 162, blue: 154 },
+  mobileLarge: { diameter: 260, image: 250, blue: 240 },
   medium: { diameter: 374, image: 363, blue: 341 },
   xlarge: { diameter: 575, image: 564, blue: 540 },
 }
