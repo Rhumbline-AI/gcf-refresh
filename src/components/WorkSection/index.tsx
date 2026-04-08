@@ -385,8 +385,8 @@ type ProjectCircleProps = {
 const circleSizes = {
   mobile: { diameter: 180, image: 172, blue: 164 },
   mobileLarge: { diameter: 300, image: 290, blue: 278 },
-  medium: { diameter: 430, image: 417, blue: 392 },
-  xlarge: { diameter: 660, image: 648, blue: 621 },
+  medium: { diameter: 387, image: 375, blue: 353 },
+  xlarge: { diameter: 594, image: 583, blue: 559 },
 }
 
 function ProjectCircle({ project, size }: ProjectCircleProps) {
