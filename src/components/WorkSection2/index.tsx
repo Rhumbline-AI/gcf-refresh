@@ -352,7 +352,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
           </div>
         </div>
 
-        <div className="relative w-full flex justify-center" style={{ zIndex: 2, transform: 'translateX(-8%)' }}>
+        <div className="relative w-full flex justify-center" style={{ zIndex: 2 }}>
           <div ref={orb3Ref} className="inline-block">
             {displayProjects[0] && (
               <FloatingWrapper
