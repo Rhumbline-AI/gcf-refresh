@@ -28,10 +28,10 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
         className="absolute rounded-full pointer-events-none z-[5]"
         aria-hidden
         style={{
-          width: 'clamp(280px, 55vw, 950px)',
-          height: 'clamp(280px, 55vw, 950px)',
-          top: 'clamp(-50px, 2vw, 40px)',
-          left: 'clamp(-200px, -20vw, -120px)',
+          width: 'clamp(380px, 55vw, 950px)',
+          height: 'clamp(380px, 55vw, 950px)',
+          top: 'clamp(-60px, 2vw, 40px)',
+          left: 'clamp(-260px, -20vw, -120px)',
           backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${circleBg.src})`,
           backgroundSize: 'auto, 200%',
           backgroundPosition: '0% 0%',
@@ -41,31 +41,29 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
         }}
       />
 
-      <div className="container relative z-10">
-        <div className="flex flex-col items-center">
-          <ScrollReveal animation="scaleIn" duration={1.1}>
-            <div className="relative">
-              <div
-                className="relative w-[300px] h-[300px] sm:w-[420px] sm:h-[420px] md:w-[750px] md:h-[750px] lg:w-[950px] lg:h-[950px] xl:w-[1100px] xl:h-[1100px] rounded-full flex items-center justify-center overflow-hidden"
-                style={{
-                  backgroundColor: '#307fe2',
-                  backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${circleBg.src})`,
-                  backgroundSize: 'auto, 200%',
-                  backgroundPosition: '0% 0%',
-                  animation: 'blueNoiseShift 2s steps(10) infinite',
-                }}
-              >
-                <div className="w-full px-8 sm:px-16 md:px-32 lg:px-40 xl:px-48">
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-4 sm:gap-x-6 sm:gap-y-6 md:gap-x-14 md:gap-y-12 lg:gap-x-16 lg:gap-y-14">
-                    {items.map((item, i) => (
-                      <MethodologyCircle key={i} item={item} />
-                    ))}
-                  </div>
+      <div className="relative z-10 flex flex-col items-center justify-center">
+        <ScrollReveal animation="scaleIn" duration={1.1} className="w-full md:max-w-[1100px] md:mx-auto md:px-4">
+          <div className="relative w-[130vw] -ml-[15vw] md:w-full md:ml-0 aspect-square flex items-center justify-center">
+            <div
+              className="absolute inset-0 md:inset-0 rounded-full flex items-center justify-center overflow-hidden"
+              style={{
+                backgroundColor: '#307fe2',
+                backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${circleBg.src})`,
+                backgroundSize: 'auto, 200%',
+                backgroundPosition: '0% 0%',
+                animation: 'blueNoiseShift 2s steps(10) infinite',
+              }}
+            >
+              <div className="w-full px-16 sm:px-20 md:px-32 lg:px-40 xl:px-48">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-5 sm:gap-x-8 sm:gap-y-8 md:gap-x-14 md:gap-y-12 lg:gap-x-16 lg:gap-y-14">
+                  {items.map((item, i) => (
+                    <MethodologyCircle key={i} item={item} />
+                  ))}
                 </div>
               </div>
             </div>
-          </ScrollReveal>
-        </div>
+          </div>
+        </ScrollReveal>
       </div>
     </div>
   )
@@ -77,7 +75,7 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div
-        className="relative w-14 h-14 sm:w-20 sm:h-20 md:w-36 md:h-36 lg:w-44 lg:h-44 xl:w-52 xl:h-52 rounded-full overflow-hidden mb-1 sm:mb-2 md:mb-3 border-2 border-white/20"
+        className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-36 md:h-36 lg:w-44 lg:h-44 xl:w-52 xl:h-52 rounded-full overflow-hidden mb-2 sm:mb-2 md:mb-3 border-2 border-white/20"
         style={{ backgroundColor: '#1a2a4a' }}
       >
         {hasImage && (
@@ -85,13 +83,13 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
         )}
       </div>
       <h3
-        className="text-[9px] sm:text-xs md:text-base lg:text-lg font-bold uppercase tracking-wider mb-0.5 sm:mb-1 text-white"
+        className="text-xs sm:text-sm md:text-base lg:text-lg font-bold uppercase tracking-wider mb-0.5 sm:mb-1 text-white"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.label}
       </h3>
       <p
-        className="text-[8px] sm:text-[10px] md:text-sm lg:text-base text-white/90 font-medium leading-snug max-w-[120px] sm:max-w-[160px] md:max-w-[180px] lg:max-w-[220px]"
+        className="text-[10px] sm:text-xs md:text-sm lg:text-base text-white/90 font-medium leading-snug max-w-[150px] sm:max-w-[170px] md:max-w-[180px] lg:max-w-[220px]"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.description}

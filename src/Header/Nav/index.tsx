@@ -62,7 +62,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
           style={{
             backgroundColor: '#307fe2',
             backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${blueNoiseBg.src})`,
-            backgroundSize: 'auto, 200%',
+            backgroundSize: 'auto, 500%',
             backgroundPosition: '0% 0%',
             animation: 'blueNoiseShift 2s steps(10) infinite',
           }}
