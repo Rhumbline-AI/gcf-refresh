@@ -35,7 +35,7 @@ export const WorkHero: React.FC<WorkHeroProps> = ({ richText }) => {
 
   return (
     <div
-      className="relative pt-8 pb-0 md:pt-10 md:pb-0"
+      className="relative pt-8 pb-4 md:pt-10 md:pb-6"
       style={{
         backgroundImage: `url(${dotMatrixBg.src})`,
         backgroundRepeat: 'repeat',
@@ -48,7 +48,7 @@ export const WorkHero: React.FC<WorkHeroProps> = ({ richText }) => {
         <div ref={contentRef} className="max-w-3xl mx-auto text-center">
           {richText && (
             <RichText
-              className="[&_h1]:text-4xl [&_h1]:md:text-5xl [&_h1]:lg:text-6xl [&_h1]:font-extralight [&_h1]:text-[#343434] [&_h1]:mb-1 [&_h1]:leading-tight [&_p]:text-base [&_p]:md:text-lg [&_p]:text-[#343434] [&_p]:font-light"
+              className="[&_h1]:text-4xl [&_h1]:md:text-5xl [&_h1]:lg:text-6xl [&_h1]:font-extralight [&_h1]:text-[#343434] [&_h1]:mb-0 [&_h1]:leading-tight [&_p]:text-base [&_p]:md:text-lg [&_p]:text-[#343434] [&_p]:font-light [&_p]:mt-0 [&_p]:md:mt-1"
               data={richText}
               enableGutter={false}
             />

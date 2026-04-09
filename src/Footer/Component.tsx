@@ -16,14 +16,17 @@ export async function Footer() {
 
   return (
     <footer 
-      className="relative pt-8 md:pt-16 pb-12 -mt-16 md:-mt-24 overflow-visible bg-white"
+      className="relative pt-8 md:pt-16 pb-12 -mt-16 md:-mt-24 overflow-hidden bg-white"
     >
       {/* Rip image: fixed-height + object-fit for consistent sizing; object-position keeps torn edge visible */}
       <div
-        className="absolute left-0 w-full pointer-events-none select-none z-20"
+        className="absolute w-full pointer-events-none select-none z-20"
         style={{
           top: '-18%',
-          height: 'clamp(56px, 9vw, 88px)',
+          height: 'clamp(75px, 9vw, 88px)',
+          minWidth: '960px',
+          left: '50%',
+          transform: 'translateX(-50%)',
         }}
         aria-hidden
       >
