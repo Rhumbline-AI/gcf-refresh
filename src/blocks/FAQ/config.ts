@@ -17,7 +17,7 @@ export const FAQ: Block = {
     {
       name: 'heading',
       type: 'text',
-      defaultValue: 'Frequently Asked Questions',
+      defaultValue: 'FAQS',
     },
     {
       name: 'items',
