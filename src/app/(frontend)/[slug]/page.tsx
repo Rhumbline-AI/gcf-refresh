@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import type { Page as PageType } from '@/payload-types'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
@@ -76,7 +77,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
 
       {isHome ? (
-        <HomePageLivePreview initialPage={page}>
+        <HomePageLivePreview initialPage={page as PageType}>
           <RenderBlocks blocks={layout} />
         </HomePageLivePreview>
       ) : (
