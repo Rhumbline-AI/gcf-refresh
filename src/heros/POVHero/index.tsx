@@ -55,10 +55,10 @@ export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
   const quote = quoteList[currentQuote]
 
   return (
-    <div className="relative pt-10 pb-0 md:pt-14 md:pb-2" style={{ backgroundColor: '#f7f2ee' }}>
+    <div className="relative pt-10 pb-8 md:pt-14 md:pb-2" style={{ backgroundColor: '#f7f2ee' }}>
       <div className="container">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-16">
-          <div className="flex-1">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-16">
+          <div className="flex-1 text-center md:text-left">
             <h1
               className="text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a] leading-[1.2] font-light"
               style={{ fontFamily: 'var(--font-inter)' }}
