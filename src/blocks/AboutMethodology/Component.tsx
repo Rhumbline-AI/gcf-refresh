@@ -22,16 +22,16 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
   if (!items || items.length === 0) return null
 
   return (
-    <div className="relative py-16 md:py-24 bg-white">
+    <div className="relative py-16 md:py-24 bg-white overflow-hidden">
       {/* Large decorative blue circle outline — Venn-overlaps the filled circle */}
       <div
         className="absolute rounded-full pointer-events-none z-[5]"
         aria-hidden
         style={{
-          width: 'clamp(400px, 50vw, 750px)',
-          height: 'clamp(400px, 50vw, 750px)',
+          width: 'clamp(400px, 55vw, 950px)',
+          height: 'clamp(400px, 55vw, 950px)',
           top: 'clamp(-80px, 2vw, 40px)',
-          left: 'clamp(-320px, -18vw, -100px)',
+          left: 'clamp(-380px, -20vw, -120px)',
           backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${circleBg.src})`,
           backgroundSize: 'auto, 200%',
           backgroundPosition: '0% 0%',
@@ -46,7 +46,7 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
           <ScrollReveal animation="scaleIn" duration={1.1}>
             <div className="relative">
               <div
-                className="relative w-[380px] h-[380px] sm:w-[500px] sm:h-[500px] md:w-[650px] md:h-[650px] lg:w-[780px] lg:h-[780px] rounded-full flex items-center justify-center overflow-hidden"
+                className="relative w-[380px] h-[380px] sm:w-[500px] sm:h-[500px] md:w-[750px] md:h-[750px] lg:w-[950px] lg:h-[950px] xl:w-[1100px] xl:h-[1100px] rounded-full flex items-center justify-center overflow-hidden"
                 style={{
                   backgroundColor: '#307fe2',
                   backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${circleBg.src})`,
@@ -55,8 +55,8 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
                   animation: 'blueNoiseShift 2s steps(10) infinite',
                 }}
               >
-                <div className="w-full px-14 sm:px-20 md:px-28 lg:px-36">
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:gap-x-8 sm:gap-y-8 md:gap-x-12 md:gap-y-10">
+                <div className="w-full px-14 sm:px-20 md:px-32 lg:px-40 xl:px-48">
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:gap-x-8 sm:gap-y-8 md:gap-x-14 md:gap-y-12 lg:gap-x-16 lg:gap-y-14">
                     {items.map((item, i) => (
                       <MethodologyCircle key={i} item={item} />
                     ))}
@@ -77,7 +77,7 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div
-        className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 rounded-full overflow-hidden mb-2 md:mb-3 border-2 border-white/20"
+        className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 xl:w-52 xl:h-52 rounded-full overflow-hidden mb-2 md:mb-3 border-2 border-white/20"
         style={{ backgroundColor: '#1a2a4a' }}
       >
         {hasImage && (
@@ -85,13 +85,13 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
         )}
       </div>
       <h3
-        className="text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider mb-1 text-white"
+        className="text-xs sm:text-sm md:text-base lg:text-lg font-bold uppercase tracking-wider mb-1 text-white"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.label}
       </h3>
       <p
-        className="text-[10px] sm:text-xs md:text-sm text-white/90 font-medium leading-snug max-w-[180px]"
+        className="text-[10px] sm:text-xs md:text-sm lg:text-base text-white/90 font-medium leading-snug max-w-[180px] lg:max-w-[220px]"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.description}

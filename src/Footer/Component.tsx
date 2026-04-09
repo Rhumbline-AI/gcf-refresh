@@ -6,7 +6,7 @@ import Image from 'next/image'
 import type { Footer } from '@/payload-types'
 
 import bbbLockup from '@/images/bbb-rating-lockup.png'
-import footerRip2 from '@/images/footer-rip2.png'
+import footerWhite from '@/images/footer-white.png'
 import { BackToTop } from './BackToTop'
 
 export async function Footer() {
@@ -16,7 +16,7 @@ export async function Footer() {
 
   return (
     <footer 
-      className="relative pt-32 pb-12 -mt-16 md:-mt-24 overflow-visible bg-white"
+      className="relative pt-8 md:pt-16 pb-12 -mt-16 md:-mt-24 overflow-visible bg-white"
     >
       {/* Rip image: fixed-height + object-fit for consistent sizing; object-position keeps torn edge visible */}
       <div
@@ -28,7 +28,7 @@ export async function Footer() {
         aria-hidden
       >
         <img
-          src={footerRip2.src}
+          src={footerWhite.src}
           alt=""
           className="w-full h-full object-cover object-[center_bottom]"
           style={{ display: 'block' }}
