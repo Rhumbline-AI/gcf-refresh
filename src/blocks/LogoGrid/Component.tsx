@@ -1,7 +1,11 @@
 import React from 'react'
-import type { LogoGrid as LogoGridProps } from '@/payload-types'
+import type { Media as MediaType } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { ScrollReveal } from '@/components/ScrollReveal'
+
+type LogoGridProps = {
+  logos?: { logo: number | MediaType; id?: string | null }[] | null
+}
 
 export const LogoGridBlock: React.FC<LogoGridProps> = ({ logos }) => {
   return (
