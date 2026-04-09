@@ -19,11 +19,11 @@ export const Logo = (props: Props) => {
     <Image
       src={LogoImage}
       alt="Growth Fuel"
-      width={58}
-      height={58}
+      width={80}
+      height={80}
       loading={loading}
       priority={priorityValue}
-      className={clsx('w-auto h-[58px]', className)}
+      className={clsx('w-auto h-[80px]', className)}
     />
   )
 }

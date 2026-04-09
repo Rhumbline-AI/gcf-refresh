@@ -74,7 +74,7 @@ export const FAQBlock: React.FC<FAQBlockProps> = ({ heading, items }) => {
       <div className="container">
         {heading && (
           <h2
-            className="text-2xl md:text-4xl font-extralight text-white uppercase tracking-wider mb-8 md:mb-12"
+            className="text-2xl md:text-4xl font-extralight text-[#343434] uppercase tracking-wider mb-8 md:mb-12"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
             {heading}
