@@ -134,11 +134,12 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
   const orb2Ref = useRef<HTMLDivElement>(null)
 
   // Responsive sizing: defaults to desktop, switches after hydration
-  const [sizeKey, setSizeKey] = useState<{ small: 'mobile' | 'mobileLarge' | 'medium'; large: 'mobileLarge' | 'xlarge' }>({ small: 'medium', large: 'xlarge' })
+  const [sizeKey, setSizeKey] = useState<{ small: keyof typeof circleSizes; large: keyof typeof circleSizes }>({ small: 'medium', large: 'xlarge' })
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth
       if (w < 768) setSizeKey({ small: 'mobile', large: 'mobileLarge' })
+      else if (w < 1024) setSizeKey({ small: 'tablet', large: 'tabletLarge' })
       else setSizeKey({ small: 'medium', large: 'xlarge' })
     }
     update()
@@ -305,15 +306,15 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
         style={{ top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
       >
         {/* Left connector: long (edge→bend) + short (bend→orb) */}
-        <line className="ll1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
-        <line className="ll2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
-        <circle className="dl dot" r={sizeKey.small === 'mobile' ? 5 : 8} fill="#307fe2" cx="0" cy="0" />
+        <line className="ll1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
+        <line className="ll2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
+        <circle className="dl dot" r={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 6 : 8} fill="#307fe2" cx="0" cy="0" />
         {/* Right connector */}
-        <line className="rl1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
-        <line className="rl2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : 4} x1="0" y1="0" x2="0" y2="0" />
-        <circle className="dr dot" r={sizeKey.small === 'mobile' ? 5 : 8} fill="#307fe2" cx="0" cy="0" />
-        {/* Decorative ring — anchored to left orb */}
-        <circle className="dec-ring" fill="none" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 3 : 5} cx="0" cy="0" r="200" />
+        <line className="rl1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
+        <line className="rl2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
+        <circle className="dr dot" r={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 6 : 8} fill="#307fe2" cx="0" cy="0" />
+        {/* Decorative ring — anchored to RIGHT orb */}
+        <circle className="dec-ring" fill="none" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 3 : sizeKey.small === 'tablet' ? 4 : 5} cx="0" cy="0" r="200" />
       </svg>
 
       {title && (
@@ -326,14 +327,14 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
       {/* Responsive layout — same structure at all widths, sizes adapt */}
       <div>
-        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '225px' : '405px' }}>
+        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '225px' : sizeKey.small === 'tablet' ? '290px' : '405px' }}>
           <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '5%', zIndex: 2 }}>
             {displayProjects[0] && (
               <FloatingWrapper
                 entranceDelay={0.1}
-                floatAmount={sizeKey.small === 'mobile' ? 4 : 10}
+                floatAmount={sizeKey.small === 'mobile' ? 4 : sizeKey.small === 'tablet' ? 6 : 10}
                 floatDuration={3.8}
-                swayAmount={sizeKey.small === 'mobile' ? 2 : 5}
+                swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 5}
                 rotateAmount={1.2}
                 cursorFactor={0.05}
               >
@@ -346,9 +347,9 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
             {displayProjects[1] && (
               <FloatingWrapper
                 entranceDelay={0.2}
-                floatAmount={sizeKey.small === 'mobile' ? 4 : 12}
+                floatAmount={sizeKey.small === 'mobile' ? 4 : sizeKey.small === 'tablet' ? 7 : 12}
                 floatDuration={4.2}
-                swayAmount={sizeKey.small === 'mobile' ? 2 : 6}
+                swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 4 : 6}
                 rotateAmount={1.8}
                 cursorFactor={0.035}
               >
@@ -362,9 +363,9 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
           {displayProjects[2] && (
             <FloatingWrapper
               entranceDelay={0.3}
-              floatAmount={sizeKey.small === 'mobile' ? 5 : 14}
+              floatAmount={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 8 : 14}
               floatDuration={5}
-              swayAmount={sizeKey.small === 'mobile' ? 2 : 4}
+              swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4}
               rotateAmount={1}
               cursorFactor={0.025}
             >
@@ -379,12 +380,14 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
 type ProjectCircleProps = {
   project: Project
-  size: 'mobile' | 'mobileLarge' | 'medium' | 'xlarge'
+  size: keyof typeof circleSizes
 }
 
 const circleSizes = {
   mobile: { diameter: 180, image: 172, blue: 164 },
   mobileLarge: { diameter: 300, image: 290, blue: 278 },
+  tablet: { diameter: 260, image: 250, blue: 238 },
+  tabletLarge: { diameter: 420, image: 408, blue: 390 },
   medium: { diameter: 387, image: 375, blue: 353 },
   xlarge: { diameter: 594, image: 583, blue: 559 },
 }
@@ -519,8 +522,8 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
         ref={titleRef}
         className="absolute inset-0 flex items-center justify-start text-white font-bold"
         style={{
-          fontSize: size === 'xlarge' ? '3rem' : size === 'mobile' ? '1.05rem' : size === 'mobileLarge' ? '1.4rem' : '2.1rem',
-          padding: size === 'mobile' ? '0 1.25rem' : size === 'mobileLarge' ? '0 1.75rem' : '0 3rem',
+          fontSize: size === 'xlarge' ? '3rem' : size === 'mobile' ? '1.05rem' : size === 'mobileLarge' ? '1.4rem' : size === 'tablet' ? '1.25rem' : size === 'tabletLarge' ? '1.6rem' : '2.1rem',
+          padding: size === 'mobile' ? '0 1.25rem' : size === 'mobileLarge' ? '0 1.75rem' : size === 'tablet' || size === 'tabletLarge' ? '0 2rem' : '0 3rem',
           fontFamily: 'var(--font-inter)',
           textShadow: '0 2px 8px rgba(0,0,0,0.5)',
           zIndex: 3,
@@ -530,7 +533,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
       </div>
       
       {/* Hover content - hidden by default (skip on mobile) */}
-      {size !== 'mobile' && size !== 'mobileLarge' && <div
+      {size !== 'mobile' && size !== 'mobileLarge' && size !== 'tablet' && size !== 'tabletLarge' && <div
         ref={hoverContentRef}
         className="absolute inset-0 flex flex-col items-start justify-center"
         style={{
@@ -570,7 +573,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
     </div>
   )
 
-  if (size === 'mobile' || size === 'mobileLarge') {
+  if (size === 'mobile' || size === 'mobileLarge' || size === 'tablet' || size === 'tabletLarge') {
     return (
       <a href={`/work/${project.slug || ''}`} className="block rounded-full">
         {circleContent}
