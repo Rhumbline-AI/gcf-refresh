@@ -45,7 +45,7 @@ export default async function ProjectPage({ params: paramsPromise }: Args) {
   }
 
   return (
-    <article className="pb-40 md:pb-56" style={{ backgroundColor: '#f5f0eb' }}>
+    <article className="pb-24" style={{ backgroundColor: '#f5f0eb' }}>
       <PageClient />
       <CaseStudy project={project} />
     </article>
