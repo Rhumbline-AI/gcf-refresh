@@ -139,7 +139,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
     const update = () => {
       const w = window.innerWidth
       if (w < 768) setSizeKey({ small: 'mobile', large: 'mobileLarge' })
-      else if (w < 1024) setSizeKey({ small: 'tablet', large: 'tabletLarge' })
+      else if (w < 1200) setSizeKey({ small: 'tablet', large: 'tabletLarge' })
       else setSizeKey({ small: 'medium', large: 'xlarge' })
     }
     update()
@@ -386,8 +386,8 @@ type ProjectCircleProps = {
 const circleSizes = {
   mobile: { diameter: 180, image: 172, blue: 164 },
   mobileLarge: { diameter: 300, image: 290, blue: 278 },
-  tablet: { diameter: 260, image: 250, blue: 238 },
-  tabletLarge: { diameter: 420, image: 408, blue: 390 },
+  tablet: { diameter: 220, image: 210, blue: 200 },
+  tabletLarge: { diameter: 360, image: 348, blue: 332 },
   medium: { diameter: 387, image: 375, blue: 353 },
   xlarge: { diameter: 594, image: 583, blue: 559 },
 }
