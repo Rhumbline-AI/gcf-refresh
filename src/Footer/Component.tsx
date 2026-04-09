@@ -16,14 +16,14 @@ export async function Footer() {
 
   return (
     <footer 
-      className="relative pt-8 md:pt-16 pb-12 -mt-16 md:-mt-24 overflow-hidden bg-white"
+      className="relative pt-24 md:pt-32 pb-12 -mt-32 md:-mt-40 overflow-hidden bg-white"
     >
-      {/* Rip image: fixed-height + object-fit for consistent sizing; object-position keeps torn edge visible */}
+      {/* Rip image: tall enough to show full shadow; pinned to top of footer padding area */}
       <div
         className="absolute w-full pointer-events-none select-none z-20"
         style={{
-          top: '-18%',
-          height: 'clamp(75px, 9vw, 88px)',
+          top: 0,
+          height: 'clamp(100px, 12vw, 140px)',
           minWidth: '960px',
           left: '50%',
           transform: 'translateX(-50%)',
@@ -37,10 +37,8 @@ export async function Footer() {
           style={{ display: 'block' }}
         />
       </div>
-      {/* Content: negative margin pulls up into rip overlap zone; padding-top keeps actual content clear */}
       <div
-        className="container relative z-10 pt-8 md:pt-10"
-        style={{ marginTop: '-clamp(20px, 4vw, 36px)' }}
+        className="container relative z-10"
       >
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
             <div className="flex gap-4">
