@@ -58,7 +58,7 @@ export const RenderBlocks: React.FC<{
                 : undefined
 
               return (
-                <div key={index} {...(anchorId ? { id: anchorId } : {})}>
+                <div key={index} className={`block-${blockType}`} {...(anchorId ? { id: anchorId } : {})}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

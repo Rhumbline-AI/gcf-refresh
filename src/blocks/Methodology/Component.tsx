@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import dotMatrixBg from '@/images/dot-matrix-background2.gif'
+import dotMatrixBg from '@/images/dot-matrix-background-fix1.gif'
 import circleBg from '@/images/how-we-do-it-bg.jpg'
 import hand1 from '@/images/hand1.gif'
 import { ScrollReveal } from '@/components/ScrollReveal'
