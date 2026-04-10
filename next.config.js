@@ -34,7 +34,12 @@ const nextConfig = {
     if (!BLOB_STORE_BASE_URL) return { beforeFiles: [], afterFiles: [], fallback: [] }
 
     return {
-      beforeFiles: [],
+      beforeFiles: [
+        {
+          source: '/api/media/file/:path*',
+          destination: `${BLOB_STORE_BASE_URL}/media/:path*`,
+        },
+      ],
       afterFiles: [
         {
           source: '/media/:path*',
