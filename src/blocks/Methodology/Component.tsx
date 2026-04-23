@@ -26,8 +26,11 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
     >
       <div className="relative z-10 flex flex-col items-center justify-center">
         <ScrollReveal animation="scaleIn" duration={1.2} className="w-full md:max-w-[990px] md:mx-auto md:px-4">
-          {/* Circle bleeds off-screen on mobile; contained on desktop */}
-          <div className="relative w-[130vw] -ml-[15vw] md:w-full md:ml-0 aspect-square flex items-center justify-center">
+          {/* Circle bleeds off-screen on mobile; contained on desktop. */}
+          {/* Explicit width:height pair (instead of aspect-square) avoids mobile Safari oval-rendering bug. */}
+          <div
+            className="relative w-[130vw] h-[130vw] -ml-[15vw] md:w-full md:h-auto md:ml-0 md:aspect-square flex items-center justify-center"
+          >
             {/* Hand — mobile */}
             <div
               className="absolute md:hidden"
@@ -65,14 +68,14 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
               <text className="text-[1.4px] fill-foreground tracking-wide font-medium" style={{ fontFamily: 'var(--font-inter)' }}>
                 <textPath href="#circlePath" startOffset="0%">
                   {Array.from({ length: repetitions }).map((_, i) => (
-                    <tspan key={i}>{repeatingText}  </tspan>
+                    <tspan key={i}>{repeatingText}{'\u00A0\u00A0\u00A0\u00A0'}</tspan>
                   ))}
                 </textPath>
               </text>
             </svg>
 
             <div 
-              className="absolute inset-[5%] md:inset-[4%] rounded-full flex flex-col items-center justify-center px-16 py-12 sm:px-18 sm:py-10 md:p-16 text-white text-center overflow-hidden"
+              className="absolute inset-[5%] md:inset-[4%] rounded-full flex flex-col items-center justify-center px-16 py-12 sm:px-18 sm:py-10 md:px-10 md:py-12 lg:px-14 lg:py-16 text-white text-center overflow-hidden"
               style={{ 
                 backgroundColor: '#307fe2',
                 backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${circleBg.src})`,
@@ -82,16 +85,16 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
                 aspectRatio: '1 / 1',
               }}
             >
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-2 sm:mb-3 md:mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
-                {title}
+              <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light mb-2 sm:mb-3 md:mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
+                {title?.replace(/\s+/g, ' ').trim()}
               </h2>
-              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-normal mb-4 sm:mb-6 md:mb-8" style={{ fontFamily: 'var(--font-inter)' }}>
-                {subtitle}
+              <p className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-normal mb-4 sm:mb-6 md:mb-6" style={{ fontFamily: 'var(--font-inter)' }}>
+                {subtitle?.replace(/\s+/g, ' ').trim()}
               </p>
 
               {definition && (
-                <p className="text-xs sm:text-sm md:text-sm lg:text-base mb-4 sm:mb-6 md:mb-8 max-w-md opacity-90 leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
-                  {definition}
+                <p className="text-xs sm:text-sm md:text-base lg:text-lg mb-4 sm:mb-6 md:mb-6 max-w-lg opacity-90 leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
+                  {definition.replace(/\s+/g, ' ').trim()}
                 </p>
               )}
 
@@ -109,15 +112,16 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
                   <div key={i} className="flex flex-row gap-2 sm:gap-3 md:gap-4 items-center text-left">
                     <div className="flex-1">
                       <h3 className="text-xs sm:text-sm md:text-base lg:text-lg font-bold sm:mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
-                        {item.label}
+                        {item.label?.replace(/\s+/g, ' ').trim()}
                       </h3>
                     </div>
                     <div className="flex-1 flex items-center gap-2">
                       <svg className="w-6 sm:w-8 h-4 flex-shrink-0" viewBox="0 0 32 16" fill="none">
-                        <path d="M0 8H30M30 8L24 2M30 8L24 14" stroke="white" strokeWidth="2"/>
+                        <line x1="0" y1="8" x2="28" y2="8" stroke="white" strokeWidth="2"/>
+                        <circle cx="29" cy="8" r="3" fill="white"/>
                       </svg>
                       <p className="text-[11px] sm:text-xs md:text-sm lg:text-base opacity-90 leading-snug sm:leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
-                        {item.description}
+                        {item.description?.replace(/\s+/g, ' ').trim()}
                       </p>
                     </div>
                   </div>

@@ -54,8 +54,8 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
                 animation: 'blueNoiseShift 2s steps(10) infinite',
               }}
             >
-              <div className="w-full px-16 sm:px-20 md:px-32 lg:px-40 xl:px-48">
-                <div className="grid grid-cols-2 gap-x-6 gap-y-5 sm:gap-x-8 sm:gap-y-8 md:gap-x-14 md:gap-y-12 lg:gap-x-16 lg:gap-y-14">
+              <div className="w-full px-10 sm:px-14 md:px-32 lg:px-40 xl:px-48">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-8 md:gap-x-14 md:gap-y-12 lg:gap-x-16 lg:gap-y-14">
                   {items.map((item, i) => (
                     <MethodologyCircle key={i} item={item} />
                   ))}
@@ -75,7 +75,7 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div
-        className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-36 md:h-36 lg:w-44 lg:h-44 xl:w-52 xl:h-52 rounded-full overflow-hidden mb-2 sm:mb-2 md:mb-3 border-2 border-white/20"
+        className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-44 lg:h-44 xl:w-52 xl:h-52 rounded-full overflow-hidden mb-2 sm:mb-2 md:mb-3 border-2 border-white/20"
         style={{ backgroundColor: '#1a2a4a' }}
       >
         {hasImage && (
