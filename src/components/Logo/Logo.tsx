@@ -18,12 +18,12 @@ export const Logo = (props: Props) => {
   return (
     <Image
       src={LogoImage}
-      alt="Growth Fuel"
-      width={80}
-      height={80}
+      alt="GCF"
       loading={loading}
       priority={priorityValue}
-      className={clsx('w-auto h-[50px] md:h-[80px]', className)}
+      sizes="(max-width: 768px) 100px, 200px"
+      className={clsx('w-auto h-auto', className)}
+      style={{ height: 'clamp(40px, 6vw, 80px)', width: 'auto' }}
     />
   )
 }
