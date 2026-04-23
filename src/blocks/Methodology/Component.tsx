@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import circleBg from '@/images/how-we-do-it-bg.jpg'
+import circleBg from '@/images/blue-noise-background.jpg'
 import hand1 from '@/images/hand1.gif'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
@@ -75,9 +75,10 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
               className="absolute inset-[5%] md:inset-[4%] rounded-full flex flex-col items-center justify-center px-16 py-12 sm:px-18 sm:py-10 md:p-16 text-white text-center overflow-hidden"
               style={{ 
                 backgroundColor: '#307fe2',
-                backgroundImage: `url(${circleBg.src})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${circleBg.src})`,
+                backgroundSize: 'auto, 200%',
+                backgroundPosition: '0% 0%',
+                animation: 'blueNoiseShift 2s steps(10) infinite',
                 aspectRatio: '1 / 1',
               }}
             >

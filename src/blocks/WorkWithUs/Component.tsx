@@ -36,7 +36,7 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
               className="w-full h-full rounded-full flex flex-col items-center justify-center p-8 md:p-16 overflow-hidden transition-transform duration-300 ease-out group-hover:scale-105"
               style={{ 
                 backgroundColor: '#307fe2',
-                backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${blueNoiseBg.src})`,
+                backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${blueNoiseBg.src})`,
                 backgroundSize: 'auto, 200%',
                 backgroundPosition: '0% 0%',
                 animation: 'blueNoiseShift 2s steps(10) infinite',

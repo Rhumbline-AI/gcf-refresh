@@ -32,7 +32,7 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
           height: 'clamp(380px, 55vw, 950px)',
           top: 'clamp(-60px, 2vw, 40px)',
           left: 'clamp(-260px, -20vw, -120px)',
-          backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${circleBg.src})`,
+          backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${circleBg.src})`,
           backgroundSize: 'auto, 200%',
           backgroundPosition: '0% 0%',
           animation: 'blueNoiseShift 2s steps(10) infinite',
@@ -48,7 +48,7 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
               className="absolute inset-0 md:inset-0 rounded-full flex items-center justify-center overflow-hidden"
               style={{
                 backgroundColor: '#307fe2',
-                backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${circleBg.src})`,
+                backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${circleBg.src})`,
                 backgroundSize: 'auto, 200%',
                 backgroundPosition: '0% 0%',
                 animation: 'blueNoiseShift 2s steps(10) infinite',

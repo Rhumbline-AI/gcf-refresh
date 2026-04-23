@@ -167,7 +167,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                     className="w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full flex flex-col justify-center px-12 md:px-16 py-10 md:py-14 relative overflow-hidden"
                     style={{
                       backgroundColor: '#307fe2',
-                      backgroundImage: `linear-gradient(rgba(48,127,226,0.5), rgba(48,127,226,0.5)), url(${blueNoiseBg.src})`,
+                      backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${blueNoiseBg.src})`,
                       backgroundSize: 'auto, 200%',
                       backgroundPosition: '0% 0%',
                       animation: 'blueNoiseShift 2s steps(10) infinite',
