@@ -30,7 +30,7 @@ export const CapabilitiesBlock: React.FC<CapabilitiesBlockProps> = ({ title, ite
   if (!items || items.length === 0) return null
 
   return (
-    <div className="relative py-16 md:py-24 overflow-hidden" style={{ backgroundColor: '#307fe2' }}>
+    <div className="relative pt-16 md:pt-24 pb-24 md:pb-32 overflow-hidden" style={{ backgroundColor: '#307fe2' }}>
       <div className="container relative z-10">
         {title && (
           <ScrollReveal animation="fadeUp" duration={1}>
