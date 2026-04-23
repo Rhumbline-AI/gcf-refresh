@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import type { Header as HeaderType } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
+import { Logo } from '@/components/Logo/Logo'
 import { Menu, X } from 'lucide-react'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 
@@ -67,6 +68,11 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
             animation: 'blueNoiseShift 2s steps(10) infinite',
           }}
         >
+          {/* GCF Logo top-left */}
+          <div className="absolute top-4 left-4">
+            <Logo />
+          </div>
+
           {/* Close button */}
           <button
             className="absolute top-6 right-4 flex items-center justify-center w-10 h-10 rounded-full bg-[#343434] text-white"

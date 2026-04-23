@@ -44,7 +44,8 @@ export const PageTransitionProvider: React.FC<{ children: React.ReactNode }> = (
       if (hasHash && (hrefPath === pathname || hrefPath === '')) return
 
       e.preventDefault()
-      e.stopPropagation()
+      // Note: do NOT stopPropagation — React onClick handlers (e.g. close mobile menu)
+      // need to still fire after we intercept the navigation.
 
       if (!contentRef.current) {
         router.push(href)
