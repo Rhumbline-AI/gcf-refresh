@@ -11,7 +11,6 @@ import { homeStatic } from '@/endpoints/seed/home-static'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import dotMatrixBg from '@/images/dot-matrix-background-fix1.gif'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { HomePageLivePreview } from './HomePageLivePreview'
@@ -74,14 +73,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   return (
     <article
-      className={`pb-24 page-${decodedSlug}`}
-      style={isWork ? {
-        backgroundImage: `url(${dotMatrixBg.src})`,
-        backgroundRepeat: 'repeat',
-        backgroundSize: '700px',
-        backgroundPosition: '0 0',
-        backgroundColor: '#ffffff',
-      } : undefined}
+      className={`pb-24 page-${decodedSlug} ${isWork ? 'dot-matrix-bg' : ''}`}
     >
       <PageClient />
       <PayloadRedirects disableNotFound url={url} />

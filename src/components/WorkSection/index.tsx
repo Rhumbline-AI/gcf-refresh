@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { gsap, registerGSAP, ScrollTrigger } from '@/utilities/gsapSetup'
-import dotMatrixBg from '@/images/dot-matrix-background-fix1.gif'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import type { Project } from '@/payload-types'
 
@@ -290,14 +289,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
   return (
     <section
       ref={sectionRef}
-      className="relative pt-0 pb-0 -mb-8 md:mb-0"
-      style={{
-        backgroundImage: `url(${dotMatrixBg.src})`,
-        backgroundRepeat: 'repeat',
-        backgroundSize: '700px',
-        backgroundPosition: '0 0',
-        backgroundColor: '#ffffff',
-      }}
+      className="relative pt-0 pb-0 -mb-8 md:mb-0 dot-matrix-bg"
     >
       {/* SVG: lines + decorative ring — positions calculated dynamically from orb refs */}
       <svg

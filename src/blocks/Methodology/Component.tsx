@@ -1,6 +1,5 @@
 import React from 'react'
 import Image from 'next/image'
-import dotMatrixBg from '@/images/dot-matrix-background-fix1.gif'
 import circleBg from '@/images/how-we-do-it-bg.jpg'
 import hand1 from '@/images/hand1.gif'
 import { ScrollReveal } from '@/components/ScrollReveal'
@@ -23,13 +22,7 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
   
   return (
     <div 
-      className="py-16 md:py-24 overflow-hidden relative"
-      style={{
-        backgroundImage: `url(${dotMatrixBg.src})`,
-        backgroundRepeat: 'repeat',
-        backgroundSize: '700px',
-        backgroundPosition: '0 0',
-      }}
+      className="py-16 md:py-24 overflow-hidden relative dot-matrix-bg"
     >
       <div className="relative z-10 flex flex-col items-center justify-center">
         <ScrollReveal animation="scaleIn" duration={1.2} className="w-full md:max-w-[990px] md:mx-auto md:px-4">

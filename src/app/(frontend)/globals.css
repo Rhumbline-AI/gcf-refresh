@@ -97,6 +97,15 @@
       max-width: var(--breakpoint-2xl);
     }
   }
+
+  /* Seamless dot-matrix background (replaces the gif which had a visible tiling seam) */
+  .dot-matrix-bg {
+    background-color: #ffffff;
+    background-image: radial-gradient(circle, #c8c8c8 1.2px, transparent 1.2px);
+    background-size: 28px 28px;
+    background-position: 0 0;
+    background-repeat: repeat;
+  }
 }
 
 :root {

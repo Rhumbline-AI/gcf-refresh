@@ -3,7 +3,6 @@
 import React, { useEffect, useRef } from 'react'
 import RichText from '@/components/RichText'
 import type { Page } from '@/payload-types'
-import dotMatrixBg from '@/images/dot-matrix-background-fix1.gif'
 import { gsap, registerGSAP } from '@/utilities/gsapSetup'
 
 registerGSAP()
@@ -35,14 +34,7 @@ export const WorkHero: React.FC<WorkHeroProps> = ({ richText }) => {
 
   return (
     <div
-      className="relative pt-8 pb-4 md:pt-10 md:pb-6 work-hero-bg"
-      style={{
-        backgroundImage: `url(${dotMatrixBg.src})`,
-        backgroundRepeat: 'repeat',
-        backgroundSize: '700px',
-        backgroundPosition: '0 0',
-        backgroundColor: '#ffffff',
-      }}
+      className="relative pt-8 pb-4 md:pt-10 md:pb-6 work-hero-bg dot-matrix-bg"
     >
       <div className="container">
         <div ref={contentRef} className="max-w-3xl mx-auto text-center">

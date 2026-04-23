@@ -2,7 +2,6 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Media as MediaType } from '@/payload-types'
-import dotMatrixBg from '@/images/dot-matrix-background-fix1.gif'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import hand2 from '@/images/hand2.gif'
 import { ScrollReveal } from '@/components/ScrollReveal'
@@ -16,16 +15,7 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
   const imageUrl = typeof image === 'object' && image !== null ? image.url : null
   
   return (
-    <div
-      className="py-16 md:py-24 relative"
-      style={{
-        backgroundImage: `url(${dotMatrixBg.src})`,
-        backgroundRepeat: 'repeat',
-        backgroundSize: '700px',
-        backgroundPosition: '0 0',
-        backgroundColor: '#ffffff',
-      }}
-    >
+    <div className="py-16 md:py-24 relative dot-matrix-bg">
       <div className="container relative z-10 flex flex-col items-center justify-center">
         <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[396px]">
           {/* Link is the positioning context — hand sits inside at circle-relative percentages */}
