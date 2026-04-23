@@ -22,7 +22,8 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
   
   return (
     <div 
-      className="py-16 md:py-24 overflow-hidden relative dot-matrix-bg"
+      className="py-16 md:py-24 relative dot-matrix-bg"
+      style={{ overflowX: 'clip', overflowY: 'visible' }}
     >
       <div className="relative z-10 flex flex-col items-center justify-center">
         <ScrollReveal animation="scaleIn" duration={1.2} className="w-full md:max-w-[990px] md:mx-auto md:px-4">

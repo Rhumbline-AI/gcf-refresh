@@ -13,48 +13,88 @@ type WorkWithUsProps = {
 
 export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => {
   const imageUrl = typeof image === 'object' && image !== null ? image.url : null
-  
+  const repeatingText = 'Work With Us'
+  const repetitions = 30
+
   return (
-    <div className="py-16 md:py-24 relative dot-matrix-bg">
+    <div className="py-16 md:py-24 relative dot-matrix-bg" style={{ overflowX: 'clip', overflowY: 'visible' }}>
       <div className="container relative z-10 flex flex-col items-center justify-center">
-        <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[396px]">
-          {/* Link is the positioning context — hand sits inside at circle-relative percentages */}
-          <Link href="/contact" className="block relative w-full aspect-square group">
-            {/* Hand holding the circle from the left — percentage-based so it scales with circle */}
-            <div
-              className="absolute hidden md:block pointer-events-none"
-              style={{
-                left: '-40%',
-                top: '53%',
-                width: '48%',
-                zIndex: 20,
-              }}
+        <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[480px]">
+          {/* Outer frame holds the rotating-text ring; the link/circle sits inset inside */}
+          <div className="relative w-full aspect-square">
+            {/* Rotating text ring around the outside */}
+            <svg
+              className="absolute inset-0 w-full h-full overflow-visible animate-[spin_60s_linear_infinite] pointer-events-none"
+              viewBox="0 0 100 100"
+              aria-hidden
             >
-              <Image src={hand2} alt="" className="w-full h-auto" unoptimized />
-            </div>
-            <div 
-              className="w-full h-full rounded-full flex flex-col items-center justify-center p-8 md:p-16 overflow-hidden transition-transform duration-300 ease-out group-hover:scale-105"
-              style={{ 
-                backgroundColor: '#307fe2',
-                backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${blueNoiseBg.src})`,
-                backgroundSize: 'auto, 200%',
-                backgroundPosition: '0% 0%',
-                animation: 'blueNoiseShift 2s steps(10) infinite',
-              }}
-            >
-              {imageUrl && (
-                <img
-                  src={imageUrl}
-                  alt={title || 'Work With Us'}
-                  className="w-full h-full object-contain"
-                  style={{
-                    maxWidth: '80%',
-                    maxHeight: '80%',
-                  }}
+              <defs>
+                <path
+                  id="workWithUsCirclePath"
+                  d="M 50, 50 m -48, 0 a 48,48 0 1,1 96,0 a 48,48 0 1,1 -96,0"
                 />
-              )}
-            </div>
-          </Link>
+              </defs>
+              <text className="text-[1.4px] fill-foreground tracking-wide font-medium" style={{ fontFamily: 'var(--font-inter)' }}>
+                <textPath href="#workWithUsCirclePath" startOffset="0%">
+                  {Array.from({ length: repetitions }).map((_, i) => (
+                    <tspan key={i}>{repeatingText}{'\u00A0\u00A0\u00A0\u00A0'}</tspan>
+                  ))}
+                </textPath>
+              </text>
+            </svg>
+
+            {/* Link is the positioning context — hand sits inside at circle-relative percentages */}
+            <Link
+              href="/contact"
+              aria-label={title || 'Work With Us'}
+              className="absolute inset-[8%] block group cursor-pointer"
+            >
+              {/* Hand holding the circle from the left — percentage-based so it scales with circle */}
+              <div
+                className="absolute hidden md:block pointer-events-none"
+                style={{
+                  left: '-40%',
+                  top: '53%',
+                  width: '48%',
+                  zIndex: 20,
+                }}
+              >
+                <Image src={hand2} alt="" className="w-full h-auto" unoptimized />
+              </div>
+              <div
+                className="relative w-full h-full rounded-full flex flex-col items-center justify-center p-8 md:p-16 overflow-hidden transition-transform duration-300 ease-out group-hover:scale-105"
+                style={{
+                  backgroundColor: '#307fe2',
+                  backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${blueNoiseBg.src})`,
+                  backgroundSize: 'auto, 200%',
+                  backgroundPosition: '0% 0%',
+                  animation: 'blueNoiseShift 2s steps(10) infinite',
+                }}
+              >
+                {imageUrl && (
+                  <img
+                    src={imageUrl}
+                    alt={title || 'Work With Us'}
+                    className="w-full h-full object-contain"
+                    style={{
+                      maxWidth: '80%',
+                      maxHeight: '80%',
+                    }}
+                  />
+                )}
+                {/* CTA badge — makes the circle read as a clickable button */}
+                <span
+                  className="absolute bottom-[14%] left-1/2 -translate-x-1/2 inline-flex items-center gap-2 bg-white text-[#307fe2] px-5 py-2 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider shadow-md transition-transform duration-300 ease-out group-hover:scale-110"
+                  style={{ fontFamily: 'var(--font-inter)' }}
+                >
+                  Let&apos;s Talk
+                  <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none">
+                    <path d="M2 6h7m0 0L6 3m3 3L6 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              </div>
+            </Link>
+          </div>
         </ScrollReveal>
       </div>
     </div>

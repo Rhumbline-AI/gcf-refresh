@@ -37,20 +37,20 @@ function FloatingWrapper({
     const tweens: gsap.core.Tween[] = []
     let st: ScrollTrigger | null = null
 
-    gsap.set(el, { opacity: 0, scale: 0.85, y: 40 })
+    gsap.set(el, { opacity: 0, scale: 0.6, y: 60 })
 
     st = ScrollTrigger.create({
       trigger: el,
-      start: 'top 68%',
+      start: 'top 80%',
       once: true,
       onEnter: () => {
         gsap.to(el, {
           opacity: 1,
           scale: 1,
           y: 0,
-          duration: 0.8,
+          duration: 1.2,
           delay: entranceDelay,
-          ease: 'power2.out',
+          ease: 'power3.out',
           onComplete: () => {
             tweens.push(
               gsap.to(el, {
@@ -86,7 +86,7 @@ function FloatingWrapper({
       const cy = window.innerHeight / 2
       const dx = -(e.clientX - cx) * cursorFactor
       const dy = -(e.clientY - cy) * cursorFactor
-      const maxD = 80
+      const maxD = 120
       cursorOffset.current = {
         x: Math.max(-maxD, Math.min(maxD, dx)),
         y: Math.max(-maxD, Math.min(maxD, dy)),
@@ -132,6 +132,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
   const orb1Ref = useRef<HTMLDivElement>(null)
   const orb2Ref = useRef<HTMLDivElement>(null)
   const orb3Ref = useRef<HTMLDivElement>(null)
+  const recalcConnectorsRef = useRef<(() => void) | null>(null)
 
   const [sizeKey, setSizeKey] = useState<{ small: keyof typeof circleSizes; large: keyof typeof circleSizes }>({ small: 'medium', large: 'xlarge' })
   useEffect(() => {
@@ -236,10 +237,23 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       }
     }
 
+    let rafId: number | null = null
+    const scheduleCalc = () => {
+      if (rafId != null) cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        rafId = null
+        calcConnectors()
+      })
+    }
+
     calcConnectors()
 
-    const ro = new ResizeObserver(calcConnectors)
+    const ro = new ResizeObserver(scheduleCalc)
     ro.observe(section)
+    if (orb1Ref.current) ro.observe(orb1Ref.current)
+    if (orb3Ref.current) ro.observe(orb3Ref.current)
+    window.addEventListener('resize', scheduleCalc)
+    recalcConnectorsRef.current = scheduleCalc
 
     const st = ScrollTrigger.create({
       trigger: section,
@@ -281,8 +295,22 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       },
     })
 
-    return () => { st.kill(); ro.disconnect() }
+    return () => {
+      st.kill()
+      ro.disconnect()
+      window.removeEventListener('resize', scheduleCalc)
+      if (rafId != null) cancelAnimationFrame(rafId)
+      recalcConnectorsRef.current = null
+    }
   }, [])
+
+  // When responsive sizeKey changes, defer a recalc so orbs have settled at their new size
+  useEffect(() => {
+    const recalc = recalcConnectorsRef.current
+    if (recalc) {
+      requestAnimationFrame(() => requestAnimationFrame(() => recalc()))
+    }
+  }, [sizeKey])
 
   if (projects.length === 0) return null
 
@@ -322,7 +350,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
                 floatDuration={3.8}
                 swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 5}
                 rotateAmount={1.2}
-                cursorFactor={0.05}
+                cursorFactor={0.09}
               >
                 <ProjectCircle project={displayProjects[1]} size={sizeKey.small} />
               </FloatingWrapper>
@@ -337,7 +365,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
                 floatDuration={4.2}
                 swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 4 : 6}
                 rotateAmount={1.8}
-                cursorFactor={0.035}
+                cursorFactor={0.07}
               >
                 <ProjectCircle project={displayProjects[2]} size={sizeKey.small} />
               </FloatingWrapper>
@@ -354,7 +382,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
                 floatDuration={5}
                 swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4}
                 rotateAmount={1}
-                cursorFactor={0.025}
+                cursorFactor={0.05}
               >
                 <ProjectCircle project={displayProjects[0]} size={sizeKey.large} />
               </FloatingWrapper>
@@ -505,7 +533,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
       
       <div
         ref={titleRef}
-        className="absolute inset-0 flex items-center justify-start text-white font-bold"
+        className="absolute inset-0 flex flex-col items-start justify-center text-white font-bold"
         style={{
           fontSize: size === 'xlarge' ? '3rem' : size === 'mobile' ? '1.05rem' : size === 'mobileLarge' ? '1.4rem' : size === 'tablet' ? '1.25rem' : size === 'tabletLarge' ? '1.6rem' : '2.1rem',
           padding: size === 'mobile' ? '0 1.25rem' : size === 'mobileLarge' ? '0 1.75rem' : size === 'tablet' || size === 'tabletLarge' ? '0 2rem' : '0 3rem',
@@ -514,7 +542,22 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
           zIndex: 3,
         }}
       >
-        {project.title}
+        <span>{project.title}</span>
+        {/* Mobile/tablet: always-visible CTA so users know orb is tappable */}
+        {(size === 'mobile' || size === 'mobileLarge' || size === 'tablet' || size === 'tabletLarge') && (
+          <span
+            className="mt-2 inline-flex items-center gap-1 text-white/90 font-semibold uppercase tracking-wider"
+            style={{
+              fontSize: size === 'mobile' ? '0.6rem' : size === 'tablet' ? '0.7rem' : '0.75rem',
+              fontFamily: 'var(--font-inter)',
+            }}
+          >
+            See Case Study
+            <svg className="w-2.5 h-2.5" viewBox="0 0 12 12" fill="none">
+              <path d="M2 6h7m0 0L6 3m3 3L6 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+        )}
       </div>
       
       {size !== 'mobile' && size !== 'mobileLarge' && size !== 'tablet' && size !== 'tabletLarge' && <div
