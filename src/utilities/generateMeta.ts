@@ -27,8 +27,8 @@ export const generateMeta = async (args: {
   const ogImage = getImageURL(doc?.meta?.image)
 
   const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Growth Catalyst Firm'
-    : 'Growth Catalyst Firm'
+    ? doc?.meta?.title + ' | GCF'
+    : 'GCF'
 
   return {
     description: doc?.meta?.description,

@@ -63,8 +63,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
   title: {
-    default: 'Growth Catalyst Firm',
-    template: '%s | Growth Catalyst Firm',
+    default: 'GCF',
+    template: '%s | GCF',
   },
   description: 'We engineer combustible ideas. Growth Catalyst Firm identifies energy sources, blind spots, and acceleration points to fuel undeniable brand growth.',
   openGraph: mergeOpenGraph(),
