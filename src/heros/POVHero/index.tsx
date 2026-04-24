@@ -32,7 +32,7 @@ export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
         currentRef.current = next
         setIsFading(false)
       }, 400)
-    }, 5500)
+    }, 4500)
   }, [quoteList.length])
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
   const quote = quoteList[currentQuote]
 
   return (
-    <div className="relative pt-10 pb-8 md:pt-14 md:pb-2" style={{ backgroundColor: '#f7f2ee' }}>
+    <div className="relative pt-6 pb-4 md:pt-8 md:pb-2" style={{ backgroundColor: '#f7f2ee' }}>
       <div className="container">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-16">
           <div className="flex-1 text-center md:text-left">

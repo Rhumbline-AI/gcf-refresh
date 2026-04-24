@@ -70,10 +70,12 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout } = page
   const isHome = decodedSlug === 'home'
   const isWork = decodedSlug === 'work'
+  const isFaq = decodedSlug === 'faq'
 
   return (
     <article
-      className={`pb-24 page-${decodedSlug} ${isWork ? 'dot-matrix-bg' : ''}`}
+      className={`${isFaq ? 'pb-0' : 'pb-24'} page-${decodedSlug} ${isWork ? 'dot-matrix-bg' : ''}`}
+      style={isFaq ? { backgroundColor: '#307fe2' } : undefined}
     >
       <PageClient />
       <PayloadRedirects disableNotFound url={url} />

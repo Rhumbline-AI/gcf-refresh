@@ -14,10 +14,18 @@ import contactButtonBg from '@/images/contact-button-bg.png'
 
 type ContactHeroProps = Page['hero']
 
-export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form: formRelation }) => {
+export const ContactHero: React.FC<ContactHeroProps> = ({
+  richText,
+  media,
+  form: formRelation,
+  backgroundVideo,
+}) => {
   const router = useRouter()
   const form = formRelation as FormType | undefined
   const mediaData = media as MediaType | undefined
+  const videoData = backgroundVideo as MediaType | undefined
+  const videoUrl = videoData?.url || '/videos/rocket-control-web.mp4'
+  const videoMime = videoData?.mimeType || 'video/mp4'
 
   const {
     register,
@@ -98,6 +106,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
     <div className="relative w-full flex items-start overflow-hidden" style={{ minHeight: 'calc(72vh + 6rem)', marginBottom: '-6rem' }}>
       {/* Background video */}
       <video
+        key={videoUrl}
         autoPlay
         muted
         loop
@@ -105,7 +114,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         style={{ zIndex: 0 }}
       >
-        <source src="/videos/rocket-control-web.mp4" type="video/mp4" />
+        <source src={videoUrl} type={videoMime} />
       </video>
       <div className="absolute inset-0 bg-black/50" style={{ zIndex: 1 }} />
 
@@ -121,12 +130,12 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
       )}
 
       {/* Content */}
-      <div className="container relative z-10 pt-8 pb-16 md:pt-12 md:pb-24">
+      <div className="container relative z-10 pt-2 pb-10 md:pt-4 md:pb-16">
         <div className="max-w-xl">
           {/* Title & subtitle */}
           {richText && (
             <RichText
-              className="mb-8 md:mb-10 [&_h1]:text-4xl [&_h1]:md:text-5xl [&_h1]:lg:text-6xl [&_h1]:font-extralight [&_h1]:text-white [&_h1]:mb-4 [&_h1]:leading-tight [&_p]:text-base [&_p]:md:text-lg [&_p]:text-white/90 [&_p]:font-light [&_p]:leading-relaxed"
+              className="mb-6 md:mb-8 [&_h1]:text-4xl [&_h1]:md:text-5xl [&_h1]:lg:text-6xl [&_h1]:font-extralight [&_h1]:text-white [&_h1]:mb-4 [&_h1]:leading-tight [&_p]:text-base [&_p]:md:text-lg [&_p]:text-white/90 [&_p]:font-light [&_p]:leading-relaxed"
               data={richText}
               enableGutter={false}
             />
@@ -217,14 +226,29 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ richText, media, form:
           )}
 
           {/* Success message */}
-          {hasSubmitted && form?.confirmationType === 'message' && form.confirmationMessage && (
-            <RichText
-              className="[&_p]:text-white [&_p]:text-lg"
-              data={form.confirmationMessage}
-            />
-          )}
-          {hasSubmitted && !form?.confirmationMessage && (
-            <p className="text-white text-lg font-light">Thank you! We&apos;ll be in touch.</p>
+          {hasSubmitted && (
+            <div
+              className="rounded-2xl bg-white/95 px-6 py-6 md:px-8 md:py-8 max-w-md"
+              role="status"
+              aria-live="polite"
+            >
+              <p
+                className="text-2xl md:text-3xl font-light text-[#307fe2] leading-snug"
+                style={{ fontFamily: 'var(--font-inter)' }}
+              >
+                Thanks for submitting{' '}
+                <span role="img" aria-label="smile">
+                  🙂
+                </span>
+              </p>
+              {form?.confirmationType === 'message' && form.confirmationMessage && (
+                <RichText
+                  className="mt-2 [&_p]:text-[#1a1a1a]/80 [&_p]:text-base [&_h2]:text-lg [&_h2]:font-medium [&_h2]:text-[#1a1a1a]"
+                  data={form.confirmationMessage}
+                  enableGutter={false}
+                />
+              )}
+            </div>
           )}
         </div>
       </div>

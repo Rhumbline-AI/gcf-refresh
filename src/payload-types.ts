@@ -201,6 +201,10 @@ export interface Page {
         }[]
       | null;
     media?: (number | null) | Media;
+    /**
+     * Optional background video (MP4). When provided, plays muted and loops behind the form. Falls back to the image above if not set.
+     */
+    backgroundVideo?: (number | null) | Media;
     form?: (number | null) | Form;
     quotes?:
       | {
@@ -1335,6 +1339,7 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        backgroundVideo?: T;
         form?: T;
         quotes?:
           | T

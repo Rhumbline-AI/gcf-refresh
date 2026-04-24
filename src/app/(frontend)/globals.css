@@ -295,19 +295,29 @@ html[data-theme='light'] {
   }
 }
 
-/* Reduce vertical gap between consecutive work modules */
-.block-work + .block-work2,
-.block-work2 + .block-work,
-.block-work + .block-work,
-.block-work2 + .block-work2 {
+/* Reduce vertical gap between consecutive work modules — work page only. */
+/* On other pages (e.g. home), the work blocks should stack with normal flow */
+/* so the next section's small orbs don't overlap the previous section's large orb. */
+.page-work .block-work + .block-work2,
+.page-work .block-work2 + .block-work,
+.page-work .block-work + .block-work,
+.page-work .block-work2 + .block-work2 {
   margin-top: -6rem;
 }
 
 @media (min-width: 768px) {
-  .block-work + .block-work2,
-  .block-work2 + .block-work,
-  .block-work + .block-work,
-  .block-work2 + .block-work2 {
+  .page-work .block-work + .block-work2,
+  .page-work .block-work2 + .block-work,
+  .page-work .block-work + .block-work,
+  .page-work .block-work2 + .block-work2 {
     margin-top: -8rem;
   }
+}
+
+/* FAQ page: drop the footer's negative margin so the blue article meets the */
+/* white footer flush, without the white "above-the-tear" strip showing. */
+/* The tear graphic still sits at the top of the footer (over the blue), */
+/* providing a clean blue → white transition. */
+body:has(.page-faq) footer.footer-tear {
+  margin-top: 0 !important;
 }

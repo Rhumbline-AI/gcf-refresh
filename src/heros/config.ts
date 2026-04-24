@@ -85,6 +85,17 @@ export const hero: Field = {
       required: true,
     },
     {
+      name: 'backgroundVideo',
+      type: 'upload',
+      admin: {
+        condition: (_, { type } = {}) => type === 'contactHero',
+        description:
+          'Optional background video (MP4). When provided, plays muted and loops behind the form. Falls back to the image above if not set.',
+      },
+      relationTo: 'media',
+      label: 'Background Video',
+    },
+    {
       name: 'form',
       type: 'relationship',
       relationTo: 'forms',

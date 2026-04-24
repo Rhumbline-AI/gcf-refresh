@@ -9,6 +9,8 @@ import { CMSLink } from '../../components/Link'
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   const { columns } = props
 
+  if (!columns || columns.length === 0) return null
+
   const colsSpanClasses = {
     full: '12',
     half: '6',

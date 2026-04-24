@@ -16,7 +16,7 @@ export async function Footer() {
 
   return (
     <footer 
-      className="relative pt-24 md:pt-32 pb-12 -mt-32 md:-mt-40 overflow-visible bg-white"
+      className="footer-tear relative pt-24 md:pt-32 pb-12 -mt-32 md:-mt-40 overflow-visible bg-white"
     >
       <div
         className="absolute w-full pointer-events-none select-none z-20 overflow-visible"
