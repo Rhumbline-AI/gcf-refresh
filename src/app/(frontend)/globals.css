@@ -314,10 +314,3 @@ html[data-theme='light'] {
   }
 }
 
-/* FAQ page: drop the footer's negative margin so the blue article meets the */
-/* white footer flush, without the white "above-the-tear" strip showing. */
-/* The tear graphic still sits at the top of the footer (over the blue), */
-/* providing a clean blue → white transition. */
-body:has(.page-faq) footer.footer-tear {
-  margin-top: 0 !important;
-}

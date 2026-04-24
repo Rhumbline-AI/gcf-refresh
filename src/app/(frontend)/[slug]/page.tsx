@@ -70,12 +70,24 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout } = page
   const isHome = decodedSlug === 'home'
   const isWork = decodedSlug === 'work'
-  const isFaq = decodedSlug === 'faq'
+
+  // Pages whose article wrapper should carry a background color so it bleeds
+  // up behind the footer's torn-paper shadow (no white gap before the footer).
+  const pageBackgrounds: Record<string, string> = {
+    faq: '#307fe2',
+    pov: '#f7f2ee',
+  }
+  const pageBg = pageBackgrounds[decodedSlug]
+
+  // Pages where the hero (or last block) is responsible for filling the visual
+  // area down to the footer overlap — no extra bottom padding on the article.
+  const fullBleedSlugs = new Set(['contact'])
+  const isFullBleed = fullBleedSlugs.has(decodedSlug)
 
   return (
     <article
-      className={`${isFaq ? 'pb-0' : 'pb-24'} page-${decodedSlug} ${isWork ? 'dot-matrix-bg' : ''}`}
-      style={isFaq ? { backgroundColor: '#307fe2' } : undefined}
+      className={`${isFullBleed ? 'pb-0' : 'pb-24'} page-${decodedSlug} ${isWork ? 'dot-matrix-bg' : ''}`}
+      style={pageBg ? { backgroundColor: pageBg } : undefined}
     >
       <PageClient />
       <PayloadRedirects disableNotFound url={url} />

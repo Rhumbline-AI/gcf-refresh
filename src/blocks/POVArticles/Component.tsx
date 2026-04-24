@@ -18,7 +18,7 @@ export const POVArticlesBlock: React.FC<POVArticlesProps> = ({ articles }) => {
   if (!articles || articles.length === 0) return null
 
   return (
-    <div className="pt-6 pb-12 md:pt-8 md:pb-16" style={{ backgroundColor: '#f7f2ee' }}>
+    <div className="pt-6 pb-24 md:pt-8 md:pb-32" style={{ backgroundColor: '#f7f2ee' }}>
       <div className="container">
         <div className="max-w-md">
           <ScrollReveal animation="fadeUp" staggerChildren stagger={0.2} duration={0.8}>

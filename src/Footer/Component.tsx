@@ -16,8 +16,18 @@ export async function Footer() {
 
   return (
     <footer 
-      className="footer-tear relative pt-24 md:pt-32 pb-12 -mt-32 md:-mt-40 overflow-visible bg-white"
+      className="footer-tear relative pt-24 md:pt-32 pb-12 -mt-32 md:-mt-40 overflow-visible"
     >
+      {/* White bg starts at (approximately) the tear graphic's bottom edge so */}
+      {/* the page above (white or colored) bleeds up behind the torn-paper */}
+      {/* shadow without leaving a transparent gap inside the footer. */}
+      {/* Formula mirrors the tear container's bottom: top:-17% + height clamp, */}
+      {/* minus 10px so the tear's white pieces overlap into the white bg. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 bg-white z-0 pointer-events-none"
+        style={{ top: 'calc(-17% + clamp(90px, 12vw, 130px))' }}
+      />
       <div
         className="absolute w-full pointer-events-none select-none z-20 overflow-visible"
         style={{

@@ -103,7 +103,11 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
   )
 
   return (
-    <div className="relative w-full flex items-start overflow-hidden" style={{ minHeight: 'calc(72vh + 6rem)', marginBottom: '-6rem' }}>
+    // Article uses pb-0 on /contact, so the hero owns the whole vertical area
+    // down to the footer. The +10rem buffer matches the footer's md:-mt-40
+    // overlap so the video bg bleeds behind the torn-paper shadow.
+    // (visible hero ≈ 48vh; if the form is taller, the box grows to fit)
+    <div className="relative w-full flex items-start overflow-hidden" style={{ minHeight: 'calc(48vh + 10rem)' }}>
       {/* Background video */}
       <video
         key={videoUrl}
