@@ -33,7 +33,16 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     <header className="relative z-50 border-b border-border/30" style={{ backgroundColor: '#f7f2ee' }} {...(theme ? { 'data-theme': theme } : {})}>
       <div className="container relative z-20">
         <div className="py-6 flex justify-between items-center">
-          <Link href="/" className="flex items-center">
+          {/*
+            shrink-0 is critical here. The header is a flex row whose only two
+            children are this Link and HeaderNav. Flex defaults to shrink: 1,
+            so on viewports where the nav text wants more horizontal space than
+            is available, the path of least resistance is to squeeze THIS link
+            down — visually compressing the GCF circle into an ellipse. Pinning
+            shrink to 0 keeps the logo at its natural width and lets the nav
+            row reflow / wrap instead.
+          */}
+          <Link href="/" className="flex items-center shrink-0">
             <Logo loading="eager" priority="high" />
           </Link>
           <HeaderNav data={data} />
