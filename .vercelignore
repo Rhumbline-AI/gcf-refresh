@@ -6,6 +6,10 @@ node_modules
 .next
 .vercel
 
+# Local Payload media uploads — production serves these from Vercel Blob.
+# Excluding keeps the deploy upload fast (~MB instead of hundreds of MB).
+public/media/
+
 public/robots.txt
 public/sitemap*.xml
 
@@ -14,3 +18,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Source-only large video assets
+src/videos/*.mp4
+*.mov

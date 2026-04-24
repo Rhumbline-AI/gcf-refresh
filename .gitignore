@@ -13,6 +13,9 @@ public/media/
 src/videos/GCF_INTRO_REEL_v2.mp4
 *.mov
 
+# Local DB backups — never commit (may contain user data + URLs)
+backups/
+
 public/robots.txt
 public/sitemap*.xml
 

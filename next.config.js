@@ -27,6 +27,14 @@ const nextConfig = {
             },
           ]
         : []),
+      // Always allow any Vercel Blob public store. Without this, any environment
+      // where BLOB_STORE_BASE_URL isn't explicitly set (e.g. local dev pointing
+      // at the prod Neon DB) throws `next/image` 500s for media URLs that came
+      // from the storage-vercel-blob adapter.
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      },
     ],
   },
   async rewrites() {

@@ -25,7 +25,13 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 export const plugins: Plugin[] = [
-  ...(process.env.BLOB_READ_WRITE_TOKEN && process.env.VERCEL
+  // Activate Vercel Blob storage anywhere a token is present (production + local
+  // dev). The previous gate also required `process.env.VERCEL`, which meant new
+  // local uploads went to public/media/ on disk while the Neon DB row pointed
+  // at a /api/media/file/... URL — fine locally, broken on prod. Now both
+  // environments behave the same: every Media upload (and its sized variants)
+  // is written straight to Blob and the DB stores the canonical Blob URL.
+  ...(process.env.BLOB_READ_WRITE_TOKEN
     ? [
         vercelBlobStorage({
           collections: {
