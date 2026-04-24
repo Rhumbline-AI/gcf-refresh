@@ -38,6 +38,15 @@ export const plugins: Plugin[] = [
             media: true,
           },
           token: process.env.BLOB_READ_WRITE_TOKEN,
+          // clientUploads = true makes the admin UI request a signed token and
+          // PUT the file straight from the browser to Vercel Blob, bypassing
+          // the serverless function entirely. Without it, every upload streams
+          // through a serverless function and Vercel hard-caps the request
+          // body at ~4.5 MB — which is what produced the
+          // "Your request was too large to submit successfully" error on
+          // larger video uploads. With clientUploads on, the practical ceiling
+          // is the Blob limit (~5 GB).
+          clientUploads: true,
         }),
       ]
     : []),
