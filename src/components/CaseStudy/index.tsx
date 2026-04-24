@@ -10,6 +10,7 @@ import shadow2 from '@/images/case-study-block2-shadow2.png'
 import arrowLeft from '@/images/scribble-arrow-left.png'
 import arrowRight from '@/images/scribble-arrow-right.png'
 import hand2 from '@/images/hand2.gif'
+import ripCaseStudyTop from '@/images/rip-case-study-top.png'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
 type CaseStudyProps = {
@@ -136,9 +137,9 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
           )}
 
           {/* Two column: sections + results circle */}
-          <div className="flex flex-col md:flex-row gap-10 md:gap-20 items-start md:items-center">
+          <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center md:items-center">
             {/* Left column - text sections */}
-            <ScrollReveal animation="fadeUp" staggerChildren stagger={0.15} duration={0.8} className="flex-1 max-w-lg">
+            <ScrollReveal animation="fadeUp" staggerChildren stagger={0.15} duration={0.8} className="flex-1 w-full max-w-lg">
               <div>
                 <Section heading="Problem" body={problem} />
                 <Section heading="Spark" body={spark} />
@@ -149,22 +150,23 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
             {/* Right column - results circle */}
             {results && (
               <ScrollReveal animation="scaleIn" duration={1} delay={0.2}>
-                <div className="flex-shrink-0 flex items-center justify-center relative">
-                  {/* Hand holding the results circle from the left */}
+                <div className="flex-shrink-0 flex items-center justify-center relative mx-auto">
+                  {/* Hand holding the results circle from the right side, fingers pointing left into circle.
+                      Visible on mobile too (was previously hidden md:block).
+                      No rotateY flip — the hand naturally faces the design direction. */}
                   <div
-                    className="absolute hidden md:block"
+                    className="absolute pointer-events-none"
                     style={{
-                      left: '91%',
-                      top: '58%',
-                      width: '49%',
+                      left: '78%',
+                      top: '50%',
+                      width: '55%',
                       zIndex: 20,
-                      transform: 'rotateY(180deg)',
                     }}
                   >
                     <Image src={hand2} alt="" className="w-full h-auto" unoptimized />
                   </div>
                   <div
-                    className="w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full flex flex-col justify-center px-12 md:px-16 py-10 md:py-14 relative overflow-hidden"
+                    className="w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full flex flex-col items-center md:items-start justify-center px-10 md:px-16 py-10 md:py-14 text-center md:text-left relative overflow-hidden"
                     style={{
                       backgroundColor: '#307fe2',
                       backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${blueNoiseBg.src})`,
@@ -193,10 +195,23 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
         </div>
       </div>
 
+      {/* Paper-tear divider between case study intro and content blocks */}
+      {contentBlocks && contentBlocks.length > 0 && (
+        <div className="relative w-full -mb-px overflow-hidden pointer-events-none" aria-hidden>
+          <Image
+            src={ripCaseStudyTop}
+            alt=""
+            className="block w-full h-auto"
+            sizes="100vw"
+            priority={false}
+          />
+        </div>
+      )}
+
       {/* Alternating content blocks with blue background */}
       {contentBlocks && contentBlocks.length > 0 && (
         <div
-          className="relative py-20 md:py-32"
+          className="relative pt-12 md:pt-16 pb-20 md:pb-32"
           style={{
             backgroundImage: `url(${blueBg.src})`,
             backgroundRepeat: 'repeat',

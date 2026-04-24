@@ -39,9 +39,11 @@ function FloatingWrapper({
 
     gsap.set(el, { opacity: 0, scale: 0.6, y: 60 })
 
+    // Use bottom of viewport (top 100%) so orbs partially below the fold still animate in promptly.
+    // Previously `top 80%` left the third orb invisible until the user scrolled.
     st = ScrollTrigger.create({
       trigger: el,
-      start: 'top 80%',
+      start: 'top 100%',
       once: true,
       onEnter: () => {
         gsap.to(el, {
@@ -126,7 +128,19 @@ function FloatingWrapper({
   )
 }
 
-export function WorkSection2({ projects, title }: { projects: Project[]; title?: string | null }) {
+export function WorkSection2({
+  projects,
+  title,
+  showCtaButton,
+  ctaButtonLabel,
+  ctaButtonLink,
+}: {
+  projects: Project[]
+  title?: string | null
+  showCtaButton?: boolean
+  ctaButtonLabel?: string
+  ctaButtonLink?: string
+}) {
   const sectionRef = useRef<HTMLElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
   const orb1Ref = useRef<HTMLDivElement>(null)
@@ -185,9 +199,13 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       const o1 = getOrb(orb1Ref) // left medium orb
       const o3 = getOrb(orb3Ref) // center xlarge orb
 
+      // Mobile-aware bend offset: clamp the X bend to keep dots safely inside the viewport.
+      const isMobile = W < 768
+      const minEdgeGap = isMobile ? 24 : 12
+
       if (o1) {
         // LEFT connector: comes from LOW, elbow BELOW orb, arm angles UP into orb bottom
-        const lBendX = o1.cx - o1.r * 1.30
+        const lBendX = Math.max(minEdgeGap, o1.cx - o1.r * (isMobile ? 1.0 : 1.30))
         const lBendY = o1.cy + o1.r * 1.15
         const lOrbX  = o1.cx - o1.r * 0.48
         const lOrbY  = o1.cy + o1.r * 0.72
@@ -202,7 +220,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
 
       if (o3) {
         // RIGHT connector: comes from HIGH, elbow far out at orb-level, arm goes horizontal into orb side
-        const bBendX = o3.cx + o3.r * 1.50
+        const bBendX = Math.min(W - minEdgeGap, o3.cx + o3.r * (isMobile ? 1.1 : 1.50))
         const bBendY = o3.cy + o3.r * 0.35
         const bOrbX  = o3.cx + o3.r * 0.80
         const bOrbY  = o3.cy + o3.r * 0.38
@@ -257,7 +275,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
 
     const st = ScrollTrigger.create({
       trigger: section,
-      start: 'top 68%',
+      start: 'top 95%',
       once: true,
       onEnter: () => {
         animated = true
@@ -340,9 +358,10 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
       </svg>
 
       {/* Responsive layout — same structure at all widths, sizes adapt */}
+      {/* max-w-6xl (1152px) caps spread on wide screens; orbs at 8% pull them inward to tighten the gap */}
       <div>
-        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '225px' : sizeKey.small === 'tablet' ? '290px' : '405px' }}>
-          <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '5%', zIndex: 2 }}>
+        <div className="relative mx-auto w-full max-w-6xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '225px' : sizeKey.small === 'tablet' ? '290px' : '405px' }}>
+          <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '8%', zIndex: 2 }}>
             {displayProjects[1] && (
               <FloatingWrapper
                 entranceDelay={0.1}
@@ -357,7 +376,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
             )}
           </div>
 
-          <div ref={orb2Ref} className="absolute" style={{ top: '0%', right: '5%', zIndex: 2 }}>
+          <div ref={orb2Ref} className="absolute" style={{ top: '0%', right: '8%', zIndex: 2 }}>
             {displayProjects[2] && (
               <FloatingWrapper
                 entranceDelay={0.2}
@@ -389,6 +408,27 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
             )}
           </div>
         </div>
+
+        {showCtaButton && ctaButtonLink && (
+          <div className="relative w-full flex justify-center mt-12 md:mt-16" style={{ zIndex: 2 }}>
+            <a
+              href={ctaButtonLink}
+              className="inline-flex items-center gap-2 px-8 py-4 md:px-10 md:py-5 rounded-full bg-[#307fe2] text-white font-bold uppercase tracking-wider text-sm md:text-base hover:opacity-90 transition-opacity shadow-lg"
+              style={{ fontFamily: 'var(--font-inter)' }}
+            >
+              {ctaButtonLabel || 'More Case Studies'}
+              <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" aria-hidden>
+                <path
+                  d="M3 8h10m0 0L9 4m4 4l-4 4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+          </div>
+        )}
       </div>
     </section>
   )

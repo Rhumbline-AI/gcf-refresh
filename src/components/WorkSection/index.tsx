@@ -39,9 +39,11 @@ function FloatingWrapper({
 
     gsap.set(el, { opacity: 0, scale: 0.6, y: 60 })
 
+    // Use bottom of viewport (top 100%) so orbs partially below the fold still animate in promptly.
+    // Previously `top 80%` left the third orb invisible until the user scrolled.
     st = ScrollTrigger.create({
       trigger: el,
-      start: 'top 80%',
+      start: 'top 100%',
       once: true,
       onEnter: () => {
         gsap.to(el, {
@@ -187,8 +189,13 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       const o2 = getOrb(orb2Ref)
       if (!o1 || !o2) return
 
+      // Mobile-aware bend offset: on small screens, orbs are tiny so r*1.40 can push the bend
+      // dot off-screen. Clamp the X bend to keep dots safely inside the viewport.
+      const isMobile = W < 768
+      const minEdgeGap = isMobile ? 24 : 12
+
       // LEFT connector: elbow HIGH, arm drops down into orb from above
-      const lBendX = o1.cx - o1.r * 1.40
+      const lBendX = Math.max(minEdgeGap, o1.cx - o1.r * (isMobile ? 1.05 : 1.40))
       const lBendY = o1.cy - o1.r * 0.30
       const lOrbX  = o1.cx - o1.r * 0.55
       const lOrbY  = o1.cy + o1.r * 0.65
@@ -197,7 +204,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
 
       // RIGHT connector: elbow LOW-RIGHT, arm reaches up into orb side
-      const rBendX = o2.cx + o2.r * 1.30
+      const rBendX = Math.min(W - minEdgeGap, o2.cx + o2.r * (isMobile ? 1.05 : 1.30))
       const rBendY = o2.cy + o2.r * 1.00
       const rOrbX  = o2.cx + o2.r * 0.78
       const rOrbY  = o2.cy + o2.r * 0.40
@@ -255,7 +262,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
     const st = ScrollTrigger.create({
       trigger: section,
-      start: 'top 68%',
+      start: 'top 95%',
       once: true,
       onEnter: () => {
         animated = true
@@ -342,16 +349,17 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
 
       {title && (
         <div className="container">
-          <h2 className="-mb-4 md:-mb-8 text-5xl md:text-7xl lg:text-8xl font-light text-center tracking-tight" style={{ fontFamily: 'var(--font-inter)' }}>
+          <h2 className="-mb-12 md:-mb-24 text-5xl md:text-7xl lg:text-8xl font-light text-center tracking-tight" style={{ fontFamily: 'var(--font-inter)' }}>
             {title}
           </h2>
         </div>
       )}
 
       {/* Responsive layout — same structure at all widths, sizes adapt */}
+      {/* max-w-6xl (1152px) caps spread on wide screens; orbs at 8% pull them inward to tighten the gap */}
       <div>
-        <div className="relative mx-auto w-full max-w-7xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '225px' : sizeKey.small === 'tablet' ? '290px' : '405px' }}>
-          <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '5%', zIndex: 2 }}>
+        <div className="relative mx-auto w-full max-w-6xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '225px' : sizeKey.small === 'tablet' ? '290px' : '405px' }}>
+          <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '8%', zIndex: 2 }}>
             {displayProjects[0] && (
               <FloatingWrapper
                 entranceDelay={0.1}
@@ -366,7 +374,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
             )}
           </div>
 
-          <div ref={orb2Ref} className="absolute" style={{ top: '0%', right: '5%', zIndex: 2 }}>
+          <div ref={orb2Ref} className="absolute" style={{ top: '0%', right: '8%', zIndex: 2 }}>
             {displayProjects[1] && (
               <FloatingWrapper
                 entranceDelay={0.2}

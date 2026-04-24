@@ -329,6 +329,12 @@ export interface Page {
          * Select up to 3 projects. First appears as large circle on top, second two appear as smaller circles on bottom.
          */
         projects?: (number | Project)[] | null;
+        /**
+         * Enable this on the last Work section of the Work page.
+         */
+        showCtaButton?: boolean | null;
+        ctaButtonLabel?: string | null;
+        ctaButtonLink?: string | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'work2';
@@ -1453,6 +1459,9 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               title?: T;
               projects?: T;
+              showCtaButton?: T;
+              ctaButtonLabel?: T;
+              ctaButtonLink?: T;
               id?: T;
               blockName?: T;
             };

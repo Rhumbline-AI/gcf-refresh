@@ -7,9 +7,18 @@ import type { Project } from '@/payload-types'
 type Work2BlockProps = {
   title?: string | null
   projects?: (number | Project)[] | null
+  showCtaButton?: boolean | null
+  ctaButtonLabel?: string | null
+  ctaButtonLink?: string | null
 }
 
-export const Work2Block = async ({ title, projects }: Work2BlockProps) => {
+export const Work2Block = async ({
+  title,
+  projects,
+  showCtaButton,
+  ctaButtonLabel,
+  ctaButtonLink,
+}: Work2BlockProps) => {
   // Handle missing or empty projects
   if (!projects || projects.length === 0) {
     return null
@@ -39,5 +48,13 @@ export const Work2Block = async ({ title, projects }: Work2BlockProps) => {
     return null
   }
 
-  return <WorkSection2 projects={sortedProjects} title={title} />
+  return (
+    <WorkSection2
+      projects={sortedProjects}
+      title={title}
+      showCtaButton={Boolean(showCtaButton)}
+      ctaButtonLabel={ctaButtonLabel ?? undefined}
+      ctaButtonLink={ctaButtonLink ?? undefined}
+    />
+  )
 }
