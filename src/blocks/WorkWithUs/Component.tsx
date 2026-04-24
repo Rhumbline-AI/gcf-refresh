@@ -18,30 +18,50 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
 
   return (
     <div className="py-16 md:py-24 relative dot-matrix-bg" style={{ overflowX: 'clip', overflowY: 'visible' }}>
-      <div className="container relative z-10 flex flex-col items-center justify-center">
-        <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[480px]">
-          {/* Outer frame holds the rotating-text ring; the link/circle sits inset inside */}
+      {/*
+        Rotating text ring — pinned to the right edge of the viewport (right: 0
+        on this full-width section), with 35% of its width pushed off-screen
+        via `transform: translate(35%, -50%)`. The section's `overflowX: clip`
+        cleanly hides the off-screen portion. The translate lives on this
+        wrapper so the spin animation on the inner SVG doesn't clobber the
+        position. No z-index → footer naturally paints on top of any vertical
+        bleed.
+      */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: 'min(1000px, 95vw)',
+          aspectRatio: '1 / 1',
+          right: 0,
+          top: '50%',
+          transform: 'translate(35%, -50%)',
+        }}
+        aria-hidden
+      >
+        <svg
+          className="w-full h-full overflow-visible animate-[spin_60s_linear_infinite]"
+          viewBox="0 0 100 100"
+        >
+          <defs>
+            <path
+              id="workWithUsCirclePath"
+              d="M 50, 50 m -48, 0 a 48,48 0 1,1 96,0 a 48,48 0 1,1 -96,0"
+            />
+          </defs>
+          <text className="text-[1.4px] fill-foreground tracking-wide font-medium" style={{ fontFamily: 'var(--font-inter)' }}>
+            <textPath href="#workWithUsCirclePath" startOffset="0%">
+              {Array.from({ length: repetitions }).map((_, i) => (
+                <tspan key={i}>{repeatingText}{'\u00A0\u00A0\u00A0\u00A0'}</tspan>
+              ))}
+            </textPath>
+          </text>
+        </svg>
+      </div>
+
+      <div className="container relative flex flex-col items-center justify-center">
+        {/* Blue circle + hand — sized 15% larger than before (480px → 552px). Hand width is a % of the link, so it scales automatically. */}
+        <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[552px]">
           <div className="relative w-full aspect-square">
-            {/* Rotating text ring around the outside */}
-            <svg
-              className="absolute inset-0 w-full h-full overflow-visible animate-[spin_60s_linear_infinite] pointer-events-none"
-              viewBox="0 0 100 100"
-              aria-hidden
-            >
-              <defs>
-                <path
-                  id="workWithUsCirclePath"
-                  d="M 50, 50 m -48, 0 a 48,48 0 1,1 96,0 a 48,48 0 1,1 -96,0"
-                />
-              </defs>
-              <text className="text-[1.4px] fill-foreground tracking-wide font-medium" style={{ fontFamily: 'var(--font-inter)' }}>
-                <textPath href="#workWithUsCirclePath" startOffset="0%">
-                  {Array.from({ length: repetitions }).map((_, i) => (
-                    <tspan key={i}>{repeatingText}{'\u00A0\u00A0\u00A0\u00A0'}</tspan>
-                  ))}
-                </textPath>
-              </text>
-            </svg>
 
             {/* Link is the positioning context — hand sits inside at circle-relative percentages */}
             <Link
