@@ -10,7 +10,8 @@ node_modules
 public/media/
 
 # Large video assets — should be uploaded via Payload Media or Vercel Blob, not committed
-src/videos/GCF_INTRO_REEL_v2.mp4
+src/videos/*.mp4
+*.mp4
 *.mov
 
 # Local DB backups — never commit (may contain user data + URLs)

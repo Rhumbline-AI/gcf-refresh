@@ -6,7 +6,9 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : undefined || process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
 
-const BLOB_STORE_BASE_URL = process.env.BLOB_STORE_BASE_URL
+// Strip whitespace/newlines — the Vercel-managed env var came through with a
+// trailing literal `\n` which would corrupt rewrite destinations.
+const BLOB_STORE_BASE_URL = process.env.BLOB_STORE_BASE_URL?.trim()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -41,17 +43,26 @@ const nextConfig = {
     const rules = await (typeof redirects === 'function' ? redirects() : [])
     if (!BLOB_STORE_BASE_URL) return { beforeFiles: [], afterFiles: [], fallback: [] }
 
+    // Files in our Blob store live at the ROOT of the store
+    // (e.g. https://<store>.public.blob.vercel-storage.com/foo.mp4),
+    // NOT under a /media/ prefix — that's a default the upstream template
+    // assumed but our migration + adapter don't use. The previous rewrites
+    // were tacking on `/media/` and producing 404s on production for every
+    // upload made AFTER the bulk migration (those rows store url
+    // `/api/media/file/foo.mp4`, which then got rewritten to a path that
+    // doesn't exist). Drop the prefix so the legacy URL pattern proxies
+    // straight through to the actual Blob object.
     return {
       beforeFiles: [
         {
           source: '/api/media/file/:path*',
-          destination: `${BLOB_STORE_BASE_URL}/media/:path*`,
+          destination: `${BLOB_STORE_BASE_URL}/:path*`,
         },
       ],
       afterFiles: [
         {
           source: '/media/:path*',
-          destination: `${BLOB_STORE_BASE_URL}/media/:path*`,
+          destination: `${BLOB_STORE_BASE_URL}/:path*`,
         },
       ],
       fallback: [],
