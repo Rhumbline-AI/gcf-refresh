@@ -82,16 +82,6 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
                     }}
                   />
                 )}
-                {/* CTA badge — makes the circle read as a clickable button */}
-                <span
-                  className="absolute bottom-[14%] left-1/2 -translate-x-1/2 inline-flex items-center gap-2 bg-white text-[#307fe2] px-5 py-2 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider shadow-md transition-transform duration-300 ease-out group-hover:scale-110"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  Let&apos;s Talk
-                  <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none">
-                    <path d="M2 6h7m0 0L6 3m3 3L6 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
               </div>
             </Link>
           </div>
