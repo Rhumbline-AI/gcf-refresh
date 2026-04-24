@@ -11,8 +11,12 @@ export const FullWidthBackground: Block = {
       name: 'backgroundImage',
       type: 'upload',
       relationTo: 'media',
-      label: 'Background Image',
+      label: 'Background Image or Video',
       required: true,
+      admin: {
+        description:
+          'Accepts both images (jpg, png, webp) and videos (mp4, webm, mov). Videos auto-play, loop, and are muted.',
+      },
     },
     {
       name: 'height',

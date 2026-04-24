@@ -86,7 +86,7 @@ function FloatingWrapper({
       const cy = window.innerHeight / 2
       const dx = -(e.clientX - cx) * cursorFactor
       const dy = -(e.clientY - cy) * cursorFactor
-      const maxD = 120
+      const maxD = 40
       cursorOffset.current = {
         x: Math.max(-maxD, Math.min(maxD, dx)),
         y: Math.max(-maxD, Math.min(maxD, dy)),
@@ -350,7 +350,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
                 floatDuration={3.8}
                 swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 5}
                 rotateAmount={1.2}
-                cursorFactor={0.09}
+                cursorFactor={0.04}
               >
                 <ProjectCircle project={displayProjects[1]} size={sizeKey.small} />
               </FloatingWrapper>
@@ -365,7 +365,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
                 floatDuration={4.2}
                 swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 4 : 6}
                 rotateAmount={1.8}
-                cursorFactor={0.07}
+                cursorFactor={0.03}
               >
                 <ProjectCircle project={displayProjects[2]} size={sizeKey.small} />
               </FloatingWrapper>
@@ -382,7 +382,7 @@ export function WorkSection2({ projects, title }: { projects: Project[]; title?:
                 floatDuration={5}
                 swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4}
                 rotateAmount={1}
-                cursorFactor={0.05}
+                cursorFactor={0.02}
               >
                 <ProjectCircle project={displayProjects[0]} size={sizeKey.large} />
               </FloatingWrapper>

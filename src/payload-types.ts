@@ -259,6 +259,9 @@ export interface Page {
     | ContentBlock
     | FAQBlock
     | {
+        /**
+         * Accepts both images (jpg, png, webp) and videos (mp4, webm, mov). Videos auto-play, loop, and are muted.
+         */
         backgroundImage: number | Media;
         height?: ('small' | 'medium' | 'large') | null;
         grayscale?: boolean | null;
