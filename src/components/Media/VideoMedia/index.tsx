@@ -24,7 +24,14 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
   }, [])
 
   if (resource && typeof resource === 'object') {
-    const { filename } = resource
+    // Use resource.url directly (matches ImageMedia). When the Vercel Blob
+    // adapter is active, `url` is the canonical https://*.public.blob.vercel-
+    // storage.com/<filename> path. The previous `/media/${filename}` construction
+    // was a holdover from the disk-storage era and produced 404s in production
+    // because the file no longer lives under the site origin.
+    const { url, filename, updatedAt } = resource
+    const src = getMediaUrl(url || (filename ? `/media/${filename}` : null), updatedAt)
+    if (!src) return null
 
     return (
       <video
@@ -37,7 +44,7 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
         playsInline
         ref={videoRef}
       >
-        <source src={getMediaUrl(`/media/${filename}`)} />
+        <source src={src} />
       </video>
     )
   }
