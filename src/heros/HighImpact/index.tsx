@@ -43,7 +43,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
       data-theme="dark"
     >
       {media && typeof media === 'object' && (
-        <Media fill imgClassName="object-cover" priority resource={media} />
+        <Media
+          fill
+          priority
+          resource={media}
+          imgClassName="object-cover"
+          videoClassName="absolute inset-0 w-full h-full object-cover"
+        />
       )}
       <div ref={contentRef} className="container z-10 relative flex items-center justify-center">
         <div className="max-w-full md:text-center md:whitespace-nowrap" style={{ fontFamily: 'var(--font-inter)' }}>
