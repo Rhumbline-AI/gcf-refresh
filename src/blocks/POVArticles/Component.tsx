@@ -29,8 +29,8 @@ export const POVArticlesBlock: React.FC<POVArticlesProps> = ({ articles }) => {
                     ? article.logo.url
                     : null
 
-                const content = (
-                  <div className="flex flex-col gap-1">
+                return (
+                  <div key={index} className="flex flex-col gap-1">
                     <img
                       src={logoUrl || adageLogo.src}
                       alt=""
@@ -50,24 +50,36 @@ export const POVArticlesBlock: React.FC<POVArticlesProps> = ({ articles }) => {
                         {article.description}
                       </p>
                     )}
+                    {article.link && (
+                      // Explicit CTA below the copy — destination is the
+                      // existing `link` field on the article, so editors set
+                      // the URL once and it powers this link.
+                      <a
+                        href={article.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex items-center gap-1.5 self-start text-base md:text-lg font-semibold text-[#307fe2] underline underline-offset-4 decoration-2 hover:opacity-80 transition-opacity"
+                        style={{ fontFamily: 'var(--font-inter)' }}
+                      >
+                        View Article
+                        <svg
+                          className="w-4 h-4"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          aria-hidden
+                        >
+                          <path
+                            d="M3 8h10m0 0L9 4m4 4l-4 4"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </a>
+                    )}
                   </div>
                 )
-
-                if (article.link) {
-                  return (
-                    <a
-                      key={index}
-                      href={article.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block hover:opacity-80 transition-opacity"
-                    >
-                      {content}
-                    </a>
-                  )
-                }
-
-                return <div key={index}>{content}</div>
               })}
             </div>
           </ScrollReveal>

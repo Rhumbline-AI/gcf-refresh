@@ -285,24 +285,32 @@ html[data-theme='light'] {
   background-color: transparent !important;
 }
 
-.page-work .block-work:first-of-type {
-  padding-top: 2rem;
+/* Push the first work block down on the /work page so the hero title isn't
+   eaten by the project orbs. We have to overcome the inner WorkSection's
+   own negative top margin (`-mt-8 md:-mt-16` = -2rem / -4rem) AND still
+   leave real breathing room beneath the hero. */
+.page-work .block-work:first-of-type,
+.page-work .block-work2:first-of-type {
+  padding-top: 7rem;
 }
 
 @media (min-width: 768px) {
-  .page-work .block-work:first-of-type {
-    padding-top: 3rem;
+  .page-work .block-work:first-of-type,
+  .page-work .block-work2:first-of-type {
+    padding-top: 9rem;
   }
 }
 
 /* Reduce vertical gap between consecutive work modules — work page only. */
 /* On other pages (e.g. home), the work blocks should stack with normal flow */
 /* so the next section's small orbs don't overlap the previous section's large orb. */
+/* Mobile uses a much milder pull-up (-2rem) because the orbs are smaller and */
+/* sit closer to the section edges; the original -6rem made them overlap. */
 .page-work .block-work + .block-work2,
 .page-work .block-work2 + .block-work,
 .page-work .block-work + .block-work,
 .page-work .block-work2 + .block-work2 {
-  margin-top: -6rem;
+  margin-top: -2rem;
 }
 
 @media (min-width: 768px) {

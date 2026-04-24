@@ -21,8 +21,11 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
 }) => {
   if (!items || items.length === 0) return null
 
+  // Trimmed top + bottom padding (was py-16 md:py-24) so the methodology
+  // circle sits closer to the body copy above and the rocket video below
+  // peeks up into view instead of being pushed off the fold.
   return (
-    <div className="relative py-16 md:py-24 bg-white overflow-hidden">
+    <div className="relative pt-4 pb-4 md:pt-6 md:pb-8 bg-white overflow-hidden">
       {/* Large decorative blue ring — Venn-overlaps the filled circle (desktop only). */}
       {/* Matches the inner filled circle's blue + noise treatment so the ring reads */}
       {/* as the same material; the radial mask defines the ring shape. */}

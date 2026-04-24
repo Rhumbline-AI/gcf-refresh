@@ -17,7 +17,11 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
   const repetitions = 30
 
   return (
-    <div className="py-16 md:py-24 relative dot-matrix-bg" style={{ overflowX: 'clip', overflowY: 'visible' }}>
+    // Bottom padding is much larger on mobile so the circle clears the footer's
+    // torn-paper graphic + white-bg overlap (~200px on small screens). On
+    // desktop the original py-24 still works because the section itself is
+    // taller (552px circle + padding).
+    <div className="pt-16 md:pt-24 pb-48 md:pb-24 relative dot-matrix-bg" style={{ overflowX: 'clip', overflowY: 'visible' }}>
       {/*
         Rotating text ring — pinned to the right edge of the viewport (right: 0
         on this full-width section), with 35% of its width pushed off-screen
@@ -26,14 +30,20 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
         wrapper so the spin animation on the inner SVG doesn't clobber the
         position. No z-index → footer naturally paints on top of any vertical
         bleed.
+
+        On mobile the section is shorter so the desktop `top: calc(50% - 250px)`
+        would push the ring above the section entirely. Use a milder offset on
+        mobile and the original on md+ via the CSS variable below.
       */}
       <div
-        className="absolute pointer-events-none"
+        className="absolute pointer-events-none work-with-us-ring"
         style={{
-          width: 'min(1000px, 95vw)',
+          // ~20% smaller than before (1000 → 800px max, 95 → 76vw cap) so the
+          // ring's circumference drops by the same ratio.
+          width: 'min(800px, 76vw)',
           aspectRatio: '1 / 1',
           right: 0,
-          top: '50%',
+          top: 'var(--ring-top, calc(50% - 250px))',
           transform: 'translate(35%, -50%)',
         }}
         aria-hidden
@@ -58,9 +68,21 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
         </svg>
       </div>
 
+      {/* The rotating ring still needs a different vertical anchor on mobile
+          (the section is too short for the desktop calc(50% - 250px)), but the
+          hand uses the same proportions everywhere — values dialed in on
+          mobile via DevTools, also work great on desktop. */}
+      <style>{`
+        .work-with-us-ring { --ring-top: 35%; }
+        @media (min-width: 768px) {
+          .work-with-us-ring { --ring-top: calc(50% - 250px); }
+        }
+      `}</style>
+
       <div className="container relative flex flex-col items-center justify-center">
-        {/* Blue circle + hand — sized 15% larger than before (480px → 552px). Hand width is a % of the link, so it scales automatically. */}
-        <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[552px]">
+        {/* Blue circle + hand. Mobile uses a smaller circle (300px) so the hand
+            fits on screen alongside it; desktop keeps the 552px hero size. */}
+        <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[300px] md:max-w-[552px]">
           <div className="relative w-full aspect-square">
 
             {/* Link is the positioning context — hand sits inside at circle-relative percentages */}
@@ -69,13 +91,16 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
               aria-label={title || 'Work With Us'}
               className="absolute inset-[8%] block group cursor-pointer"
             >
-              {/* Hand holding the circle from the left — percentage-based so it scales with circle */}
+              {/* Hand holding the circle from the left — same proportions
+                  on every viewport. Tuned via DevTools on mobile; still reads
+                  correctly on desktop because everything is %-based off the
+                  link (which is itself a % of the circle). */}
               <div
-                className="absolute hidden md:block pointer-events-none"
+                className="absolute pointer-events-none"
                 style={{
-                  left: '-40%',
-                  top: '53%',
-                  width: '48%',
+                  left: '-39%',
+                  top: '55%',
+                  width: '47%',
                   zIndex: 20,
                 }}
               >

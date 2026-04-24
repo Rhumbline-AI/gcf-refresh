@@ -46,44 +46,100 @@ export const ScrollReveal: React.FC<Props> = ({
     const el = ref.current
     const from = presets[animation]
 
+    // Defensive multi-trigger pattern. We use ScrollTrigger as the primary
+    // reveal mechanism, but we've seen sporadic failures (most reproducible on
+    // mobile + React Strict Mode) where the trigger is created but never fires
+    // — leaving content stuck at opacity 0. To make sure nothing is ever
+    // permanently invisible, we layer two backups:
+    //   1. an IntersectionObserver (independent of GSAP / ScrollTrigger)
+    //   2. a final setTimeout safety net
+    // Whichever fires first wins; the rest become no-ops via `revealed`.
+    let revealed = false
+
     if (staggerChildren) {
       const kids = Array.from(el.children)
       if (kids.length === 0) return
       gsap.set(kids, from)
+
+      const reveal = () => {
+        if (revealed) return
+        revealed = true
+        gsap.to(kids, {
+          y: 0, x: 0, scale: 1, opacity: 1,
+          duration,
+          delay,
+          stagger,
+          ease: 'power3.out',
+          clearProps: 'transform',
+        })
+      }
+
       const st = ScrollTrigger.create({
         trigger: el,
         start,
         once: true,
-        onEnter: () => {
-          gsap.to(kids, {
-            y: 0, x: 0, scale: 1, opacity: 1,
-            duration,
-            delay,
-            stagger,
-            ease: 'power3.out',
-            clearProps: 'transform',
-          })
-        },
+        onEnter: reveal,
       })
-      return () => st.kill()
+
+      const io =
+        typeof IntersectionObserver !== 'undefined'
+          ? new IntersectionObserver(
+              (entries) => {
+                if (entries.some((e) => e.isIntersecting)) reveal()
+              },
+              { rootMargin: '0px 0px -10% 0px' },
+            )
+          : null
+      io?.observe(el)
+
+      const safety = setTimeout(reveal, 4000)
+
+      return () => {
+        st.kill()
+        io?.disconnect()
+        clearTimeout(safety)
+      }
     }
 
     gsap.set(el, from)
+
+    const reveal = () => {
+      if (revealed) return
+      revealed = true
+      gsap.to(el, {
+        y: 0, x: 0, scale: 1, opacity: 1,
+        duration,
+        delay,
+        ease: 'power3.out',
+        clearProps: 'transform',
+      })
+    }
+
     const st = ScrollTrigger.create({
       trigger: el,
       start,
       once: true,
-      onEnter: () => {
-        gsap.to(el, {
-          y: 0, x: 0, scale: 1, opacity: 1,
-          duration,
-          delay,
-          ease: 'power3.out',
-          clearProps: 'transform',
-        })
-      },
+      onEnter: reveal,
     })
-    return () => st.kill()
+
+    const io =
+      typeof IntersectionObserver !== 'undefined'
+        ? new IntersectionObserver(
+            (entries) => {
+              if (entries.some((e) => e.isIntersecting)) reveal()
+            },
+            { rootMargin: '0px 0px -10% 0px' },
+          )
+        : null
+    io?.observe(el)
+
+    const safety = setTimeout(reveal, 4000)
+
+    return () => {
+      st.kill()
+      io?.disconnect()
+      clearTimeout(safety)
+    }
   }, [animation, duration, delay, stagger, staggerChildren, start])
 
   return (

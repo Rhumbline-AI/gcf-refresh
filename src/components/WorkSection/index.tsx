@@ -4,129 +4,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { gsap, registerGSAP, ScrollTrigger } from '@/utilities/gsapSetup'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import type { Project } from '@/payload-types'
+import { FloatingWrapper } from './FloatingWrapper'
 
 registerGSAP()
-
-function FloatingWrapper({
-  children,
-  className,
-  style,
-  entranceDelay = 0,
-  floatAmount = 8,
-  floatDuration = 4,
-  swayAmount = 4,
-  rotateAmount = 1.5,
-  cursorFactor = 0.04,
-}: {
-  children: React.ReactNode
-  className?: string
-  style?: React.CSSProperties
-  entranceDelay?: number
-  floatAmount?: number
-  floatDuration?: number
-  swayAmount?: number
-  rotateAmount?: number
-  cursorFactor?: number
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-  const cursorOffset = useRef({ x: 0, y: 0 })
-
-  useEffect(() => {
-    if (!ref.current) return
-    const el = ref.current
-    const tweens: gsap.core.Tween[] = []
-    let st: ScrollTrigger | null = null
-
-    gsap.set(el, { opacity: 0, scale: 0.6, y: 60 })
-
-    // Use bottom of viewport (top 100%) so orbs partially below the fold still animate in promptly.
-    // Previously `top 80%` left the third orb invisible until the user scrolled.
-    st = ScrollTrigger.create({
-      trigger: el,
-      start: 'top 100%',
-      once: true,
-      onEnter: () => {
-        gsap.to(el, {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 1.2,
-          delay: entranceDelay,
-          ease: 'power3.out',
-          onComplete: () => {
-            tweens.push(
-              gsap.to(el, {
-                y: floatAmount,
-                duration: floatDuration,
-                ease: 'sine.inOut',
-                repeat: -1,
-                yoyo: true,
-              }),
-              gsap.to(el, {
-                x: swayAmount,
-                duration: floatDuration * 1.3,
-                ease: 'sine.inOut',
-                repeat: -1,
-                yoyo: true,
-              }),
-              gsap.to(el, {
-                rotation: rotateAmount,
-                duration: floatDuration * 1.6,
-                ease: 'sine.inOut',
-                repeat: -1,
-                yoyo: true,
-              }),
-            )
-          },
-        })
-      },
-    })
-
-    const isTouch = window.matchMedia('(pointer: coarse)').matches
-    const handleMouseMove = (e: MouseEvent) => {
-      const cx = window.innerWidth / 2
-      const cy = window.innerHeight / 2
-      const dx = -(e.clientX - cx) * cursorFactor
-      const dy = -(e.clientY - cy) * cursorFactor
-      const maxD = 40
-      cursorOffset.current = {
-        x: Math.max(-maxD, Math.min(maxD, dx)),
-        y: Math.max(-maxD, Math.min(maxD, dy)),
-      }
-      gsap.to(el, {
-        '--cx': `${cursorOffset.current.x}px`,
-        '--cy': `${cursorOffset.current.y}px`,
-        duration: 0.6,
-        ease: 'power2.out',
-        overwrite: 'auto',
-      } as gsap.TweenVars)
-    }
-
-    if (!isTouch) {
-      window.addEventListener('mousemove', handleMouseMove)
-    }
-
-    return () => {
-      st?.kill()
-      tweens.forEach((t) => t.kill())
-      if (!isTouch) window.removeEventListener('mousemove', handleMouseMove)
-    }
-  }, [entranceDelay, floatAmount, floatDuration, swayAmount, rotateAmount, cursorFactor])
-
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: 0,
-        translate: 'var(--cx, 0px) var(--cy, 0px)',
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  )
-}
 
 export function WorkSection({ projects, title }: { projects: Project[]; title?: string | null }) {
   const sectionRef = useRef<HTMLElement>(null)
@@ -213,8 +93,13 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       sa(svg.querySelector('.dr'),  { cx: rBendX, cy: rBendY })
 
       // Decorative ring: anchored to RIGHT orb (USAA) — Venn-overlap upper area, away from lines
+      // On mobile the title above the orbs is much closer, so push the ring
+      // lower and further right so it doesn't intrude into the "The work" type.
+      // Desktop tuning preserved (cx +0.10, cy -0.85 of orb radius).
       const dcR = o2.r * 0.85
-      sa(svg.querySelector('.dec-ring'), { cx: o2.cx + o2.r * 0.10, cy: o2.cy - o2.r * 0.85, r: dcR })
+      const ringCxOffset = isMobile ? o2.r * 0.45 : o2.r * 0.10
+      const ringCyOffset = isMobile ? -o2.r * 0.55 : -o2.r * 0.85
+      sa(svg.querySelector('.dec-ring'), { cx: o2.cx + ringCxOffset, cy: o2.cy + ringCyOffset, r: dcR })
 
       if (!animated) {
         // Set initial hidden state AFTER coordinates are correct
@@ -350,7 +235,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       {title && (
         <div className="container">
           <h2
-            className="mb-4 md:mb-8 font-light text-center tracking-tight"
+            className="mb-12 md:mb-16 font-light text-center tracking-tight"
             style={{ fontFamily: 'var(--font-inter)', fontSize: '3em', paddingTop: '25px' }}
           >
             {title}
@@ -359,10 +244,14 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       )}
 
       {/* Responsive layout — same structure at all widths, sizes adapt */}
-      {/* max-w-6xl (1152px) caps spread on wide screens; orbs at 8% pull them inward to tighten the gap */}
+      {/* max-w-6xl (1152px) caps spread on wide screens; orbs at 6% pull them slightly inward */}
+      {/* min-height + reduced negative mb give the orbs more breathing room (less crowded) */}
+      {/* Mobile/tablet minHeight + negative margin tuned for ~20px of breathing
+          room between the upper pair of orbs and the big bottom one. Desktop
+          (-mb-20, minHeight 460px) is intentionally untouched. */}
       <div>
-        <div className="relative mx-auto w-full max-w-6xl -mb-16 md:-mb-32" style={{ minHeight: sizeKey.small === 'mobile' ? '225px' : sizeKey.small === 'tablet' ? '290px' : '405px' }}>
-          <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '8%', zIndex: 2 }}>
+        <div className="relative mx-auto w-full max-w-6xl -mb-10 md:-mb-20" style={{ minHeight: sizeKey.small === 'mobile' ? '230px' : sizeKey.small === 'tablet' ? '310px' : '460px' }}>
+          <div ref={orb1Ref} className="absolute" style={{ top: '0%', left: '6%', zIndex: 2 }}>
             {displayProjects[0] && (
               <FloatingWrapper
                 entranceDelay={0.1}
@@ -370,14 +259,13 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
                 floatDuration={3.8}
                 swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 5}
                 rotateAmount={1.2}
-                cursorFactor={0.04}
               >
                 <ProjectCircle project={displayProjects[0]} size={sizeKey.small} />
               </FloatingWrapper>
             )}
           </div>
 
-          <div ref={orb2Ref} className="absolute" style={{ top: '0%', right: '8%', zIndex: 2 }}>
+          <div ref={orb2Ref} className="absolute" style={{ top: '0%', right: '6%', zIndex: 2 }}>
             {displayProjects[1] && (
               <FloatingWrapper
                 entranceDelay={0.2}
@@ -385,7 +273,6 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
                 floatDuration={4.2}
                 swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 4 : 6}
                 rotateAmount={1.8}
-                cursorFactor={0.03}
               >
                 <ProjectCircle project={displayProjects[1]} size={sizeKey.small} />
               </FloatingWrapper>
@@ -401,7 +288,6 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
               floatDuration={5}
               swayAmount={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4}
               rotateAmount={1}
-              cursorFactor={0.02}
             >
               <ProjectCircle project={displayProjects[2]} size={sizeKey.large} />
             </FloatingWrapper>
