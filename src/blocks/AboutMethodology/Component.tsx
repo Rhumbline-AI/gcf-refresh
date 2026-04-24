@@ -24,7 +24,8 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
   return (
     <div className="relative py-16 md:py-24 bg-white overflow-hidden">
       {/* Large decorative blue ring — Venn-overlaps the filled circle (desktop only). */}
-      {/* Darker blue + more opaque overlay = visible intersection band where ring crosses filled circle. */}
+      {/* Matches the inner filled circle's blue + noise treatment so the ring reads */}
+      {/* as the same material; the radial mask defines the ring shape. */}
       <div
         className="absolute rounded-full pointer-events-none z-[5] hidden md:block"
         aria-hidden
@@ -33,8 +34,8 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
           height: 'clamp(380px, 55vw, 950px)',
           top: 'clamp(-60px, 2vw, 40px)',
           left: 'clamp(-260px, -20vw, -120px)',
-          backgroundColor: '#1f5dba',
-          backgroundImage: `linear-gradient(rgba(31,93,186,0.55), rgba(31,93,186,0.55)), url(${circleBg.src})`,
+          backgroundColor: '#307fe2',
+          backgroundImage: `linear-gradient(rgba(48,127,226,0.8), rgba(48,127,226,0.8)), url(${circleBg.src})`,
           backgroundSize: 'auto, 200%',
           backgroundPosition: '0% 0%',
           animation: 'blueNoiseShift 2s steps(10) infinite',
@@ -50,7 +51,7 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({
               className="absolute inset-0 md:inset-0 rounded-full flex items-center justify-center overflow-hidden"
               style={{
                 backgroundColor: '#307fe2',
-                backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${circleBg.src})`,
+                backgroundImage: `linear-gradient(rgba(48,127,226,0.8), rgba(48,127,226,0.8)), url(${circleBg.src})`,
                 backgroundSize: 'auto, 200%',
                 backgroundPosition: '0% 0%',
                 animation: 'blueNoiseShift 2s steps(10) infinite',

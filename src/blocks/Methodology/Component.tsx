@@ -79,7 +79,7 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
               className="absolute inset-[5%] md:inset-[4%] rounded-full flex flex-col items-center justify-center px-16 py-12 sm:px-18 sm:py-10 md:px-10 md:py-12 lg:px-14 lg:py-16 text-white text-center overflow-hidden"
               style={{ 
                 backgroundColor: '#307fe2',
-                backgroundImage: `linear-gradient(rgba(48,127,226,0.35), rgba(48,127,226,0.35)), url(${circleBg.src})`,
+                backgroundImage: `linear-gradient(rgba(48,127,226,0.8), rgba(48,127,226,0.8)), url(${circleBg.src})`,
                 backgroundSize: 'auto, 200%',
                 backgroundPosition: '0% 0%',
                 animation: 'blueNoiseShift 2s steps(10) infinite',

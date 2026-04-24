@@ -96,6 +96,17 @@ export const hero: Field = {
       label: 'Background Video',
     },
     {
+      name: 'aboutHeadlineImage',
+      type: 'upload',
+      admin: {
+        condition: (_, { type } = {}) => type === 'aboutHero',
+        description:
+          'Headline image (PNG/SVG/WebP) shown at the top of the About hero. Replaces the default "Insight & Instinct / Brains & Bravery / Science & Story" lockup. Use a transparent PNG or SVG for best results.',
+      },
+      relationTo: 'media',
+      label: 'Headline Image',
+    },
+    {
       name: 'form',
       type: 'relationship',
       relationTo: 'forms',

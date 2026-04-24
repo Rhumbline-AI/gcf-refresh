@@ -205,6 +205,10 @@ export interface Page {
      * Optional background video (MP4). When provided, plays muted and loops behind the form. Falls back to the image above if not set.
      */
     backgroundVideo?: (number | null) | Media;
+    /**
+     * Headline image (PNG/SVG/WebP) shown at the top of the About hero. Replaces the default "Insight & Instinct / Brains & Bravery / Science & Story" lockup. Use a transparent PNG or SVG for best results.
+     */
+    aboutHeadlineImage?: (number | null) | Media;
     form?: (number | null) | Form;
     quotes?:
       | {
@@ -1340,6 +1344,7 @@ export interface PagesSelect<T extends boolean = true> {
             };
         media?: T;
         backgroundVideo?: T;
+        aboutHeadlineImage?: T;
         form?: T;
         quotes?:
           | T
