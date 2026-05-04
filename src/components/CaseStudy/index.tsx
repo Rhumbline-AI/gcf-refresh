@@ -10,7 +10,7 @@ import shadow2 from '@/images/case-study-block2-shadow2.png'
 import arrowLeft from '@/images/scribble-arrow-left.png'
 import arrowRight from '@/images/scribble-arrow-right.png'
 import hand2 from '@/images/hand2.gif'
-import ripCaseStudyTop from '@/images/rip-case-study-top.png'
+import ripCaseStudyTop from '@/images/rip-case-study-white2.png'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
 type CaseStudyProps = {
@@ -157,13 +157,13 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                   <div
                     className="absolute pointer-events-none"
                     style={{
-                      left: '78%',
+                      left: '87%',
                       top: '50%',
-                      width: '55%',
+                      width: '85%',
                       zIndex: 20,
                     }}
                   >
-                    <Image src={hand2} alt="" className="w-full h-auto" unoptimized />
+                    <Image src={hand2} alt="" className="w-full h-auto" style={{ transform: 'scaleX(-1)' }} unoptimized />
                   </div>
                   <div
                     className="w-[300px] h-[300px] md:w-[380px] md:h-[380px] rounded-full flex flex-col items-center md:items-start justify-center px-10 md:px-16 py-10 md:py-14 text-center md:text-left relative overflow-hidden"
@@ -197,7 +197,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
 
       {/* Paper-tear divider between case study intro and content blocks */}
       {contentBlocks && contentBlocks.length > 0 && (
-        <div className="relative w-full -mb-px overflow-hidden pointer-events-none" aria-hidden>
+        <div className="relative w-full -mb-12 md:-mb-16 z-10 overflow-hidden pointer-events-none" aria-hidden>
           <Image
             src={ripCaseStudyTop}
             alt=""
@@ -211,7 +211,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
       {/* Alternating content blocks with blue background */}
       {contentBlocks && contentBlocks.length > 0 && (
         <div
-          className="relative pt-12 md:pt-16 pb-20 md:pb-32"
+          className="relative pt-24 md:pt-32 pb-20 md:pb-32"
           style={{
             backgroundImage: `url(${blueBg.src})`,
             backgroundRepeat: 'repeat',
@@ -235,24 +235,24 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                     animation="fadeUp"
                     duration={0.9}
                     delay={0.05}
-                    className={`relative flex flex-col ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 md:gap-16 items-center`}
+                    className={`relative flex flex-col ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 md:gap-16 items-stretch md:items-center`}
                   >
                     {/* Arrow positioned per design reference: top-right when text is right, bottom-left when text is left. Only on blocks 1 and 4. */}
                     {(block.caption || block.description) && (index === 0 || index === 3) && (
                       <Image
                         src={arrowDirection}
                         alt=""
-                        className="absolute hidden md:block pointer-events-none z-20"
+                        className="absolute pointer-events-none z-20"
                         style={
                           arrowOnRight
-                            ? { right: '2rem', top: '2rem', width: '80px', height: 'auto' }
-                            : { left: '2rem', bottom: '2rem', width: '80px', height: 'auto' }
+                            ? { right: '1rem', top: '1rem', width: 'clamp(50px, 8vw, 80px)', height: 'auto' }
+                            : { left: '1rem', bottom: '1rem', width: 'clamp(50px, 8vw, 80px)', height: 'auto' }
                         }
                       />
                     )}
 
                     {/* Media container with scribble background */}
-                    <div className="relative flex-1">
+                    <div className="relative w-full md:flex-1" style={{ overflow: 'visible' }}>
                       {scribble && (
                         <Image
                           src={scribble}
@@ -264,7 +264,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                                   width: '170%',
                                   height: '170%',
                                   left: '55%',
-                                  top: '50%',
+                                  top: '100%',
                                   transform: 'translate(-50%, -50%)',
                                   objectFit: 'contain',
                                 }
@@ -272,7 +272,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                                   width: '140%',
                                   height: '140%',
                                   left: '50%',
-                                  top: '50%',
+                                  top: '100%',
                                   transform: 'translate(-50%, -50%)',
                                   objectFit: 'contain',
                                 }
@@ -284,7 +284,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                           <div
                             className={`relative ${getAspectRatioClass(block.aspectRatio || '16:9')} w-full rounded-2xl md:rounded-3xl ${getMediaWidthClass(block.aspectRatio || '16:9')}`}
                             style={{
-                              boxShadow: '0 44px 40px -64px rgba(0,0,0,0.1)',
+                              boxShadow: '0 20px 40px -10px rgba(0,0,0,0.35)',
                             }}
                           >
                             <div className="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl">
@@ -302,7 +302,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
 
                     {/* Caption and description */}
                     {(block.caption || block.description) && (
-                      <div className={`relative flex-1 flex flex-col ${!isLeft ? 'items-end text-right' : 'items-start text-left'}`}>
+                      <div className={`relative w-full md:flex-1 flex flex-col ${!isLeft ? 'items-end text-right' : 'items-start text-left'}`}>
                         {block.caption && (
                           <p
                             className="text-lg md:text-2xl font-bold uppercase tracking-wide text-white leading-tight mb-4"

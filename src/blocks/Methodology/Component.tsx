@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import circleBg from '@/images/blue-noise-background.jpg'
+import howWeDoItBg from '@/images/how-we-do-it-bg.jpg'
 import hand1 from '@/images/hand1.gif'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
@@ -18,7 +19,8 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
     ).join(' ')
   }
   const repeatingText = capitalizeWords(title || 'How do we do it?')
-  const repetitions = 40
+  const separator = '\u00A0\u00A0\u00A0\u00A0'
+  const fullCircleText = Array.from({ length: 40 }, () => repeatingText).join(separator) + separator
   
   return (
     <div 
@@ -32,24 +34,11 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
           <div
             className="relative w-[130vw] h-[130vw] -ml-[15vw] md:w-full md:h-auto md:ml-0 md:aspect-square flex items-center justify-center"
           >
-            {/* Hand — mobile */}
             <div
-              className="absolute md:hidden"
-              style={{
-                right: '0%',
-                top: '78%',
-                width: 'clamp(120px, 18vw, 260px)',
-                zIndex: 20,
-              }}
-            >
-              <Image src={hand1} alt="" className="w-full h-auto" unoptimized />
-            </div>
-            {/* Hand — desktop */}
-            <div
-              className="absolute hidden md:block"
+              className="absolute"
               style={{
                 right: '-5%',
-                top: '77%',
+                top: '78%',
                 width: 'clamp(140px, 18vw, 260px)',
                 zIndex: 20,
               }}
@@ -68,24 +57,39 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
               </defs>
               <text className="text-[1.4px] fill-foreground tracking-wide font-medium" style={{ fontFamily: 'var(--font-inter)' }}>
                 <textPath href="#circlePath" startOffset="0%">
-                  {Array.from({ length: repetitions }).map((_, i) => (
-                    <tspan key={i}>{repeatingText}{'\u00A0\u00A0\u00A0\u00A0'}</tspan>
-                  ))}
+                  {fullCircleText}
                 </textPath>
               </text>
             </svg>
 
             <div 
-              className="absolute inset-[5%] md:inset-[4%] rounded-full flex flex-col items-center justify-center px-16 py-12 sm:px-18 sm:py-10 md:px-10 md:py-12 lg:px-14 lg:py-16 text-white text-center overflow-hidden"
+              className="absolute inset-[5%] md:inset-[4%] rounded-full overflow-hidden"
               style={{ 
                 backgroundColor: '#307fe2',
-                backgroundImage: `linear-gradient(rgba(48,127,226,0.8), rgba(48,127,226,0.8)), url(${circleBg.src})`,
-                backgroundSize: 'auto, 200%',
-                backgroundPosition: '0% 0%',
-                animation: 'blueNoiseShift 2s steps(10) infinite',
                 aspectRatio: '1 / 1',
               }}
             >
+              {/* Animated noise base layer */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  backgroundImage: `linear-gradient(rgba(48,127,226,0.8), rgba(48,127,226,0.8)), url(${circleBg.src})`,
+                  backgroundSize: 'auto, 200%',
+                  backgroundPosition: '0% 0%',
+                  animation: 'blueNoiseShift 2s steps(10) infinite',
+                }}
+              />
+              {/* Background image overlay — partially transparent so noise shows through */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  backgroundImage: `url(${howWeDoItBg.src})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  opacity: 0.35,
+                }}
+              />
+              <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-16 py-12 sm:px-18 sm:py-10 md:px-10 md:py-12 lg:px-14 lg:py-16 text-white text-center">
               <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light mb-2 sm:mb-3 md:mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                 {title?.replace(/\s+/g, ' ').trim()}
               </h2>
@@ -127,6 +131,7 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
                     </div>
                   </div>
                 ))}
+              </div>
               </div>
             </div>
           </div>
