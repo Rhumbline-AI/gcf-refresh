@@ -55,9 +55,9 @@ export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
   const quote = quoteList[currentQuote]
 
   return (
-    <div className="relative pt-6 pb-4 md:pt-8 md:pb-2" style={{ backgroundColor: '#f7f2ee' }}>
+    <div className="relative pt-2 pb-2 md:pt-4 md:pb-2" style={{ backgroundColor: '#f7f2ee' }}>
       <div className="container">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-16">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-10">
           <div className="flex-1 text-center md:text-left">
             <h1
               className="text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a] leading-[1.2] font-light"
@@ -68,9 +68,9 @@ export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
           </div>
 
           {quoteList.length > 0 && quote && (
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col items-center gap-3 mt-4 md:mt-8">
               <div
-                className="w-[240px] h-[240px] md:w-[280px] md:h-[280px] rounded-full flex flex-col items-center justify-center p-10 md:p-12 text-center relative overflow-hidden"
+                className="w-[200px] h-[200px] md:w-[240px] md:h-[240px] rounded-full flex flex-col items-center justify-center p-8 md:p-10 text-center relative overflow-hidden"
                 style={{ backgroundColor: '#307fe2' }}
               >
                 <div
@@ -82,7 +82,7 @@ export const POVHero: React.FC<POVHeroProps> = ({ richText, quotes }) => {
                   }}
                 >
                   <p
-                    className="text-white text-lg md:text-xl italic leading-snug mb-3 font-extralight"
+                    className="text-white text-sm md:text-base italic leading-snug mb-2 font-extralight"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     &ldquo;{quote.text}&rdquo;

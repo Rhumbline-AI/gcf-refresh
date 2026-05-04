@@ -156,8 +156,8 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ items }
               {/* Mobile: pull the 2x2 cluster inward (px-14) and tighten the
                   gap so the four sub-circles sit closer to the center of the
                   big blue circle. Desktop spacing is unchanged. */}
-              <div className="w-full px-14 md:px-32 lg:px-40 xl:px-48">
-                <div className="grid grid-cols-2 gap-x-2 gap-y-5 sm:gap-x-6 sm:gap-y-8 md:gap-x-14 md:gap-y-12 lg:gap-x-16 lg:gap-y-14">
+              <div className="w-full px-14 sm:px-20 md:px-32 lg:px-40 xl:px-48">
+                <div className="grid grid-cols-2 gap-x-2 gap-y-5 sm:gap-x-4 sm:gap-y-6 md:gap-x-10 md:gap-y-10 lg:gap-x-16 lg:gap-y-14">
                   {items.map((item, i) => (
                     <MethodologyCircle key={i} item={item} />
                   ))}
@@ -177,7 +177,7 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div
-        className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 xl:w-52 xl:h-52 rounded-full overflow-hidden mb-2 sm:mb-2 md:mb-3 border-2 border-white/20"
+        className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-44 lg:h-44 xl:w-52 xl:h-52 rounded-full overflow-hidden mb-2 sm:mb-2 md:mb-3 border-2 border-white/20"
         style={{ backgroundColor: '#1a2a4a' }}
       >
         {hasImage && (
@@ -191,7 +191,7 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
         {item.label}
       </h3>
       <p
-        className="text-[11px] sm:text-xs md:text-sm lg:text-base text-white/90 font-medium leading-snug sm:leading-snug max-w-[140px] sm:max-w-[170px] md:max-w-[180px] lg:max-w-[220px]"
+        className="text-[11px] sm:text-sm md:text-sm lg:text-base text-white/90 font-medium leading-snug sm:leading-snug max-w-[140px] sm:max-w-[190px] md:max-w-[180px] lg:max-w-[220px]"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.description}

@@ -26,12 +26,12 @@ export async function Footer() {
       <div
         aria-hidden
         className="absolute inset-x-0 bottom-0 bg-white z-0 pointer-events-none"
-        style={{ top: 'calc(-17% + clamp(90px, 12vw, 130px))' }}
+        style={{ top: '-5%' }}
       />
       <div
         className="absolute w-full pointer-events-none select-none z-20 overflow-visible"
         style={{
-          top: '-17%',
+          top: '-10%',
           height: 'clamp(100px, 12vw, 140px)',
           minWidth: '960px',
           left: '50%',

@@ -137,7 +137,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
           )}
 
           {/* Two column: sections + results circle */}
-          <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center md:items-center">
+          <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center md:items-start">
             {/* Left column - text sections */}
             <ScrollReveal animation="fadeUp" staggerChildren stagger={0.15} duration={0.8} className="flex-1 w-full max-w-lg">
               <div>
