@@ -90,7 +90,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                   key={i} 
                   {...link} 
                   appearance="link"
-                  className="text-[#343434] font-bold text-4xl uppercase tracking-wider hover:text-white transition-colors"
+                  className="text-[#343434] font-bold text-4xl uppercase tracking-wider no-underline hover:no-underline hover:text-white focus:no-underline transition-colors"
                   style={{ fontFamily: 'var(--font-inter)' }}
                   onClick={() => setMobileMenuOpen(false)}
                 />

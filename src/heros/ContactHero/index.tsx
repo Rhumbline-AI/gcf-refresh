@@ -108,19 +108,37 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
     // overlap so the video bg bleeds behind the torn-paper shadow.
     // (visible hero ≈ 48vh; if the form is taller, the box grows to fit)
     <div className="relative w-full flex items-start overflow-hidden" style={{ minHeight: 'calc(48vh + 10rem)' }}>
-      {/* Background video */}
+      {/* Background video — pinned to all 4 edges with explicit `display: block`
+          (video is inline by default, which can break `height: 100%`). Width is
+          allowed to overflow per design (parent has overflow-hidden). */}
       <video
         key={videoUrl}
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        style={{ zIndex: 0 }}
+        className="pointer-events-none"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100%',
+          height: '100%',
+          minWidth: '100%',
+          minHeight: '100%',
+          display: 'block',
+          objectFit: 'cover',
+          zIndex: 0,
+        }}
       >
         <source src={videoUrl} type={videoMime} />
       </video>
-      <div className="absolute inset-0 bg-black/50" style={{ zIndex: 1 }} />
+      <div
+        className="bg-black/50"
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1 }}
+      />
 
       {/* Fallback background image (behind video) */}
       {mediaData && (
@@ -133,8 +151,9 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
         </div>
       )}
 
-      {/* Content */}
-      <div className="container relative z-10 pt-2 pb-10 md:pt-4 md:pb-16">
+      {/* Content — pb sized to clear the footer overlap (mobile -mt-32 = 128px,
+          desktop -mt-40 = 160px), plus extra room for the torn-paper graphic. */}
+      <div className="container relative z-10 pt-2 pb-44 md:pt-4 md:pb-52">
         <div className="max-w-xl">
           {/* Title & subtitle */}
           {richText && (

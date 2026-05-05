@@ -17,9 +17,8 @@ export const PageTransitionProvider: React.FC<{ children: React.ReactNode }> = (
     gsap.set(contentRef.current, { opacity: 0 })
     gsap.to(contentRef.current, {
       opacity: 1,
-      duration: 0.4,
+      duration: 0.2,
       ease: 'power2.out',
-      delay: 0.05,
     })
 
     prevPathname.current = pathname
@@ -54,7 +53,7 @@ export const PageTransitionProvider: React.FC<{ children: React.ReactNode }> = (
 
       gsap.to(contentRef.current, {
         opacity: 0,
-        duration: 0.25,
+        duration: 0.12,
         ease: 'power2.in',
         onComplete: () => {
           router.push(href)
