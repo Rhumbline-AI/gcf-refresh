@@ -84,11 +84,22 @@ export function WorkSection2({
       const minEdgeGap = isMobile ? 24 : 12
 
       if (o1) {
-        // LEFT connector: comes from LOW, elbow BELOW orb, arm angles UP into orb bottom
+        // LEFT connector: comes from LOW, elbow BELOW orb, arm angles UP into orb bottom.
+        // Endpoint is extended DEEP into the orb (along the same line direction) so the
+        // orb's body always covers the line tip — even when FloatingWrapper / hover
+        // animations shift the orb a few pixels in any direction.
         const lBendX = Math.max(minEdgeGap, o1.cx - o1.r * (isMobile ? 1.0 : 1.30))
         const lBendY = o1.cy + o1.r * 1.15
-        const lOrbX  = o1.cx - o1.r * 0.48
-        const lOrbY  = o1.cy + o1.r * 0.72
+        const lEdgeX = o1.cx - o1.r * 0.48
+        const lEdgeY = o1.cy + o1.r * 0.72
+        // Extend along the same line direction so the visible entry point on the
+        // orb's edge stays where it was, but the actual endpoint is buried inside.
+        const lDx = lEdgeX - lBendX
+        const lDy = lEdgeY - lBendY
+        const lLen = Math.sqrt(lDx * lDx + lDy * lDy) || 1
+        const lExt = o1.r * 0.6 // extra depth past the visible edge, into the orb
+        const lOrbX = lEdgeX + (lDx / lLen) * lExt
+        const lOrbY = lEdgeY + (lDy / lLen) * lExt
         sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.85, x2: lBendX, y2: lBendY })
         sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
         sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
@@ -99,11 +110,18 @@ export function WorkSection2({
       }
 
       if (o3) {
-        // RIGHT connector: comes from HIGH, elbow far out at orb-level, arm goes horizontal into orb side
+        // RIGHT connector: comes from HIGH, elbow far out at orb-level, arm goes horizontal into orb side.
+        // Endpoint is extended DEEP into the orb so the orb body covers the tip during animations.
         const bBendX = Math.min(W - minEdgeGap, o3.cx + o3.r * (isMobile ? 1.1 : 1.50))
         const bBendY = o3.cy + o3.r * 0.35
-        const bOrbX  = o3.cx + o3.r * 0.80
-        const bOrbY  = o3.cy + o3.r * 0.38
+        const bEdgeX = o3.cx + o3.r * 0.80
+        const bEdgeY = o3.cy + o3.r * 0.38
+        const bDx = bEdgeX - bBendX
+        const bDy = bEdgeY - bBendY
+        const bLen = Math.sqrt(bDx * bDx + bDy * bDy) || 1
+        const bExt = o3.r * 0.6
+        const bOrbX = bEdgeX + (bDx / bLen) * bExt
+        const bOrbY = bEdgeY + (bDy / bLen) * bExt
         sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.15, x2: bBendX, y2: bBendY })
         sa(svg.querySelector('.bl2'), { x1: bBendX, y1: bBendY, x2: bOrbX, y2: bOrbY })
         sa(svg.querySelector('.db'),  { cx: bBendX, cy: bBendY })

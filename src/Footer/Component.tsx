@@ -20,17 +20,18 @@ export async function Footer() {
     >
       {/* White bg starts at the tear graphic's bottom edge so the page color
           above (white, blue, dark, etc.) bleeds up behind the torn-paper edge
-          for a seamless transition. Formula = tear's top offset (-10%) + tear's
-          height (clamp), minus a small overlap so there's no transparent seam. */}
+          for a seamless transition. Tear is positioned high (-17%) so the
+          PNG's "paper body" white area sits at/below the footer top, leaving
+          only the irregular torn edge to peek above into the page content. */}
       <div
         aria-hidden
         className="absolute inset-x-0 bottom-0 bg-white z-0 pointer-events-none"
-        style={{ top: 'calc(-10% + clamp(85px, 11vw, 125px))' }}
+        style={{ top: 'calc(-17% + clamp(90px, 12vw, 130px))' }}
       />
       <div
         className="absolute w-full pointer-events-none select-none z-20 overflow-visible"
         style={{
-          top: '-10%',
+          top: '-17%',
           height: 'clamp(100px, 12vw, 140px)',
           minWidth: '960px',
           left: '50%',

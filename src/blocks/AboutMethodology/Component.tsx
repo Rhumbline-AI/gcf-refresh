@@ -37,28 +37,22 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ items }
     const triggers: ScrollTrigger[] = []
     const SCRUB = 0.4
 
-    // Big blue circle — "hold then accelerate up".
+    // Big blue circle — slow upward drift that stops while the circle is
+    // still mostly visible. The circle should partially overlap the next
+    // section (e.g. the rocket video) rather than scrolling all the way up.
     //
     // Trigger window is anchored to the circle's own bounding box (via the
     // un-transformed aspect-square wrapper) so the timing is correct on every
     // breakpoint, regardless of how tall the surrounding section ends up.
     //
     //   start: 'center 70%'      → kicks in slightly earlier than the
-    //                              fully-centered moment — when the circle's
-    //                              center is about 70% from the top of the
-    //                              viewport (i.e. it's already presenting
-    //                              itself but hasn't fully arrived yet).
+    //                              fully-centered moment.
     //   end:   'top top'          → completes when the circle's top edge has
     //                              naturally scrolled to the viewport top.
     //
-    // While the timeline runs we add yPercent: -92 on top of the natural
-    // scroll, so by the time scroll reaches 'top top' the circle has been
-    // pushed almost an entire extra height upward — leaving only a thin
-    // sliver visible at the top edge by the time the user has fully scrolled
-    // through the section.
-    //
-    // ease: 'power2.in' delivers the requested acceleration without feeling
-    // floaty.
+    // yPercent: -25 keeps the circle mostly in view at the end of the
+    // animation, so it only partially covers the section below. Linear ease
+    // ('none') prevents the late-stage acceleration that made it whip away.
     const circleTl = gsap.timeline({
       scrollTrigger: {
         trigger: aspect,
@@ -67,7 +61,7 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ items }
         scrub: SCRUB,
       },
     })
-    circleTl.to(circle, { yPercent: -92, ease: 'power2.in', duration: 1 })
+    circleTl.to(circle, { yPercent: -25, ease: 'none', duration: 1 })
     if (circleTl.scrollTrigger) triggers.push(circleTl.scrollTrigger)
 
     // Ring (desktop only — it's hidden < md). Continuous L→R glide across

@@ -88,7 +88,7 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
                   opacity: 0.35,
                 }}
               />
-              <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-16 py-12 sm:px-18 sm:py-10 md:px-10 md:py-12 lg:px-14 lg:py-16 text-white text-center">
+              <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-16 py-12 sm:px-20 sm:py-14 md:px-10 md:py-12 lg:px-14 lg:py-16 text-white text-center">
               <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light mb-2 sm:mb-3 md:mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
                 {title?.replace(/\s+/g, ' ').trim()}
               </h2>
@@ -111,20 +111,20 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
                 </button>
               </div>
 
-              <div className="w-full max-w-md space-y-4 sm:space-y-6 md:space-y-8">
+              <div className="w-full max-w-md space-y-3 sm:space-y-5 md:space-y-8">
                 {items?.map((item, i) => (
-                  <div key={i} className="flex flex-row gap-2 sm:gap-3 md:gap-4 items-center text-left">
+                  <div key={i} className="flex flex-row gap-1.5 sm:gap-3 md:gap-4 items-center text-left">
                     <div className="flex-1">
-                      <h3 className="text-xs sm:text-sm md:text-base lg:text-lg font-bold sm:mb-1" style={{ fontFamily: 'var(--font-inter)' }}>
+                      <h3 className="text-[10px] sm:text-sm md:text-base lg:text-lg font-bold sm:mb-1 leading-tight" style={{ fontFamily: 'var(--font-inter)' }}>
                         {item.label?.replace(/\s+/g, ' ').trim()}
                       </h3>
                     </div>
-                    <div className="flex-1 flex items-center gap-2">
-                      <svg className="w-6 sm:w-8 h-4 flex-shrink-0" viewBox="0 0 32 16" fill="none">
+                    <div className="flex-1 flex items-center gap-1.5 sm:gap-2">
+                      <svg className="w-4 sm:w-8 h-3 sm:h-4 flex-shrink-0" viewBox="0 0 32 16" fill="none">
                         <line x1="0" y1="8" x2="28" y2="8" stroke="white" strokeWidth="2"/>
                         <circle cx="29" cy="8" r="3" fill="white"/>
                       </svg>
-                      <p className="text-[11px] sm:text-xs md:text-sm lg:text-base opacity-90 leading-snug sm:leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
+                      <p className="text-[9px] sm:text-xs md:text-sm lg:text-base opacity-90 leading-snug sm:leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
                         {item.description?.replace(/\s+/g, ' ').trim()}
                       </p>
                     </div>

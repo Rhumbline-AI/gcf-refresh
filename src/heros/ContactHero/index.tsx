@@ -107,7 +107,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
     // down to the footer. The +10rem buffer matches the footer's md:-mt-40
     // overlap so the video bg bleeds behind the torn-paper shadow.
     // (visible hero ≈ 48vh; if the form is taller, the box grows to fit)
-    <div className="relative w-full flex items-start overflow-hidden" style={{ minHeight: 'calc(48vh + 10rem)' }}>
+    <div className="relative w-full flex flex-col items-start overflow-hidden flex-1" style={{ minHeight: 'calc(48vh + 9rem)' }}>
       {/* Background video — pinned to all 4 edges with explicit `display: block`
           (video is inline by default, which can break `height: 100%`). Width is
           allowed to overflow per design (parent has overflow-hidden). */}
@@ -151,9 +151,11 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
         </div>
       )}
 
-      {/* Content — pb sized to clear the footer overlap (mobile -mt-32 = 128px,
-          desktop -mt-40 = 160px), plus extra room for the torn-paper graphic. */}
-      <div className="container relative z-10 pt-2 pb-44 md:pt-4 md:pb-52">
+      {/* Content — small pb so the form sits ~50px above its content area's
+          bottom. The hero's minHeight provides extra dark space below the form
+          where the video extends into the footer overlap zone, meeting the
+          tear graphic seamlessly. */}
+      <div className="container relative z-10 pt-2 pb-12 md:pt-4 md:pb-14">
         <div className="max-w-xl">
           {/* Title & subtitle */}
           {richText && (

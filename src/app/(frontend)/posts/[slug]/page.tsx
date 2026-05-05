@@ -51,7 +51,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pb-24" style={{ backgroundColor: '#ffffff' }}>
+    <article className="pb-40 md:pb-48" style={{ backgroundColor: '#ffffff' }}>
       <PageClient />
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
