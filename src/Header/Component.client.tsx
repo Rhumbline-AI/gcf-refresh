@@ -32,7 +32,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   return (
     <header className="relative z-50 border-b border-border/30" style={{ backgroundColor: '#f7f2ee' }} {...(theme ? { 'data-theme': theme } : {})}>
       <div className="container relative z-20">
-        <div className="py-6 flex justify-between items-center">
+        <div className="py-6 flex justify-between items-center gap-8">
           {/*
             shrink-0 is critical here. The header is a flex row whose only two
             children are this Link and HeaderNav. Flex defaults to shrink: 1,

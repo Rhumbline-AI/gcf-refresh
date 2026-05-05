@@ -33,14 +33,14 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex gap-8 items-center">
+      <nav className="hidden md:flex gap-4 lg:gap-8 items-center">
         {navItems.map(({ link }, i) => {
           return (
             <CMSLink 
               key={i} 
               {...link} 
               appearance="link"
-              className="text-foreground font-medium text-lg tracking-wide hover:text-primary transition-colors"
+              className="text-foreground font-medium text-base lg:text-lg tracking-wide hover:text-primary transition-colors whitespace-nowrap"
               style={{ fontFamily: 'var(--font-inter)' }}
             />
           )

@@ -61,7 +61,7 @@ export const RenderBlocks: React.FC<{
                 <div
                   key={index}
                   className={`block-${blockType}`}
-                  {...(anchorId ? { id: anchorId, style: { scrollMarginTop: '300px' } } : {})}
+                  {...(anchorId ? { id: anchorId, style: { scrollMarginTop: '150px' } } : {})}
                 >
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />

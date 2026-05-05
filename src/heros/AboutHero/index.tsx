@@ -49,7 +49,7 @@ export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
         <div className="flex flex-col items-center text-center" style={{ fontFamily: 'var(--font-inter)' }}>
           <h1
             ref={headlineRef}
-            className="font-extralight text-center leading-[1.05] tracking-tight uppercase text-[1.85rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem]"
+            className="font-extralight text-center leading-[1.05] tracking-tight uppercase text-[2.2rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem]"
           >
             <span className="block">
               <span className="text-[#307fe2]">Insight</span>{' '}
@@ -77,7 +77,7 @@ export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
                   // Larger fully-justified body copy. Hyphens enabled because justified
                   // text creates ugly "rivers" of whitespace without them — the comp
                   // shows hyphenated breaks (e.g. "STRATE-GIES") for this exact reason.
-                  '[&_p]:text-[0.8rem] [&_p]:sm:text-xl [&_p]:md:text-2xl [&_p]:lg:text-3xl [&_p]:font-extralight [&_p]:uppercase [&_p]:leading-[1.6] [&_p]:tracking-[0.08em] [&_p]:max-w-2xl md:[&_p]:max-w-3xl [&_p]:mx-auto [&_p]:text-[#555555] [&_p]:mt-12 [&_p]:text-justify [&_p]:[hyphens:none] [&_p]:sm:[hyphens:auto] [&_p]:[-webkit-hyphens:none] [&_p]:sm:[-webkit-hyphens:auto]',
+                  '[&_p]:text-[0.8rem] [&_p]:sm:text-xl [&_p]:md:text-2xl [&_p]:lg:text-3xl [&_p]:font-extralight [&_p]:uppercase [&_p]:leading-[1.6] [&_p]:tracking-[0.08em] [&_p]:max-w-2xl md:[&_p]:max-w-3xl [&_p]:mx-auto [&_p]:px-6 [&_p]:sm:px-0 [&_p]:text-[#555555] [&_p]:mt-12 [&_p]:text-justify [&_p]:[hyphens:none] [&_p]:sm:[hyphens:auto] [&_p]:[-webkit-hyphens:none] [&_p]:sm:[-webkit-hyphens:auto]',
                   '[&_strong]:font-extralight [&_strong]:text-[#307fe2] [&_strong]:no-underline',
                 ].join(' ')}
                 data={richText}
