@@ -24,15 +24,15 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
   
   return (
     <div 
-      className="py-16 md:py-24 relative dot-matrix-bg"
+      className="py-16 lg:py-24 relative dot-matrix-bg"
       style={{ overflowX: 'clip', overflowY: 'visible' }}
     >
       <div className="relative z-10 flex flex-col items-center justify-center">
-        <ScrollReveal animation="scaleIn" duration={1.2} className="w-full md:max-w-[990px] md:mx-auto md:px-4">
-          {/* Circle bleeds off-screen on mobile; contained on desktop. */}
-          {/* Explicit width:height pair (instead of aspect-square) avoids mobile Safari oval-rendering bug. */}
+        <ScrollReveal animation="scaleIn" duration={1.2} className="w-full lg:max-w-[990px] lg:mx-auto lg:px-4">
+          {/* Circle bleeds off-screen on mobile/tablet; contained on desktop (lg+). */}
+          {/* Explicit width:height pair avoids mobile Safari oval-rendering bug. */}
           <div
-            className="relative w-[130vw] h-[130vw] -ml-[15vw] md:w-full md:h-auto md:ml-0 md:aspect-square flex items-center justify-center"
+            className="relative w-[130vw] h-[130vw] -ml-[15vw] lg:w-full lg:h-auto lg:ml-0 lg:aspect-square flex items-center justify-center"
           >
             <div
               className="absolute"
@@ -63,10 +63,9 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
             </svg>
 
             <div 
-              className="absolute inset-[5%] md:inset-[4%] rounded-full overflow-hidden"
+              className="absolute inset-[5%] lg:inset-[4%] rounded-full overflow-hidden"
               style={{ 
                 backgroundColor: '#307fe2',
-                aspectRatio: '1 / 1',
               }}
             >
               {/* Animated noise base layer */}

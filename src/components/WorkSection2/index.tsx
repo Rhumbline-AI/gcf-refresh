@@ -153,45 +153,46 @@ export function WorkSection2({
     window.addEventListener('resize', scheduleCalc)
     recalcConnectorsRef.current = scheduleCalc
 
+    const playAnimation = () => {
+      if (animated) return
+      animated = true
+      const clearDash = () => {
+        svg.querySelectorAll<SVGLineElement>('line').forEach(l => { l.style.strokeDasharray = ''; l.style.strokeDashoffset = '' })
+        const r = svg.querySelector<SVGElement>('.dec-ring')
+        if (r) { r.style.strokeDasharray = ''; r.style.strokeDashoffset = '' }
+      }
+      const tl = gsap.timeline({ delay: 1.2, onComplete: clearDash })
+
+      const ll1 = svg.querySelector('.ll1')
+      const ll2 = svg.querySelector('.ll2')
+      const bl1 = svg.querySelector('.bl1')
+      const bl2 = svg.querySelector('.bl2')
+      const dl  = svg.querySelector('.dl')
+      const db  = svg.querySelector('.db')
+      const ring = svg.querySelector('.dec-ring')
+
+      if (ll1) tl.to(ll1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0)
+      if (bl1) tl.to(bl1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0.1)
+      if (dl) tl.to(dl, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.85)
+      if (db) tl.to(db, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.95)
+      if (ll2) tl.to(ll2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.0)
+      if (bl2) tl.to(bl2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.1)
+      if (ring) tl.to(ring, { strokeDashoffset: 0, opacity: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
+    }
+
     const st = ScrollTrigger.create({
       trigger: section,
-      start: 'top 95%',
+      start: 'top bottom+=100',
       once: true,
-      onEnter: () => {
-        animated = true
-        // Orbs animate in via FloatingWrapper (0–1.0s). Lines draw after.
-        const clearDash = () => {
-          svg.querySelectorAll<SVGLineElement>('line').forEach(l => { l.style.strokeDasharray = ''; l.style.strokeDashoffset = '' })
-          const r = svg.querySelector<SVGElement>('.dec-ring')
-          if (r) { r.style.strokeDasharray = ''; r.style.strokeDashoffset = '' }
-        }
-        const tl = gsap.timeline({ delay: 1.2, onComplete: clearDash })
-
-        // All element references scoped to this section's SVG
-        const ll1 = svg.querySelector('.ll1')
-        const ll2 = svg.querySelector('.ll2')
-        const bl1 = svg.querySelector('.bl1')
-        const bl2 = svg.querySelector('.bl2')
-        const dl  = svg.querySelector('.dl')
-        const db  = svg.querySelector('.db')
-        const ring = svg.querySelector('.dec-ring')
-
-        // Long segments from edges
-        if (ll1) tl.to(ll1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0)
-        if (bl1) tl.to(bl1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0.1)
-
-        // Dots fade in at bend points
-        if (dl) tl.to(dl, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.85)
-        if (db) tl.to(db, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.95)
-
-        // Short segments to orbs
-        if (ll2) tl.to(ll2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.0)
-        if (bl2) tl.to(bl2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.1)
-
-        // Decorative ring draws on
-        if (ring) tl.to(ring, { strokeDashoffset: 0, opacity: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
-      },
+      onEnter: playAnimation,
     })
+
+    // Fallback: if section is already in view on mount (common on mobile for
+    // subsequent sections), fire animation after a short delay
+    const sRect = section.getBoundingClientRect()
+    if (sRect.top < window.innerHeight) {
+      setTimeout(playAnimation, 300)
+    }
 
     return () => {
       st.kill()
