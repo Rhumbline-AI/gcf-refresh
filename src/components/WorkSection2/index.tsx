@@ -61,70 +61,70 @@ export function WorkSection2({
       return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
     }
 
+    // Get an orb's STATIC center (without FloatingWrapper transforms). Used to
+    // compute the bend (elbow) position, which stays fixed in space.
+    const getStaticOrb = (ref: React.RefObject<HTMLDivElement | null>, sRect: DOMRect) => {
+      if (!ref.current) return null
+      const r = ref.current.getBoundingClientRect()
+      return {
+        cx: r.left - sRect.left + r.width / 2,
+        cy: r.top - sRect.top + r.height / 2,
+        r: r.width / 2,
+      }
+    }
+
+    // Get an orb's CURRENT VISUAL center (with FloatingWrapper transforms applied).
+    // FloatingWrapper applies transforms to two nested inner divs, so we read the
+    // bounding rect of the deeper one to capture the live float/cursor offset.
+    const getVisualOrbCenter = (ref: React.RefObject<HTMLDivElement | null>, sRect: DOMRect) => {
+      if (!ref.current) return null
+      const inner = ref.current.querySelector(':scope > div > div') as HTMLElement | null
+      const target = inner || ref.current
+      const r = target.getBoundingClientRect()
+      return {
+        cx: r.left - sRect.left + r.width / 2,
+        cy: r.top - sRect.top + r.height / 2,
+      }
+    }
+
     const calcConnectors = () => {
       const sRect = section.getBoundingClientRect()
       const W = sRect.width
       const H = sRect.height
 
-      const getOrb = (ref: React.RefObject<HTMLDivElement | null>) => {
-        if (!ref.current) return null
-        const r = ref.current.getBoundingClientRect()
-        return {
-          cx: r.left - sRect.left + r.width / 2,
-          cy: r.top - sRect.top + r.height / 2,
-          r: r.width / 2,
-        }
-      }
-
-      const o1 = getOrb(orb1Ref) // left medium orb
-      const o3 = getOrb(orb3Ref) // center xlarge orb
+      const o1 = getStaticOrb(orb1Ref, sRect) // left medium orb (static, for bend)
+      const o3 = getStaticOrb(orb3Ref, sRect) // center xlarge orb (static, for bend)
 
       // Mobile-aware bend offset: clamp the X bend to keep dots safely inside the viewport.
       const isMobile = W < 768
       const minEdgeGap = isMobile ? 24 : 12
 
       if (o1) {
-        // LEFT connector: comes from LOW, elbow BELOW orb, arm angles UP into orb bottom.
-        // Endpoint is extended DEEP into the orb (along the same line direction) so the
-        // orb's body always covers the line tip — even when FloatingWrapper / hover
-        // animations shift the orb a few pixels in any direction.
+        // LEFT connector: edge → bend (elbow) → orb CENTER. The line tip is
+        // continuously updated by gsap.ticker so it stays anchored to the orb's
+        // moving center as FloatingWrapper / hover animations shift it.
         const lBendX = Math.max(minEdgeGap, o1.cx - o1.r * (isMobile ? 1.0 : 1.30))
         const lBendY = o1.cy + o1.r * 1.15
-        const lEdgeX = o1.cx - o1.r * 0.48
-        const lEdgeY = o1.cy + o1.r * 0.72
-        // Extend along the same line direction so the visible entry point on the
-        // orb's edge stays where it was, but the actual endpoint is buried inside.
-        const lDx = lEdgeX - lBendX
-        const lDy = lEdgeY - lBendY
-        const lLen = Math.sqrt(lDx * lDx + lDy * lDy) || 1
-        const lExt = o1.r * 0.6 // extra depth past the visible edge, into the orb
-        const lOrbX = lEdgeX + (lDx / lLen) * lExt
-        const lOrbY = lEdgeY + (lDy / lLen) * lExt
+        const v1 = getVisualOrbCenter(orb1Ref, sRect) || { cx: o1.cx, cy: o1.cy }
         sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.85, x2: lBendX, y2: lBendY })
-        sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
+        sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: v1.cx, y2: v1.cy })
         sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
+        sa(svg.querySelector('.dl_end'), { cx: v1.cx, cy: v1.cy })
 
-        // Decorative ring: anchored to left orb, upper-left
+        // Decorative ring: anchored to left orb, upper-left (static position)
         const dcR = o1.r * 0.78
         sa(svg.querySelector('.dec-ring'), { cx: o1.cx - o1.r * 0.48, cy: o1.cy - o1.r * 0.42, r: dcR })
       }
 
       if (o3) {
-        // RIGHT connector: comes from HIGH, elbow far out at orb-level, arm goes horizontal into orb side.
-        // Endpoint is extended DEEP into the orb so the orb body covers the tip during animations.
+        // RIGHT connector: edge → bend (elbow) → orb CENTER. Tip follows orb live.
         const bBendX = Math.min(W - minEdgeGap, o3.cx + o3.r * (isMobile ? 1.1 : 1.50))
         const bBendY = o3.cy + o3.r * 0.35
-        const bEdgeX = o3.cx + o3.r * 0.80
-        const bEdgeY = o3.cy + o3.r * 0.38
-        const bDx = bEdgeX - bBendX
-        const bDy = bEdgeY - bBendY
-        const bLen = Math.sqrt(bDx * bDx + bDy * bDy) || 1
-        const bExt = o3.r * 0.6
-        const bOrbX = bEdgeX + (bDx / bLen) * bExt
-        const bOrbY = bEdgeY + (bDy / bLen) * bExt
+        const v3 = getVisualOrbCenter(orb3Ref, sRect) || { cx: o3.cx, cy: o3.cy }
         sa(svg.querySelector('.bl1'), { x1: W + 80, y1: H * 0.15, x2: bBendX, y2: bBendY })
-        sa(svg.querySelector('.bl2'), { x1: bBendX, y1: bBendY, x2: bOrbX, y2: bOrbY })
+        sa(svg.querySelector('.bl2'), { x1: bBendX, y1: bBendY, x2: v3.cx, y2: v3.cy })
         sa(svg.querySelector('.db'),  { cx: bBendX, cy: bBendY })
+        sa(svg.querySelector('.db_end'), { cx: v3.cx, cy: v3.cy })
       }
 
       if (!animated) {
@@ -187,6 +187,8 @@ export function WorkSection2({
       const bl2 = svg.querySelector('.bl2')
       const dl  = svg.querySelector('.dl')
       const db  = svg.querySelector('.db')
+      const dlEnd = svg.querySelector('.dl_end')
+      const dbEnd = svg.querySelector('.db_end')
       const ring = svg.querySelector('.dec-ring')
 
       if (ll1) tl.to(ll1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0)
@@ -195,6 +197,9 @@ export function WorkSection2({
       if (db) tl.to(db, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.95)
       if (ll2) tl.to(ll2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.0)
       if (bl2) tl.to(bl2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.1)
+      // Terminus dots fade in alongside the line tips arriving at the orbs
+      if (dlEnd) tl.to(dlEnd, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 1.4)
+      if (dbEnd) tl.to(dbEnd, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 1.5)
       if (ring) tl.to(ring, { strokeDashoffset: 0, opacity: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
     }
 
@@ -212,11 +217,47 @@ export function WorkSection2({
       setTimeout(playAnimation, 300)
     }
 
+    // Live-anchor the line tips + terminus dots to each orb's current visual
+    // center. This makes the line "pivot" at the fixed bend (elbow) as the
+    // orbs float / drift / get pushed by the cursor — instead of staying put
+    // and disconnecting from the orb visually.
+    const ll2El = svg.querySelector('.ll2')
+    const bl2El = svg.querySelector('.bl2')
+    const dlEndEl = svg.querySelector('.dl_end')
+    const dbEndEl = svg.querySelector('.db_end')
+    const liveAnchor = () => {
+      // Skip work if the entrance dash animation hasn't started — gsap.set on
+      // strokeDasharray + strokeDashoffset is what hides the line, and we
+      // mustn't fight it. Only run once `animated` flips to true.
+      if (!animated) return
+      const sr = section.getBoundingClientRect()
+      const v1 = getVisualOrbCenter(orb1Ref, sr)
+      if (v1 && ll2El) {
+        ll2El.setAttribute('x2', String(v1.cx))
+        ll2El.setAttribute('y2', String(v1.cy))
+      }
+      if (v1 && dlEndEl) {
+        dlEndEl.setAttribute('cx', String(v1.cx))
+        dlEndEl.setAttribute('cy', String(v1.cy))
+      }
+      const v3 = getVisualOrbCenter(orb3Ref, sr)
+      if (v3 && bl2El) {
+        bl2El.setAttribute('x2', String(v3.cx))
+        bl2El.setAttribute('y2', String(v3.cy))
+      }
+      if (v3 && dbEndEl) {
+        dbEndEl.setAttribute('cx', String(v3.cx))
+        dbEndEl.setAttribute('cy', String(v3.cy))
+      }
+    }
+    gsap.ticker.add(liveAnchor)
+
     return () => {
       st.kill()
       ro.disconnect()
       window.removeEventListener('resize', scheduleCalc)
       if (rafId != null) cancelAnimationFrame(rafId)
+      gsap.ticker.remove(liveAnchor)
       recalcConnectorsRef.current = null
     }
   }, [])
@@ -248,10 +289,14 @@ export function WorkSection2({
         <line className="ll1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
         <line className="ll2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
         <circle className="dl dot" r={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 6 : 8} fill="#307fe2" cx="0" cy="0" />
+        {/* Left line terminus dot — sits at the orb's center, follows it live (mostly hidden behind the orb) */}
+        <circle className="dl_end dot" r={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 6 : 8} fill="#307fe2" cx="0" cy="0" />
         {/* Bottom connector */}
         <line className="bl1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
         <line className="bl2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
         <circle className="db dot" r={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 6 : 8} fill="#307fe2" cx="0" cy="0" />
+        {/* Right line terminus dot — sits at the orb's center, follows it live (mostly hidden behind the orb) */}
+        <circle className="db_end dot" r={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 6 : 8} fill="#307fe2" cx="0" cy="0" />
         {/* Decorative ring — anchored to left orb */}
         <circle className="dec-ring" fill="none" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 3 : sizeKey.small === 'tablet' ? 4 : 5} cx="0" cy="0" r="200" />
       </svg>

@@ -49,24 +49,40 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
     }
 
+    // Get an orb's STATIC center (no FloatingWrapper transforms). Used to compute
+    // the bend (elbow) position, which stays fixed in space.
+    const getStaticOrb = (ref: React.RefObject<HTMLDivElement | null>, sRect: DOMRect) => {
+      if (!ref.current) return null
+      const r = ref.current.getBoundingClientRect()
+      return {
+        cx: r.left - sRect.left + r.width / 2,
+        cy: r.top - sRect.top + r.height / 2,
+        r: r.width / 2,
+      }
+    }
+
+    // Get an orb's CURRENT VISUAL center (with FloatingWrapper transforms applied).
+    // FloatingWrapper applies transforms to two nested inner divs, so we read the
+    // bounding rect of the deeper one to capture the live float/cursor offset.
+    const getVisualOrbCenter = (ref: React.RefObject<HTMLDivElement | null>, sRect: DOMRect) => {
+      if (!ref.current) return null
+      const inner = ref.current.querySelector(':scope > div > div') as HTMLElement | null
+      const target = inner || ref.current
+      const r = target.getBoundingClientRect()
+      return {
+        cx: r.left - sRect.left + r.width / 2,
+        cy: r.top - sRect.top + r.height / 2,
+      }
+    }
+
     // Recalculate all SVG positions based on actual orb DOM positions
     const calcConnectors = () => {
       const sRect = section.getBoundingClientRect()
       const W = sRect.width
       const H = sRect.height
 
-      const getOrb = (ref: React.RefObject<HTMLDivElement | null>) => {
-        if (!ref.current) return null
-        const r = ref.current.getBoundingClientRect()
-        return {
-          cx: r.left - sRect.left + r.width / 2,
-          cy: r.top - sRect.top + r.height / 2,
-          r: r.width / 2,
-        }
-      }
-
-      const o1 = getOrb(orb1Ref)
-      const o2 = getOrb(orb2Ref)
+      const o1 = getStaticOrb(orb1Ref, sRect)
+      const o2 = getStaticOrb(orb2Ref, sRect)
       if (!o1 || !o2) return
 
       // Mobile-aware bend offset: on small screens, orbs are tiny so r*1.40 can push the bend
@@ -74,23 +90,25 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       const isMobile = W < 768
       const minEdgeGap = isMobile ? 24 : 12
 
-      // LEFT connector: elbow HIGH, arm drops down into orb from above
+      // LEFT connector: edge → bend (elbow) → orb CENTER. Tip is continuously
+      // re-anchored to the orb's live visual center via gsap.ticker so the line
+      // visually pivots at the bend as the orb floats / drifts.
       const lBendX = Math.max(minEdgeGap, o1.cx - o1.r * (isMobile ? 1.05 : 1.40))
       const lBendY = o1.cy - o1.r * 0.30
-      const lOrbX  = o1.cx - o1.r * 0.55
-      const lOrbY  = o1.cy + o1.r * 0.65
+      const v1 = getVisualOrbCenter(orb1Ref, sRect) || { cx: o1.cx, cy: o1.cy }
       sa(svg.querySelector('.ll1'), { x1: -80, y1: H * 0.18, x2: lBendX, y2: lBendY })
-      sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: lOrbX, y2: lOrbY })
+      sa(svg.querySelector('.ll2'), { x1: lBendX, y1: lBendY, x2: v1.cx, y2: v1.cy })
       sa(svg.querySelector('.dl'),  { cx: lBendX, cy: lBendY })
+      sa(svg.querySelector('.dl_end'), { cx: v1.cx, cy: v1.cy })
 
-      // RIGHT connector: elbow LOW-RIGHT, arm reaches up into orb side
+      // RIGHT connector: edge → bend (elbow) → orb CENTER. Tip follows orb live.
       const rBendX = Math.min(W - minEdgeGap, o2.cx + o2.r * (isMobile ? 1.05 : 1.30))
       const rBendY = o2.cy + o2.r * 1.00
-      const rOrbX  = o2.cx + o2.r * 0.78
-      const rOrbY  = o2.cy + o2.r * 0.40
+      const v2 = getVisualOrbCenter(orb2Ref, sRect) || { cx: o2.cx, cy: o2.cy }
       sa(svg.querySelector('.rl1'), { x1: W + 80, y1: H * 0.78, x2: rBendX, y2: rBendY })
-      sa(svg.querySelector('.rl2'), { x1: rBendX, y1: rBendY, x2: rOrbX, y2: rOrbY })
+      sa(svg.querySelector('.rl2'), { x1: rBendX, y1: rBendY, x2: v2.cx, y2: v2.cy })
       sa(svg.querySelector('.dr'),  { cx: rBendX, cy: rBendY })
+      sa(svg.querySelector('.dr_end'), { cx: v2.cx, cy: v2.cy })
 
       // Decorative ring: anchored to RIGHT orb (USAA) — Venn-overlap upper area, away from lines
       // On mobile the title above the orbs is much closer, so push the ring
@@ -167,6 +185,8 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
         const rl2 = svg.querySelector('.rl2')
         const dl  = svg.querySelector('.dl')
         const dr  = svg.querySelector('.dr')
+        const dlEnd = svg.querySelector('.dl_end')
+        const drEnd = svg.querySelector('.dr_end')
         const ring = svg.querySelector('.dec-ring')
 
         if (ll1) tl.to(ll1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0)
@@ -180,10 +200,44 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
         if (ll2) tl.to(ll2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.0)
         if (rl2) tl.to(rl2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.1)
 
+        // Terminus dots fade in alongside the line tips arriving at the orbs
+        if (dlEnd) tl.to(dlEnd, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 1.4)
+        if (drEnd) tl.to(drEnd, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 1.5)
+
         // Decorative ring draws on in parallel with lines
         if (ring) tl.to(ring, { strokeDashoffset: 0, opacity: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
       },
     })
+
+    // Live-anchor the line tips + terminus dots to each orb's current visual
+    // center so the line "pivots" at the fixed bend as the orbs float / drift.
+    const ll2El = svg.querySelector('.ll2')
+    const rl2El = svg.querySelector('.rl2')
+    const dlEndEl = svg.querySelector('.dl_end')
+    const drEndEl = svg.querySelector('.dr_end')
+    const liveAnchor = () => {
+      if (!animated) return
+      const sr = section.getBoundingClientRect()
+      const v1 = getVisualOrbCenter(orb1Ref, sr)
+      if (v1 && ll2El) {
+        ll2El.setAttribute('x2', String(v1.cx))
+        ll2El.setAttribute('y2', String(v1.cy))
+      }
+      if (v1 && dlEndEl) {
+        dlEndEl.setAttribute('cx', String(v1.cx))
+        dlEndEl.setAttribute('cy', String(v1.cy))
+      }
+      const v2 = getVisualOrbCenter(orb2Ref, sr)
+      if (v2 && rl2El) {
+        rl2El.setAttribute('x2', String(v2.cx))
+        rl2El.setAttribute('y2', String(v2.cy))
+      }
+      if (v2 && drEndEl) {
+        drEndEl.setAttribute('cx', String(v2.cx))
+        drEndEl.setAttribute('cy', String(v2.cy))
+      }
+    }
+    gsap.ticker.add(liveAnchor)
 
     // Expose recalc for the sizeKey effect below
     recalcConnectorsRef.current = scheduleCalc
@@ -193,6 +247,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
       ro.disconnect()
       window.removeEventListener('resize', scheduleCalc)
       if (rafId != null) cancelAnimationFrame(rafId)
+      gsap.ticker.remove(liveAnchor)
       recalcConnectorsRef.current = null
     }
   }, [])
@@ -224,10 +279,14 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
         <line className="ll1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
         <line className="ll2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
         <circle className="dl dot" r={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 6 : 8} fill="#307fe2" cx="0" cy="0" />
+        {/* Left line terminus dot — sits at the orb's center, follows it live (mostly hidden behind the orb) */}
+        <circle className="dl_end dot" r={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 6 : 8} fill="#307fe2" cx="0" cy="0" />
         {/* Right connector */}
         <line className="rl1" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
         <line className="rl2" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 2 : sizeKey.small === 'tablet' ? 3 : 4} x1="0" y1="0" x2="0" y2="0" />
         <circle className="dr dot" r={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 6 : 8} fill="#307fe2" cx="0" cy="0" />
+        {/* Right line terminus dot — sits at the orb's center, follows it live (mostly hidden behind the orb) */}
+        <circle className="dr_end dot" r={sizeKey.small === 'mobile' ? 5 : sizeKey.small === 'tablet' ? 6 : 8} fill="#307fe2" cx="0" cy="0" />
         {/* Decorative ring — anchored to RIGHT orb */}
         <circle className="dec-ring" fill="none" stroke="#307fe2" strokeWidth={sizeKey.small === 'mobile' ? 3 : sizeKey.small === 'tablet' ? 4 : 5} cx="0" cy="0" r="200" />
       </svg>
