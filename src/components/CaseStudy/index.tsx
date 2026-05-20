@@ -9,7 +9,7 @@ import scribble2 from '@/images/scribble-case-study2.png'
 import shadow2 from '@/images/case-study-block2-shadow2.png'
 import arrowLeft from '@/images/scribble-arrow-left.png'
 import arrowRight from '@/images/scribble-arrow-right.png'
-import hand2 from '@/images/hand2.gif'
+import hand2 from '@/images/hand2-transparent.png'
 import ripCaseStudyTop from '@/images/rip-case-study-white2.png'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
@@ -95,7 +95,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
 
   return (
     <div>
-      <div className="pt-10 pb-8 md:pt-14 md:pb-10" style={{ backgroundColor: '#f5f0eb' }}>
+      <div className="pt-10 pb-24 md:pt-14 md:pb-10" style={{ backgroundColor: '#f5f0eb' }}>
         <div className="container">
           {/* Client name with underline extending beyond text */}
           {clientName && (
@@ -159,7 +159,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                     style={{
                       left: '87%',
                       top: '50%',
-                      width: '85%',
+                      width: '80%',
                       zIndex: 20,
                     }}
                   >
@@ -197,7 +197,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
 
       {/* Paper-tear divider between case study intro and content blocks */}
       {contentBlocks && contentBlocks.length > 0 && (
-        <div className="relative w-full -mb-12 md:-mb-16 z-10 overflow-hidden pointer-events-none" aria-hidden>
+        <div className="relative w-full -mb-6 md:-mb-16 z-10 overflow-hidden pointer-events-none" aria-hidden>
           <Image
             src={ripCaseStudyTop}
             alt=""
@@ -211,16 +211,17 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
       {/* Alternating content blocks with blue background */}
       {contentBlocks && contentBlocks.length > 0 && (
         <div
-          className="relative pt-24 md:pt-32 pb-20 md:pb-32"
+          className="relative pt-24 md:pt-32 pb-44 md:pb-32"
           style={{
             backgroundImage: `url(${blueBg.src})`,
             backgroundRepeat: 'repeat',
             backgroundSize: '100% auto',
             backgroundPosition: 'center',
+            overflow: 'visible',
           }}
         >
-          <div className="container">
-            <div className="max-w-6xl mx-auto space-y-14 md:space-y-20">
+          <div className="container" style={{ overflow: 'visible' }}>
+            <div className="max-w-6xl mx-auto space-y-14 md:space-y-20" style={{ overflow: 'visible' }}>
               {contentBlocks.map((block, index) => {
                 const isLeft = index % 2 === 0
                 const media = block.media as Media
@@ -237,19 +238,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                     delay={0.05}
                     className={`relative flex flex-col ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 md:gap-16 items-stretch md:items-center`}
                   >
-                    {/* Arrow positioned per design reference: top-right when text is right, bottom-left when text is left. Only on blocks 1 and 4. */}
-                    {(block.caption || block.description) && (index === 0 || index === 3) && (
-                      <Image
-                        src={arrowDirection}
-                        alt=""
-                        className="absolute pointer-events-none z-20"
-                        style={
-                          arrowOnRight
-                            ? { right: '1rem', top: '1rem', width: 'clamp(50px, 8vw, 80px)', height: 'auto' }
-                            : { left: '1rem', bottom: '1rem', width: 'clamp(50px, 8vw, 80px)', height: 'auto' }
-                        }
-                      />
-                    )}
+                    {/* Arrows removed per design direction */}
 
                     {/* Media container with scribble background */}
                     <div className="relative w-full md:flex-1" style={{ overflow: 'visible' }}>
@@ -261,18 +250,30 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                           style={
                             index === 0
                               ? {
+                                  // Block 1 (scribble1): centered behind the image
                                   width: '170%',
                                   height: '170%',
                                   left: '55%',
+                                  top: '50%',
+                                  transform: 'translate(-50%, -50%)',
+                                  objectFit: 'contain',
+                                }
+                              : block.aspectRatio === '9:16'
+                              ? {
+                                  // Portrait images: shadow anchored at bottom
+                                  width: '140%',
+                                  height: '140%',
+                                  left: '50%',
                                   top: '100%',
                                   transform: 'translate(-50%, -50%)',
                                   objectFit: 'contain',
                                 }
                               : {
+                                  // All other blocks: centered behind the image
                                   width: '140%',
                                   height: '140%',
                                   left: '50%',
-                                  top: '100%',
+                                  top: '50%',
                                   transform: 'translate(-50%, -50%)',
                                   objectFit: 'contain',
                                 }

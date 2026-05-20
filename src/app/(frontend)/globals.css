@@ -277,6 +277,14 @@ html[data-theme='light'] {
   padding-bottom: 12rem;
 }
 
+/* Contact page only: paint the footer's transparent zones black so the dark
+   video bg appears continuous up to the torn-paper graphic — no white/gray
+   gap between the video and the footer's white bg. Scoped via :has() so it
+   never affects any other page's footer. */
+body:has(.page-contact) > footer.footer-tear {
+  background-color: #000;
+}
+
 /* Remove per-section dot matrix bg on work page — the parent article handles it */
 .page-work .work-hero-bg,
 .page-work .block-work > section,

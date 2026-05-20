@@ -8,6 +8,7 @@ const dirname = path.dirname(filename)
 loadEnv({ path: path.resolve(dirname, '../../.env') })
 
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import sharp from 'sharp'
 import { buildConfig, PayloadRequest } from 'payload'
 
@@ -38,6 +39,15 @@ if (!process.env.DATABASE_URI) {
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
+  // Outbound email is delivered via Resend so the form-builder plugin can send
+  // contact form submissions to getstarted@gcfactory.com. Requires
+  // `RESEND_API_KEY` in env. From-address must use a domain you've verified
+  // in your Resend dashboard.
+  email: resendAdapter({
+    defaultFromAddress: process.env.RESEND_FROM_ADDRESS || 'noreply@gcfactory.com',
+    defaultFromName: process.env.RESEND_FROM_NAME || 'GCF Website',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.

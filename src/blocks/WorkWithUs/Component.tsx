@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { Media as MediaType } from '@/payload-types'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
-import hand2 from '@/images/hand2.gif'
+import hand2 from '@/images/hand2-transparent.png'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
 type WorkWithUsProps = {
@@ -82,7 +82,7 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
       <div className="container relative flex flex-col items-center justify-center">
         {/* Blue circle + hand. Mobile uses a smaller circle (300px) so the hand
             fits on screen alongside it; desktop keeps the 552px hero size. */}
-        <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[300px] md:max-w-[552px]">
+        <ScrollReveal animation="scaleUp" duration={1} className="w-full max-w-[345px] md:max-w-[552px]">
           <div className="relative w-full aspect-square">
 
             {/* Link is the positioning context — hand sits inside at circle-relative percentages */}

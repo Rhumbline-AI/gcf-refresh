@@ -86,8 +86,8 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   return (
     <article
-      className={`${isFullBleed ? 'pb-0 flex flex-col flex-1' : 'pb-24'} page-${decodedSlug} ${isWork ? 'dot-matrix-bg' : ''}`}
-      style={pageBg ? { backgroundColor: pageBg } : undefined}
+      className={`${isFullBleed ? 'pb-0' : 'pb-24'} page-${decodedSlug} ${isWork ? 'dot-matrix-bg' : ''}`}
+      style={pageBg ? { backgroundColor: pageBg } : isFullBleed ? { backgroundColor: '#000000' } : undefined}
     >
       <PageClient />
       <PayloadRedirects disableNotFound url={url} />

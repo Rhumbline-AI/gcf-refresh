@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import circleBg from '@/images/blue-noise-background.jpg'
 import howWeDoItBg from '@/images/how-we-do-it-bg.jpg'
-import hand1 from '@/images/hand1.gif'
+import hand1 from '@/images/hand1-transparent.png'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
 type MethodologyProps = {
@@ -34,17 +34,6 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
           <div
             className="relative w-[130vw] h-[130vw] -ml-[15vw] lg:w-full lg:h-auto lg:ml-0 lg:aspect-square flex items-center justify-center"
           >
-            <div
-              className="absolute"
-              style={{
-                right: '-5%',
-                top: '78%',
-                width: 'clamp(140px, 18vw, 260px)',
-                zIndex: 20,
-              }}
-            >
-              <Image src={hand1} alt="" className="w-full h-auto" unoptimized />
-            </div>
             <svg 
               className="absolute inset-0 w-full h-full overflow-visible animate-[spin_60s_linear_infinite]" 
               viewBox="0 0 100 100"
@@ -62,8 +51,24 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
               </text>
             </svg>
 
-            <div 
-              className="absolute inset-[5%] lg:inset-[4%] rounded-full overflow-hidden"
+            {/* Wrapper that matches the inner circle's bounds (overflow visible)
+                so the hand can be positioned RELATIVE TO THE CIRCLE rather than
+                the parent square. This keeps the hand "locked" to the circle's
+                right edge consistently across all breakpoints. */}
+            <div className="absolute inset-[5%] lg:inset-[4%]">
+              <div
+                className="absolute z-20 right-[-12%] sm:right-[-9%] lg:right-[-9%]"
+                style={{
+                  top: '80%',
+                  width: 'clamp(110px, 28%, 280px)',
+                  rotate: '-6deg',
+                }}
+              >
+                <Image src={hand1} alt="" className="w-full h-auto" unoptimized />
+              </div>
+
+              <div 
+              className="absolute inset-0 rounded-full overflow-hidden"
               style={{ 
                 backgroundColor: '#307fe2',
               }}
@@ -132,6 +137,7 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
                 ))}
               </div>
               </div>
+            </div>
             </div>
           </div>
         </ScrollReveal>

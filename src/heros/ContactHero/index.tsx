@@ -107,7 +107,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
     // down to the footer. The +10rem buffer matches the footer's md:-mt-40
     // overlap so the video bg bleeds behind the torn-paper shadow.
     // (visible hero ≈ 48vh; if the form is taller, the box grows to fit)
-    <div className="relative w-full flex flex-col items-start overflow-hidden flex-1" style={{ minHeight: 'calc(48vh + 9rem)' }}>
+    <div className="relative w-full flex flex-col items-start overflow-hidden" style={{ minHeight: 'calc(100dvh + 10rem)', backgroundColor: '#000' }}>
       {/* Background video — pinned to all 4 edges with explicit `display: block`
           (video is inline by default, which can break `height: 100%`). Width is
           allowed to overflow per design (parent has overflow-hidden). */}
