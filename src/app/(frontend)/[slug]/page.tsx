@@ -76,6 +76,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const pageBackgrounds: Record<string, string> = {
     faq: '#307fe2',
     pov: '#f7f2ee',
+    about: '#ffffff',
   }
   const pageBg = pageBackgrounds[decodedSlug]
 
@@ -86,7 +87,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   return (
     <article
-      className={`${isFullBleed ? 'pb-0 min-h-full' : 'pb-24'} page-${decodedSlug} ${isWork ? 'dot-matrix-bg' : ''}`}
+      className={`${isFullBleed ? 'pb-0 min-h-full' : 'pb-56 md:pb-52'} page-${decodedSlug} ${isWork ? 'dot-matrix-bg' : ''}`}
       style={pageBg ? { backgroundColor: pageBg } : isFullBleed ? { backgroundColor: '#000000' } : undefined}
     >
       <PageClient />

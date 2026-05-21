@@ -155,7 +155,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
           bottom. The hero's minHeight provides extra dark space below the form
           where the video extends into the footer overlap zone, meeting the
           tear graphic seamlessly. */}
-      <div className="container relative z-10 pt-2 pb-12 md:pt-4 md:pb-14">
+      <div className="container relative z-10 pt-16 pb-12 md:pt-20 md:pb-14">
         <div className="max-w-xl">
           {/* Title & subtitle */}
           {richText && (

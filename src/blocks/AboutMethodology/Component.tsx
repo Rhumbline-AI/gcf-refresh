@@ -61,20 +61,20 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ items }
         scrub: SCRUB,
       },
     })
-    circleTl.to(circle, { yPercent: -25, ease: 'none', duration: 1 })
+    circleTl.to(circle, { yPercent: -15, ease: 'none', duration: 1 })
     if (circleTl.scrollTrigger) triggers.push(circleTl.scrollTrigger)
 
-    // Ring (desktop only — it's hidden < md). Continuous L→R glide across
-    // the full section scroll window — independent of the circle timing.
+    // Ring (desktop only — it's hidden < md). Glides L→R and disappears
+    // behind the solid blue content circle (ring z-index < circle z-index).
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
     if (ringRef.current && isDesktop) {
       const ringTween = gsap.to(ringRef.current, {
-        xPercent: 140,
+        xPercent: 100,
         ease: 'none',
         scrollTrigger: {
           trigger: section,
           start: 'top bottom',
-          end: 'bottom top',
+          end: 'center top',
           scrub: SCRUB,
         },
       })
@@ -112,7 +112,7 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ items }
         style={{
           width: 'clamp(380px, 55vw, 950px)',
           height: 'clamp(380px, 55vw, 950px)',
-          top: 'clamp(-60px, 2vw, 40px)',
+          top: 'clamp(-160px, -5vw, -60px)',
           left: 'clamp(-260px, -20vw, -120px)',
           backgroundColor: '#307fe2',
           backgroundImage: `linear-gradient(rgba(48,127,226,0.8), rgba(48,127,226,0.8)), url(${circleBg.src})`,
