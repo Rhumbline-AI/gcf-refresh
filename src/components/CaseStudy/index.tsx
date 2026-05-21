@@ -243,14 +243,17 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                     {/* Media container with scribble background */}
                     <div className="relative w-full md:flex-1" style={{ overflow: 'visible' }}>
                       {scribble && (
-                        <Image
-                          src={scribble}
+                        // Plain <img> (not next/image) so percentage width/height
+                        // styles are respected consistently on all screen sizes.
+                        // next/image injects its own sizing CSS that overrides
+                        // percentage-based dimensions, hiding scribbles on mobile.
+                        <img
+                          src={scribble.src}
                           alt=""
                           className="absolute pointer-events-none z-0"
                           style={
                             index === 0
                               ? {
-                                  // Block 1 (scribble1): centered behind the image
                                   width: '170%',
                                   height: '170%',
                                   left: '55%',
@@ -260,7 +263,6 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                                 }
                               : block.aspectRatio === '9:16'
                               ? {
-                                  // Portrait images: shadow anchored at bottom
                                   width: '140%',
                                   height: '140%',
                                   left: '50%',
@@ -269,7 +271,6 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                                   objectFit: 'contain',
                                 }
                               : {
-                                  // All other blocks: centered behind the image
                                   width: '140%',
                                   height: '140%',
                                   left: '50%',

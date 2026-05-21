@@ -58,7 +58,7 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
               d="M 50, 50 m -48, 0 a 48,48 0 1,1 96,0 a 48,48 0 1,1 -96,0"
             />
           </defs>
-          <text className="text-[1.4px] fill-foreground tracking-wide font-medium" style={{ fontFamily: 'var(--font-inter)' }}>
+          <text className="work-with-us-text fill-foreground tracking-wide font-medium" style={{ fontFamily: 'var(--font-inter)' }}>
             <textPath href="#workWithUsCirclePath" startOffset="0%">
               {Array.from({ length: repetitions }).map((_, i) => (
                 <tspan key={i}>{repeatingText}{'\u00A0\u00A0\u00A0\u00A0'}</tspan>
@@ -74,8 +74,10 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
           mobile via DevTools, also work great on desktop. */}
       <style>{`
         .work-with-us-ring { --ring-top: 35%; }
+        .work-with-us-text { font-size: 4.2px; }
         @media (min-width: 768px) {
           .work-with-us-ring { --ring-top: calc(50% - 250px); }
+          .work-with-us-text { font-size: 1.4px; }
         }
       `}</style>
 

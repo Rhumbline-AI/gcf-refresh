@@ -16,22 +16,13 @@ export async function Footer() {
 
   return (
     <footer 
-      className="footer-tear relative pt-24 md:pt-32 pb-12 -mt-32 md:-mt-40 overflow-visible"
+      className="footer-tear relative pt-24 md:pt-32 pb-12 -mt-56 md:-mt-40 overflow-visible"
+      style={{ backgroundColor: '#ffffff' }}
     >
-      {/* White bg starts at the tear graphic's bottom edge so the page color
-          above (white, blue, dark, etc.) bleeds up behind the torn-paper edge
-          for a seamless transition. Tear is positioned higher (-30%) so it
-          extends well into the page content above, fully covering the bottom
-          edge of any video/image background that ends at the article boundary. */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 bg-white z-0 pointer-events-none"
-        style={{ top: 'calc(-30% + clamp(95px, 12vw, 135px))' }}
-      />
       <div
         className="absolute w-full pointer-events-none select-none z-20 overflow-visible"
         style={{
-          top: '-30%',
+          top: '-23%',
           height: 'clamp(100px, 12vw, 140px)',
           minWidth: '960px',
           left: '50%',

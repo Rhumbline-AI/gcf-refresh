@@ -137,7 +137,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
       </video>
       <div
         className="bg-black/50"
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1 }}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: -1 }}
       />
 
       {/* Fallback background image (behind video) */}
