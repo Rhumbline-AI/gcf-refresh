@@ -85,6 +85,17 @@ export const hero: Field = {
       required: true,
     },
     {
+      name: 'overlayLogo',
+      type: 'upload',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description:
+          'Small logo/image displayed in the lower-left corner of the hero banner, over the video/image. Use a transparent PNG or SVG. Max display width: 160px.',
+      },
+      relationTo: 'media',
+      label: 'Overlay Logo',
+    },
+    {
       name: 'backgroundVideo',
       type: 'upload',
       admin: {

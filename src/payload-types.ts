@@ -202,6 +202,10 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
     /**
+     * Small logo/image displayed in the lower-left corner of the hero banner, over the video/image. Use a transparent PNG or SVG. Max display width: 160px.
+     */
+    overlayLogo?: (number | null) | Media;
+    /**
      * Optional background video (MP4). When provided, plays muted and loops behind the form. Falls back to the image above if not set.
      */
     backgroundVideo?: (number | null) | Media;
@@ -1343,6 +1347,7 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        overlayLogo?: T;
         backgroundVideo?: T;
         aboutHeadlineImage?: T;
         form?: T;

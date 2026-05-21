@@ -11,7 +11,7 @@ import RichText from '@/components/RichText'
 
 registerGSAP()
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
+export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText, overlayLogo }) => {
   const { setHeaderTheme } = useHeaderTheme()
   const contentRef = useRef<HTMLDivElement>(null)
 
@@ -67,6 +67,15 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
           )}
         </div>
       </div>
+
+      {overlayLogo && typeof overlayLogo === 'object' && (
+        <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 z-20">
+          <Media
+            resource={overlayLogo}
+            imgClassName="w-auto h-auto max-w-[120px] md:max-w-[160px]"
+          />
+        </div>
+      )}
     </div>
   )
 }
