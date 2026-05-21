@@ -11,6 +11,8 @@ import arrowLeft from '@/images/scribble-arrow-left.png'
 import arrowRight from '@/images/scribble-arrow-right.png'
 import hand2 from '@/images/hand2-transparent.png'
 import ripCaseStudyTop from '@/images/rip-case-study-white2.png'
+import moreStudiesBtn from '@/images/white-scribble-btn.png'
+import Link from 'next/link'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
 type CaseStudyProps = {
@@ -211,7 +213,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
       {/* Alternating content blocks with blue background */}
       {contentBlocks && contentBlocks.length > 0 && (
         <div
-          className="relative pt-24 md:pt-32 pb-44 md:pb-32"
+          className="relative pt-24 md:pt-32 pb-80 md:pb-56"
           style={{
             backgroundImage: `url(${blueBg.src})`,
             backgroundRepeat: 'repeat',
@@ -326,6 +328,23 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                   </ScrollReveal>
                 )
               })}
+            </div>
+
+            {/* More Case Studies link */}
+            <div className="flex justify-center mt-16 md:mt-24">
+              <Link href="/work" className="relative inline-block group">
+                <img
+                  src={moreStudiesBtn.src}
+                  alt=""
+                  className="w-[220px] md:w-[280px] h-auto"
+                />
+                <span
+                  className="absolute inset-0 flex items-center justify-center text-[#307fe2] font-bold text-sm md:text-base uppercase tracking-wider"
+                  style={{ fontFamily: 'var(--font-inter)' }}
+                >
+                  MORE CASE STUDIES &rarr;
+                </span>
+              </Link>
             </div>
           </div>
         </div>

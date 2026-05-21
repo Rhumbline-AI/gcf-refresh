@@ -22,7 +22,7 @@ export async function Footer() {
       <div
         className="absolute w-full pointer-events-none select-none z-20 overflow-visible"
         style={{
-          top: '-23%',
+          top: 'clamp(-100px, -10vw, -60px)',
           height: 'clamp(100px, 12vw, 140px)',
           minWidth: '960px',
           left: '50%',
