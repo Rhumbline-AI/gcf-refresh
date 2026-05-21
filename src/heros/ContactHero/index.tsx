@@ -253,26 +253,18 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
           {/* Success message */}
           {hasSubmitted && (
             <div
-              className="rounded-2xl bg-white/95 px-6 py-6 md:px-8 md:py-8 max-w-md"
+              className="mt-12 md:mt-16"
               role="status"
               aria-live="polite"
             >
               <p
-                className="text-2xl md:text-3xl font-light text-[#307fe2] leading-snug"
+                className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#307fe2] leading-tight"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
-                Thanks for submitting{' '}
-                <span role="img" aria-label="smile">
-                  🙂
-                </span>
+                Recieved!<br />
+                A human will<br />
+                contact you soon.
               </p>
-              {form?.confirmationType === 'message' && form.confirmationMessage && (
-                <RichText
-                  className="mt-2 [&_p]:text-[#1a1a1a]/80 [&_p]:text-base [&_h2]:text-lg [&_h2]:font-medium [&_h2]:text-[#1a1a1a]"
-                  data={form.confirmationMessage}
-                  enableGutter={false}
-                />
-              )}
             </div>
           )}
         </div>

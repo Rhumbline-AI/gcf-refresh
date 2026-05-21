@@ -6,7 +6,9 @@ const defaultOpenGraph: Metadata['openGraph'] = {
   description: 'We engineer combustible ideas. Growth Catalyst Firm identifies energy sources, blind spots, and acceleration points to fuel undeniable brand growth.',
   images: [
     {
-      url: `${getServerSideURL()}/website-template-OG.webp`,
+      url: `${getServerSideURL()}/og-image.jpg`,
+      width: 1200,
+      height: 628,
     },
   ],
   siteName: 'Growth Catalyst Firm',
