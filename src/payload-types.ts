@@ -1010,7 +1010,14 @@ export interface Project {
    */
   contentBlocks?:
     | {
-        media: number | Media;
+        /**
+         * Upload an image or video file. Leave empty if using a Video URL below.
+         */
+        media?: (number | null) | Media;
+        /**
+         * Paste a Vimeo or YouTube link. This takes priority over an uploaded file.
+         */
+        videoUrl?: string | null;
         aspectRatio: '16:9' | '9:16' | '1:1';
         /**
          * Optional text caption for this media block
@@ -1653,6 +1660,7 @@ export interface ProjectsSelect<T extends boolean = true> {
     | T
     | {
         media?: T;
+        videoUrl?: T;
         aspectRatio?: T;
         caption?: T;
         description?: T;

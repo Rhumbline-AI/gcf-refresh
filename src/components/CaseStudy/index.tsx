@@ -66,6 +66,18 @@ const getMediaWidthClass = (ratio: string) => {
   }
 }
 
+function getVideoEmbedUrl(url: string): string | null {
+  // Vimeo: https://vimeo.com/123456789 or https://player.vimeo.com/video/123456789
+  const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)
+  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=0&title=0&byline=0&portrait=0`
+
+  // YouTube: https://www.youtube.com/watch?v=XXX or https://youtu.be/XXX
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/)
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?rel=0`
+
+  return null
+}
+
 const getScribbleForBlock = (index: number) => {
   const blockNumber = (index % 4) + 1
   switch (blockNumber) {
@@ -284,7 +296,22 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                         />
                       )}
                       <div className="relative z-10">
-                        {media && typeof media !== 'number' && (
+                        {block.videoUrl && getVideoEmbedUrl(block.videoUrl) ? (
+                          <div
+                            className={`relative ${getAspectRatioClass(block.aspectRatio || '16:9')} w-full rounded-2xl md:rounded-3xl ${getMediaWidthClass(block.aspectRatio || '16:9')}`}
+                            style={{
+                              boxShadow: '0 20px 40px -10px rgba(0,0,0,0.35)',
+                            }}
+                          >
+                            <iframe
+                              src={getVideoEmbedUrl(block.videoUrl)!}
+                              className="absolute inset-0 w-full h-full rounded-2xl md:rounded-3xl"
+                              allow="autoplay; fullscreen; picture-in-picture"
+                              allowFullScreen
+                              frameBorder="0"
+                            />
+                          </div>
+                        ) : media && typeof media !== 'number' ? (
                           <div
                             className={`relative ${getAspectRatioClass(block.aspectRatio || '16:9')} w-full rounded-2xl md:rounded-3xl ${getMediaWidthClass(block.aspectRatio || '16:9')}`}
                             style={{
@@ -300,7 +327,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                               />
                             </div>
                           </div>
-                        )}
+                        ) : null}
                       </div>
                     </div>
 

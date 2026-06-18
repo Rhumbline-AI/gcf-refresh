@@ -127,8 +127,20 @@ export const Projects: CollectionConfig = {
                   name: 'media',
                   type: 'upload',
                   relationTo: 'media',
-                  required: true,
-                  label: 'Image or Video',
+                  label: 'Image or Video File',
+                  admin: {
+                    description: 'Upload an image or video file. Leave empty if using a Video URL below.',
+                    condition: (data, siblingData) => !siblingData?.videoUrl,
+                  },
+                },
+                {
+                  name: 'videoUrl',
+                  type: 'text',
+                  label: 'Video URL (Vimeo or YouTube)',
+                  admin: {
+                    description: 'Paste a Vimeo or YouTube link. This takes priority over an uploaded file.',
+                    condition: (data, siblingData) => !siblingData?.media,
+                  },
                 },
                 {
                   name: 'aspectRatio',
