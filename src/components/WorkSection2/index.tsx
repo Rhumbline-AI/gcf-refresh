@@ -477,14 +477,12 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
   const circleContent = (
     <div
       ref={containerRef}
-      className="relative flex items-center justify-center cursor-pointer rounded-full"
+      className="relative flex items-center justify-center rounded-full"
       style={{
         width: `${diameter}px`,
         height: `${diameter}px`,
         filter: `drop-shadow(0 12px 28px rgba(0,0,0,0.12)) drop-shadow(0 4px 10px rgba(0,0,0,0.06))`,
       }}
-      onMouseEnter={size !== 'mobile' && size !== 'mobileLarge' ? handleMouseEnter : undefined}
-      onMouseLeave={size !== 'mobile' && size !== 'mobileLarge' ? handleMouseLeave : undefined}
     >
       <div
         ref={blueCircleRef}
@@ -584,9 +582,21 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
     </div>
   )
 
+  // The `<a>` overlay extends ~40px beyond the orb's bounding box so the
+  // visible "fuzzy halo" (created by GSAP's blur(30px) hover filter) is
+  // also clickable. Hover handlers live on the overlay so the blur effect
+  // also kicks in throughout the same area.
   return (
-    <a href={`/work/${project.slug || ''}`} className="block rounded-full">
+    <div className="relative" style={{ width: `${diameter}px`, height: `${diameter}px` }}>
       {circleContent}
-    </a>
+      <a
+        href={`/work/${project.slug || ''}`}
+        aria-label={`${project.title} case study`}
+        className="absolute rounded-full block cursor-pointer"
+        style={{ inset: '-40px', zIndex: 10 }}
+        onMouseEnter={size !== 'mobile' && size !== 'mobileLarge' ? handleMouseEnter : undefined}
+        onMouseLeave={size !== 'mobile' && size !== 'mobileLarge' ? handleMouseLeave : undefined}
+      />
+    </div>
   )
 }
