@@ -553,27 +553,22 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
           {project.title === 'Safe Auto' && 'Making insurance accessible.'}
           {!['Tecovas', 'The Venetian', 'USAA', 'Safe Auto'].includes(project.title) && 'Discover the story behind this project.'}
         </p>
-        <a 
-          href={`/work/${project.slug || ''}`}
-          className="text-white font-bold uppercase tracking-wider hover:opacity-80 transition-opacity"
+        <span
+          className="text-white font-bold uppercase tracking-wider"
           style={{
             fontSize: size === 'xlarge' ? '1rem' : '0.875rem',
             fontFamily: 'var(--font-inter)',
           }}
         >
           See Case Study &gt;
-        </a>
+        </span>
       </div>}
     </div>
   )
 
-  if (size === 'mobile' || size === 'mobileLarge' || size === 'tablet' || size === 'tabletLarge') {
-    return (
-      <a href={`/work/${project.slug || ''}`} className="block rounded-full">
-        {circleContent}
-      </a>
-    )
-  }
-
-  return circleContent
+  return (
+    <a href={`/work/${project.slug || ''}`} className="block rounded-full">
+      {circleContent}
+    </a>
+  )
 }
