@@ -68,12 +68,20 @@ const getMediaWidthClass = (ratio: string) => {
 
 function getVideoEmbedUrl(url: string): string | null {
   // Vimeo: https://vimeo.com/123456789 or https://player.vimeo.com/video/123456789
-  const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)
-  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=0&title=0&byline=0&portrait=0`
+  // Vimeo private/unlisted: https://vimeo.com/123456789/abc123def456 (h param)
+  const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([\w]+))?/)
+  if (vimeoMatch) {
+    const id = vimeoMatch[1]
+    const hash = vimeoMatch[2]
+    // playsinline=1 is required for iOS Safari to play the video inline
+    // instead of refusing to start; dnt=1 disables tracking cookies.
+    const params = `autoplay=0&title=0&byline=0&portrait=0&playsinline=1&dnt=1`
+    return `https://player.vimeo.com/video/${id}?${hash ? `h=${hash}&` : ''}${params}`
+  }
 
   // YouTube: https://www.youtube.com/watch?v=XXX or https://youtu.be/XXX
   const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/)
-  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?rel=0`
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?rel=0&playsinline=1`
 
   return null
 }
@@ -305,8 +313,9 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                           >
                             <iframe
                               src={getVideoEmbedUrl(block.videoUrl)!}
+                              title={block.caption || 'Embedded video'}
                               className="absolute inset-0 w-full h-full rounded-2xl md:rounded-3xl"
-                              allow="autoplay; fullscreen; picture-in-picture"
+                              allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope"
                               allowFullScreen
                               frameBorder="0"
                             />
