@@ -10,6 +10,7 @@ import {
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import formatSlug from '../utilities/formatSlug'
+import { revalidateProject, revalidateProjectDelete } from './hooks/revalidateProject'
 
 export const Projects: CollectionConfig = {
   slug: 'projects',
@@ -193,4 +194,8 @@ export const Projects: CollectionConfig = {
       ],
     },
   ],
+  hooks: {
+    afterChange: [revalidateProject],
+    afterDelete: [revalidateProjectDelete],
+  },
 }
