@@ -83,10 +83,10 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ title, 
 
       const pinTl = gsap.timeline({
         scrollTrigger: {
-          // Pin high (12% from top) so the circle's bottom stops sooner and
-          // doesn't drop as far down the viewport.
+          // Lock the circle when it's vertically centered in the viewport, then
+          // scrub the inner content through it; release when content bottoms out.
           trigger: wrap,
-          start: 'center 12%',
+          start: 'center center',
           end: `+=${Math.round(travel)}`,
           pin: true,
           pinSpacing: true,
