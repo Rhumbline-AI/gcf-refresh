@@ -23,11 +23,16 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
     if (!contentRef.current) return
 
     const tl = gsap.timeline({ delay: 0.3 })
+    const logoEl = contentRef.current.parentElement?.querySelector('.logo-animate')
     const richTextEl = contentRef.current.querySelector('.rich-text-animate')
     const linkItems = contentRef.current.querySelectorAll('.link-animate')
 
+    if (logoEl) {
+      tl.fromTo(logoEl, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' })
+    }
+
     if (richTextEl) {
-      tl.fromTo(richTextEl, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out' })
+      tl.fromTo(richTextEl, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }, logoEl ? '-=0.4' : 0)
     }
 
     if (linkItems.length > 0) {
@@ -51,11 +56,20 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
           videoClassName="absolute inset-0 w-full h-full object-cover"
         />
       )}
+      {overlayLogo && typeof overlayLogo === 'object' && (
+        <div className="logo-animate absolute top-16 md:top-24 left-1/2 -translate-x-1/2 z-20">
+          <Media
+            resource={overlayLogo}
+            imgClassName="w-auto h-auto max-w-[120px] md:max-w-[160px] mx-auto"
+          />
+        </div>
+      )}
+
       <div ref={contentRef} className="container z-10 relative flex items-center justify-center">
-        <div className="max-w-full md:text-center md:whitespace-nowrap" style={{ fontFamily: 'var(--font-inter)' }}>
-          {richText && <RichText className="rich-text-animate mb-6 [&_h1]:font-bold md:[&_h1]:whitespace-nowrap [&_h1]:text-3xl md:[&_h1]:text-5xl lg:[&_h1]:text-6xl" data={richText} enableGutter={false} />}
+        <div className="max-w-full flex flex-col items-center text-center md:whitespace-nowrap" style={{ fontFamily: 'var(--font-inter)' }}>
+          {richText && <RichText className="rich-text-animate [&_h1]:font-bold md:[&_h1]:whitespace-nowrap [&_h1]:text-3xl md:[&_h1]:text-5xl lg:[&_h1]:text-6xl" data={richText} enableGutter={false} />}
           {Array.isArray(links) && links.length > 0 && (
-            <ul className="flex md:justify-center gap-4">
+            <ul className="flex justify-center gap-4 mt-12 md:mt-20">
               {links.map(({ link }, i) => {
                 return (
                   <li key={i} className="link-animate">
@@ -67,15 +81,6 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
           )}
         </div>
       </div>
-
-      {overlayLogo && typeof overlayLogo === 'object' && (
-        <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 z-20">
-          <Media
-            resource={overlayLogo}
-            imgClassName="w-auto h-auto max-w-[120px] md:max-w-[160px]"
-          />
-        </div>
-      )}
     </div>
   )
 }
