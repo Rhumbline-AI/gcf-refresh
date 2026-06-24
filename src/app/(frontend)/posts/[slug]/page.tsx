@@ -60,7 +60,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <div className="container">
         <RichText
-          className="max-w-2xl [&_p]:text-base [&_p]:md:text-[1.05rem] [&_p]:leading-[1.75] [&_p]:text-[#333] [&_p]:font-light [&_p]:mb-6 [&_h2]:text-2xl [&_h2]:font-light [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:text-xl [&_h3]:font-light [&_h3]:mt-8 [&_h3]:mb-3"
+          className="max-w-2xl [&>*:first-child]:mt-0 [&_p]:text-base [&_p]:md:text-[1.05rem] [&_p]:leading-[1.75] [&_p]:text-[#333] [&_p]:font-light [&_p]:mb-6 [&_h2]:text-2xl [&_h2]:font-light [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:text-xl [&_h3]:font-light [&_h3]:mt-8 [&_h3]:mb-3"
           data={post.content}
           enableGutter={false}
           enableProse={false}

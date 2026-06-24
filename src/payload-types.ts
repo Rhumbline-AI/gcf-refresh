@@ -225,6 +225,10 @@ export interface Page {
   };
   layout: (
     | {
+        /**
+         * Displayed in thin white text above the items. Use Enter for line breaks.
+         */
+        title?: string | null;
         items?:
           | {
               label: string;
@@ -238,6 +242,7 @@ export interface Page {
         blockName?: string | null;
         blockType: 'aboutMethodology';
       }
+    | BlueStatementBlock
     | CallToActionBlock
     | {
         title?: string | null;
@@ -764,6 +769,33 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlueStatementBlock".
+ */
+export interface BlueStatementBlock {
+  /**
+   * Centered statement text on the blue background. Use bold/underline for emphasis; each paragraph becomes its own line.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'blueStatement';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
@@ -1006,10 +1038,14 @@ export interface Project {
    */
   results?: string | null;
   /**
-   * Alternating image/video blocks with captions
+   * Mix and match block layouts to tell the case study
    */
   contentBlocks?:
     | {
+        /**
+         * Choose how this block is rendered on the page
+         */
+        layout: 'alternating' | 'fullWidth16x9' | 'twoPortrait';
         /**
          * Upload an image or video file. Leave empty if using a Video URL below.
          */
@@ -1018,13 +1054,24 @@ export interface Project {
          * Paste a Vimeo or YouTube link. This takes priority over an uploaded file.
          */
         videoUrl?: string | null;
-        aspectRatio: '16:9' | '9:16' | '1:1';
         /**
-         * Optional text caption for this media block
+         * The right-hand media for the side-by-side portraits layout.
+         */
+        secondaryMedia?: (number | null) | Media;
+        /**
+         * Right-hand Vimeo/YouTube link for the side-by-side portraits layout.
+         */
+        secondaryVideoUrl?: string | null;
+        /**
+         * Only used for the alternating row layout. Full-width and side-by-side layouts force their own ratios.
+         */
+        aspectRatio?: ('16:9' | '9:16' | '1:1') | null;
+        /**
+         * Optional text caption (only shown for the alternating row layout).
          */
         caption?: string | null;
         /**
-         * Optional paragraph description below the caption
+         * Optional paragraph description below the caption (only shown for the alternating row layout).
          */
         description?: string | null;
         id?: string | null;
@@ -1373,6 +1420,7 @@ export interface PagesSelect<T extends boolean = true> {
         aboutMethodology?:
           | T
           | {
+              title?: T;
               items?:
                 | T
                 | {
@@ -1385,6 +1433,7 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        blueStatement?: T | BlueStatementBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         capabilities?:
           | T
@@ -1508,6 +1557,15 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlueStatementBlock_select".
+ */
+export interface BlueStatementBlockSelect<T extends boolean = true> {
+  content?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1659,8 +1717,11 @@ export interface ProjectsSelect<T extends boolean = true> {
   contentBlocks?:
     | T
     | {
+        layout?: T;
         media?: T;
         videoUrl?: T;
+        secondaryMedia?: T;
+        secondaryVideoUrl?: T;
         aspectRatio?: T;
         caption?: T;
         description?: T;

@@ -8,11 +8,20 @@ export const AboutMethodology: Block = {
   },
   fields: [
     {
+      name: 'title',
+      type: 'textarea',
+      label: 'Section Title',
+      required: false,
+      admin: {
+        description: 'Displayed in thin white text above the items. Use Enter for line breaks.',
+      },
+    },
+    {
       name: 'items',
       type: 'array',
       label: 'Methodology Steps',
-      minRows: 4,
-      maxRows: 4,
+      minRows: 1,
+      maxRows: 6,
       fields: [
         {
           name: 'label',

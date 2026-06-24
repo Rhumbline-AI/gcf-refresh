@@ -17,7 +17,7 @@ export const PostHero: React.FC<{
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   return (
-    <div className="pt-10 pb-6 md:pt-14 md:pb-8" style={{ backgroundColor: '#ffffff' }}>
+    <div className="pt-10 pb-2 md:pt-14 md:pb-3" style={{ backgroundColor: '#ffffff' }}>
       <div className="container">
         <div className="max-w-2xl">
           <img

@@ -245,12 +245,24 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
           <div className="container" style={{ overflow: 'visible' }}>
             <div className="max-w-6xl mx-auto space-y-14 md:space-y-20" style={{ overflow: 'visible' }}>
               {contentBlocks.map((block, index) => {
+                const layout = (block as { layout?: string }).layout || 'alternating'
+
+                if (layout === 'fullWidth16x9') {
+                  return (
+                    <FullWidthBlock key={index} block={block} />
+                  )
+                }
+
+                if (layout === 'twoPortrait') {
+                  return (
+                    <TwoPortraitBlock key={index} block={block} />
+                  )
+                }
+
+                // Default: original alternating row layout
                 const isLeft = index % 2 === 0
                 const media = block.media as Media
                 const scribble = getScribbleForBlock(index)
-                // Per design: image-left blocks → arrow top-right pointing at text; image-right blocks → arrow bottom-left pointing at text
-                const arrowOnRight = isLeft
-                const arrowDirection = arrowOnRight ? arrowLeft : arrowRight
 
                 return (
                   <ScrollReveal
@@ -260,8 +272,6 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                     delay={0.05}
                     className={`relative flex flex-col ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 md:gap-16 items-stretch md:items-center`}
                   >
-                    {/* Arrows removed per design direction */}
-
                     {/* Media container with scribble background */}
                     <div className="relative w-full md:flex-1" style={{ overflow: 'visible' }}>
                       {scribble && (
@@ -399,5 +409,99 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
         </div>
       )}
     </div>
+  )
+}
+
+type ContentBlock = NonNullable<Project['contentBlocks']>[number] & {
+  layout?: string
+  secondaryMedia?: number | Media | null
+  secondaryVideoUrl?: string | null
+}
+
+/**
+ * Renders a single media slot (image or video iframe) at the given aspect ratio.
+ * Shared by both the FullWidthBlock and TwoPortraitBlock layouts so they pick up
+ * the same styling, video embed parsing, and fallback behavior.
+ */
+function MediaSlot({
+  media,
+  videoUrl,
+  aspectClass,
+  title,
+}: {
+  media: number | Media | null | undefined
+  videoUrl?: string | null
+  aspectClass: string
+  title?: string
+}) {
+  const embedUrl = videoUrl ? getVideoEmbedUrl(videoUrl) : null
+  const mediaObj = media && typeof media !== 'number' ? (media as Media) : null
+
+  if (!embedUrl && !mediaObj) return null
+
+  return (
+    <div
+      className={`relative ${aspectClass} w-full rounded-2xl md:rounded-3xl overflow-hidden`}
+      style={{ boxShadow: '0 20px 40px -10px rgba(0,0,0,0.35)' }}
+    >
+      {embedUrl ? (
+        <iframe
+          src={embedUrl}
+          title={title || 'Embedded video'}
+          className="absolute inset-0 w-full h-full rounded-2xl md:rounded-3xl"
+          allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope"
+          allowFullScreen
+          frameBorder="0"
+        />
+      ) : mediaObj ? (
+        <Image
+          src={mediaObj.url || ''}
+          alt={mediaObj.alt || ''}
+          fill
+          className="object-cover"
+        />
+      ) : null}
+    </div>
+  )
+}
+
+/** Single 16:9 piece, no caption, spans the full content column for a hero-style moment. */
+function FullWidthBlock({ block }: { block: ContentBlock }) {
+  return (
+    <ScrollReveal animation="fadeUp" duration={0.9} delay={0.05} className="relative w-full">
+      <MediaSlot
+        media={block.media}
+        videoUrl={block.videoUrl}
+        aspectClass="aspect-[16/9]"
+        title={block.caption || undefined}
+      />
+    </ScrollReveal>
+  )
+}
+
+/** Two 9:16 portraits side-by-side, no captions. Stacks vertically on mobile. */
+function TwoPortraitBlock({ block }: { block: ContentBlock }) {
+  return (
+    <ScrollReveal
+      animation="fadeUp"
+      duration={0.9}
+      delay={0.05}
+      className="relative flex flex-col md:flex-row gap-6 md:gap-10 justify-center items-center"
+    >
+      <div className="w-full max-w-[300px] md:max-w-[360px] mx-auto">
+        <MediaSlot
+          media={block.media}
+          videoUrl={block.videoUrl}
+          aspectClass="aspect-[9/16]"
+        />
+      </div>
+      <div className="w-full max-w-[300px] md:max-w-[360px] mx-auto">
+        <MediaSlot
+          media={block.secondaryMedia}
+          videoUrl={block.secondaryVideoUrl}
+          aspectClass="aspect-[9/16]"
+        />
+      </div>
+    </ScrollReveal>
   )
 }

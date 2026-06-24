@@ -16,15 +16,18 @@ type MethodologyItem = {
 }
 
 type AboutMethodologyProps = {
+  title?: string | null
   items?: MethodologyItem[] | null
   overlayImage?: (number | null) | MediaType
 }
 
-export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ items }) => {
+export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ title, items }) => {
   const sectionRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
   const aspectRef = useRef<HTMLDivElement>(null)
   const circleRef = useRef<HTMLDivElement>(null)
+  const innerContentRef = useRef<HTMLDivElement>(null)
+  const pinWrapRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const section = sectionRef.current
@@ -37,32 +40,74 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ items }
     const triggers: ScrollTrigger[] = []
     const SCRUB = 0.4
 
-    // Big blue circle — slow upward drift that stops while the circle is
-    // still mostly visible. The circle should partially overlap the next
-    // section (e.g. the rocket video) rather than scrolling all the way up.
+    const isMobile = !window.matchMedia('(min-width: 640px)').matches
+
+    // Desktop/tablet: the circle stays static (no scroll drift) — the content
+    // sits centered and 3-across and shouldn't move up or down on scroll.
+
+    // Mobile: items stack vertically and the content column is taller than the
+    // circle. We pin the circle while it's centered so the page scroll is
+    // absorbed and ONLY the inner content scrubs up through the circle — the
+    // title shows first, then each item, then the next section follows cleanly
+    // (no gap) thanks to pin-spacing.
     //
-    // Trigger window is anchored to the circle's own bounding box (via the
-    // un-transformed aspect-square wrapper) so the timing is correct on every
-    // breakpoint, regardless of how tall the surrounding section ends up.
-    //
-    //   start: 'center 70%'      → kicks in slightly earlier than the
-    //                              fully-centered moment.
-    //   end:   'top top'          → completes when the circle's top edge has
-    //                              naturally scrolled to the viewport top.
-    //
-    // yPercent: -25 keeps the circle mostly in view at the end of the
-    // animation, so it only partially covers the section below. Linear ease
-    // ('none') prevents the late-stage acceleration that made it whip away.
-    const circleTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: aspect,
-        start: 'center 70%',
-        end: 'top top',
-        scrub: SCRUB,
-      },
-    })
-    circleTl.to(circle, { yPercent: -15, ease: 'none', duration: 1 })
-    if (circleTl.scrollTrigger) triggers.push(circleTl.scrollTrigger)
+    // The circle is given an EXPLICIT pixel size here (instead of its `vw` +
+    // aspect-ratio CSS) so that the scrollbar appearing/disappearing during
+    // pinning can't change its size mid-scroll.
+    const wrap = pinWrapRef.current
+    if (isMobile && innerContentRef.current && wrap) {
+      const content = innerContentRef.current
+
+      // Lock the circle to an explicit px size (1.6× viewport width — large
+      // enough to bleed well off both edges).
+      const vw = window.innerWidth
+      const circlePx = Math.round(vw * 1.6)
+      aspect.style.width = `${circlePx}px`
+      aspect.style.height = `${circlePx}px`
+      aspect.style.marginLeft = `${-Math.round((circlePx - vw) / 2)}px`
+
+      const circleH = circlePx
+      const contentH = content.offsetHeight
+
+      // Inset from the circle's top/bottom edges (it's round, so leave room so
+      // text isn't clipped by the narrow extremes).
+      const inset = circleH * 0.12
+
+      // Content is vertically centered in the circle via flexbox. Compute the
+      // translate needed to bring the content's top to `inset` (start) and its
+      // bottom to `circleH - inset` (end).
+      const centeredTop = (circleH - contentH) / 2
+      const yStart = inset - centeredTop
+      const yEnd = circleH - inset - contentH - centeredTop
+      const travel = Math.max(0, yStart - yEnd)
+
+      const pinTl = gsap.timeline({
+        scrollTrigger: {
+          // Pin high (12% from top) so the circle's bottom stops sooner and
+          // doesn't drop as far down the viewport.
+          trigger: wrap,
+          start: 'center 12%',
+          end: `+=${Math.round(travel)}`,
+          pin: true,
+          pinSpacing: true,
+          // Reparent to <body> so the section's `overflow-x-clip` can't
+          // interfere with the fixed-position pin — guarantees the circle (and
+          // page) truly lock at this frame instead of drifting.
+          pinReparent: true,
+          anticipatePin: 1,
+          scrub: SCRUB,
+          invalidateOnRefresh: true,
+        },
+      })
+      pinTl.fromTo(content, { y: yStart }, { y: yEnd, ease: 'none' })
+      if (pinTl.scrollTrigger) triggers.push(pinTl.scrollTrigger)
+    }
+
+    // Recompute all trigger positions after the imperative circle sizing above
+    // so the pin engages/locks at the correct scroll position.
+    if (isMobile) {
+      requestAnimationFrame(() => ScrollTrigger.refresh())
+    }
 
     // Ring (desktop only — it's hidden < md). Glides L→R and disappears
     // behind the solid blue content circle (ring z-index < circle z-index).
@@ -83,7 +128,10 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ items }
 
     return () => {
       triggers.forEach((t) => t.kill())
-      circleTl.kill()
+      // Reset the explicit mobile circle sizing back to the CSS classes.
+      aspect.style.width = ''
+      aspect.style.height = ''
+      aspect.style.marginLeft = ''
     }
   }, [])
 
@@ -125,11 +173,11 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ items }
         }}
       />
 
-      <div className="relative z-10 flex flex-col items-center justify-center">
+      <div ref={pinWrapRef} className="relative z-10 flex flex-col items-center justify-center">
         <ScrollReveal animation="scaleIn" duration={1.1} className="w-full md:max-w-[1100px] md:mx-auto md:px-4">
           <div
             ref={aspectRef}
-            className="relative w-[130vw] -ml-[15vw] md:w-full md:ml-0 aspect-square flex items-center justify-center"
+            className="relative w-[112vw] -ml-[6vw] md:w-full md:ml-0 aspect-square flex items-center justify-center"
           >
             {/* Scroll-scrub target. Lives one level inside ScrollReveal's
                 animated wrapper so the entrance transform (on the parent)
@@ -147,11 +195,16 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ items }
                 willChange: 'transform',
               }}
             >
-              {/* Mobile: pull the 2x2 cluster inward (px-14) and tighten the
-                  gap so the four sub-circles sit closer to the center of the
-                  big blue circle. Desktop spacing is unchanged. */}
-              <div className="w-full px-14 sm:px-20 md:px-32 lg:px-40 xl:px-48">
-                <div className="grid grid-cols-2 gap-x-2 gap-y-5 sm:gap-x-4 sm:gap-y-6 md:gap-x-10 md:gap-y-10 lg:gap-x-16 lg:gap-y-14">
+              <div ref={innerContentRef} className="w-full px-10 sm:px-16 md:px-24 lg:px-32 xl:px-40">
+                {title && (
+                  <h2
+                    className="text-white text-center font-extralight uppercase tracking-wide text-2xl sm:text-2xl md:text-3xl lg:text-[2.75rem] xl:text-5xl mb-6 sm:mb-8 md:mb-10 lg:mb-12 whitespace-pre-line"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    {title}
+                  </h2>
+                )}
+                <div className={`grid gap-x-2 gap-y-8 sm:gap-x-4 sm:gap-y-5 md:gap-x-10 md:gap-y-10 lg:gap-x-16 lg:gap-y-14 ${items.length === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2'}`}>
                   {items.map((item, i) => (
                     <MethodologyCircle key={i} item={item} />
                   ))}
@@ -171,7 +224,7 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div
-        className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-44 lg:h-44 xl:w-52 xl:h-52 rounded-full overflow-hidden mb-2 sm:mb-2 md:mb-3 border-2 border-white/20"
+        className="relative w-32 h-32 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-44 lg:h-44 xl:w-52 xl:h-52 rounded-full overflow-hidden mb-2.5 sm:mb-2 md:mb-3 border-2 border-white"
         style={{ backgroundColor: '#1a2a4a' }}
       >
         {hasImage && (
@@ -179,13 +232,13 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
         )}
       </div>
       <h3
-        className="text-xs sm:text-sm md:text-base lg:text-lg font-bold uppercase tracking-wider mb-1 sm:mb-1 text-white"
+        className="text-base sm:text-sm md:text-base lg:text-lg font-bold uppercase tracking-wider mb-1 sm:mb-1 text-white"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.label}
       </h3>
       <p
-        className="text-[11px] sm:text-sm md:text-sm lg:text-base text-white/90 font-medium leading-snug sm:leading-snug max-w-[140px] sm:max-w-[190px] md:max-w-[180px] lg:max-w-[220px]"
+        className="text-sm sm:text-sm md:text-sm lg:text-base text-white/90 font-medium leading-snug sm:leading-snug max-w-[230px] sm:max-w-[190px] md:max-w-[180px] lg:max-w-[220px]"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.description}

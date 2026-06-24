@@ -4,6 +4,7 @@ import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { AboutMethodology } from '../../blocks/AboutMethodology/config'
 import { Archive } from '../../blocks/ArchiveBlock/config'
+import { BlueStatement } from '../../blocks/BlueStatement/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Capabilities } from '../../blocks/Capabilities/config'
 import { Content } from '../../blocks/Content/config'
@@ -84,6 +85,7 @@ export const Pages: CollectionConfig<'pages'> = {
               type: 'blocks',
               blocks: [
                 AboutMethodology,
+                BlueStatement,
                 CallToAction,
                 Capabilities,
                 Content,

@@ -107,16 +107,7 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
                 </p>
               )}
 
-              <div className="flex gap-3 sm:gap-4 mb-6 sm:mb-8 md:mb-12">
-                <button className="bg-white text-[#307fe2] px-4 sm:px-6 py-2 sm:py-2 rounded-full font-bold text-xs sm:text-sm md:text-base uppercase tracking-wide hover:bg-opacity-90 transition-all" style={{ fontFamily: 'var(--font-inter)' }}>
-                  We Identify
-                </button>
-                <button className="bg-white text-[#307fe2] px-4 sm:px-6 py-2 sm:py-2 rounded-full font-bold text-xs sm:text-sm md:text-base uppercase tracking-wide hover:bg-opacity-90 transition-all" style={{ fontFamily: 'var(--font-inter)' }}>
-                  Growth Fuel
-                </button>
-              </div>
-
-              <div className="w-full max-w-md space-y-3 sm:space-y-5 md:space-y-8">
+              <div className="w-full max-w-md space-y-3 sm:space-y-5 md:space-y-8 mt-4 sm:mt-6 md:mt-8">
                 {items?.map((item, i) => (
                   <div key={i} className="flex flex-row gap-1.5 sm:gap-3 md:gap-4 items-center text-left">
                     <div className="flex-1">

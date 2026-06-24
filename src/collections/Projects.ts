@@ -121,9 +121,24 @@ export const Projects: CollectionConfig = {
               type: 'array',
               label: 'Content Blocks',
               admin: {
-                description: 'Alternating image/video blocks with captions',
+                description: 'Mix and match block layouts to tell the case study',
               },
               fields: [
+                {
+                  name: 'layout',
+                  type: 'select',
+                  label: 'Layout',
+                  required: true,
+                  defaultValue: 'alternating',
+                  options: [
+                    { label: 'Alternating row (media + caption)', value: 'alternating' },
+                    { label: 'Full-width 16:9 (no caption)', value: 'fullWidth16x9' },
+                    { label: 'Two portraits side-by-side (9:16, no captions)', value: 'twoPortrait' },
+                  ],
+                  admin: {
+                    description: 'Choose how this block is rendered on the page',
+                  },
+                },
                 {
                   name: 'media',
                   type: 'upload',
@@ -144,6 +159,27 @@ export const Projects: CollectionConfig = {
                   },
                 },
                 {
+                  name: 'secondaryMedia',
+                  type: 'upload',
+                  relationTo: 'media',
+                  label: 'Second Image or Video File',
+                  admin: {
+                    description: 'The right-hand media for the side-by-side portraits layout.',
+                    condition: (data, siblingData) =>
+                      siblingData?.layout === 'twoPortrait' && !siblingData?.secondaryVideoUrl,
+                  },
+                },
+                {
+                  name: 'secondaryVideoUrl',
+                  type: 'text',
+                  label: 'Second Video URL (Vimeo or YouTube)',
+                  admin: {
+                    description: 'Right-hand Vimeo/YouTube link for the side-by-side portraits layout.',
+                    condition: (data, siblingData) =>
+                      siblingData?.layout === 'twoPortrait' && !siblingData?.secondaryMedia,
+                  },
+                },
+                {
                   name: 'aspectRatio',
                   type: 'select',
                   label: 'Aspect Ratio',
@@ -154,13 +190,18 @@ export const Projects: CollectionConfig = {
                     { label: '9:16 (Portrait)', value: '9:16' },
                     { label: '1:1 (Square)', value: '1:1' },
                   ],
+                  admin: {
+                    description: 'Only used for the alternating row layout. Full-width and side-by-side layouts force their own ratios.',
+                    condition: (data, siblingData) => siblingData?.layout === 'alternating' || !siblingData?.layout,
+                  },
                 },
                 {
                   name: 'caption',
                   type: 'text',
                   label: 'Caption',
                   admin: {
-                    description: 'Optional text caption for this media block',
+                    description: 'Optional text caption (only shown for the alternating row layout).',
+                    condition: (data, siblingData) => siblingData?.layout === 'alternating' || !siblingData?.layout,
                   },
                 },
                 {
@@ -168,7 +209,8 @@ export const Projects: CollectionConfig = {
                   type: 'textarea',
                   label: 'Description',
                   admin: {
-                    description: 'Optional paragraph description below the caption',
+                    description: 'Optional paragraph description below the caption (only shown for the alternating row layout).',
+                    condition: (data, siblingData) => siblingData?.layout === 'alternating' || !siblingData?.layout,
                   },
                 },
               ],

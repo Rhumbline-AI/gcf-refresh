@@ -9,28 +9,29 @@ import RichText from '@/components/RichText'
 
 registerGSAP()
 
-// Headline is rendered as live text (reverted from an earlier PNG approach
-// per updated direction). Brand blue on the noun pairs, dark ink on the
-// ampersands. The CMS `aboutHeadlineImage` field is intentionally left in
-// place but unused so editors don't lose any previously-uploaded asset; it
-// can be removed in a follow-up if no longer wanted.
+// The About hero renders entirely from the CMS `richText` field:
+//   • H1 elements → large uppercase headline with bold words in brand blue
+//   • Paragraphs  → body copy (uppercase, lighter weight, justified)
+// This lets the client rework the headline anytime without a code deploy.
 export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
   const { setHeaderTheme } = useHeaderTheme()
-  const contentRef = useRef<HTMLDivElement>(null)
-  const headlineRef = useRef<HTMLHeadingElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setHeaderTheme('light')
   })
 
   useEffect(() => {
-    if (!contentRef.current || !headlineRef.current) return
+    if (!wrapperRef.current) return
 
-    const paragraphs = contentRef.current.querySelectorAll('p')
+    const headings = wrapperRef.current.querySelectorAll('h1, h2, h3')
+    const paragraphs = wrapperRef.current.querySelectorAll('p')
     const tl = gsap.timeline({ delay: 0.3 })
 
-    gsap.set(headlineRef.current, { y: 40, opacity: 0 })
-    tl.to(headlineRef.current, { y: 0, opacity: 1, duration: 1, ease: 'power3.out' })
+    if (headings.length > 0) {
+      gsap.set(headings, { y: 40, opacity: 0 })
+      tl.to(headings, { y: 0, opacity: 1, duration: 1, ease: 'power3.out' })
+    }
 
     if (paragraphs.length > 0) {
       gsap.set(paragraphs, { y: 30, opacity: 0 })
@@ -47,38 +48,17 @@ export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
     >
       <div className="container relative">
         <div className="flex flex-col items-center text-center" style={{ fontFamily: 'var(--font-inter)' }}>
-          <h1
-            ref={headlineRef}
-            className="font-extralight text-center leading-[1.05] tracking-tight uppercase text-[2.2rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem]"
-          >
-            <span className="block">
-              <span className="text-[#307fe2]">Insight</span>{' '}
-              <span className="text-[#1a1a1a]">&amp;</span>{' '}
-              <span className="text-[#307fe2]">Instinct</span>
-            </span>
-            <span className="block">
-              <span className="text-[#307fe2]">Brains</span>{' '}
-              <span className="text-[#1a1a1a]">&amp;</span>{' '}
-              <span className="text-[#307fe2]">Bravery</span>
-            </span>
-            <span className="block">
-              <span className="text-[#307fe2]">Science</span>{' '}
-              <span className="text-[#1a1a1a]">&amp;</span>{' '}
-              <span className="text-[#307fe2]">Story</span>
-            </span>
-          </h1>
-
           {richText && (
-            <div ref={contentRef}>
+            <div ref={wrapperRef}>
               <RichText
                 className={[
                   'mb-0',
-                  '[&_h1]:hidden [&_h2]:hidden [&_h3]:hidden',
-                  // Larger fully-justified body copy. Hyphens enabled because justified
-                  // text creates ugly "rivers" of whitespace without them — the comp
-                  // shows hyphenated breaks (e.g. "STRATE-GIES") for this exact reason.
-                  '[&_p]:text-[0.8rem] [&_p]:sm:text-xl [&_p]:md:text-2xl [&_p]:lg:text-3xl [&_p]:font-extralight [&_p]:uppercase [&_p]:leading-[1.6] [&_p]:tracking-[0.08em] [&_p]:max-w-2xl md:[&_p]:max-w-3xl [&_p]:mx-auto [&_p]:px-6 [&_p]:sm:px-0 [&_p]:text-[#555555] [&_p]:mt-12 [&_p]:text-justify [&_p]:[hyphens:none] [&_p]:sm:[hyphens:auto] [&_p]:[-webkit-hyphens:none] [&_p]:sm:[-webkit-hyphens:auto]',
-                  '[&_strong]:font-extralight [&_strong]:text-[#307fe2] [&_strong]:no-underline',
+                  // Headings: large uppercase, extra-light weight, bold words turn blue
+                  '[&_h1]:font-extralight [&_h1]:text-center [&_h1]:leading-[1.05] [&_h1]:tracking-tight [&_h1]:uppercase [&_h1]:text-[2.2rem] [&_h1]:sm:text-[3.5rem] [&_h1]:md:text-[4.5rem] [&_h1]:lg:text-[5.5rem] [&_h1]:text-[#1a1a1a] [&_h1]:mb-0',
+                  '[&_h1_strong]:font-extralight [&_h1_strong]:text-[#307fe2]',
+                  // Body copy: uppercase, lighter weight, justified
+                  '[&_p]:text-[0.8rem] [&_p]:sm:text-xl [&_p]:md:text-2xl [&_p]:lg:text-3xl [&_p]:font-extralight [&_p]:uppercase [&_p]:leading-[1.6] [&_p]:tracking-[0.08em] [&_p]:max-w-2xl md:[&_p]:max-w-3xl [&_p]:mx-auto [&_p]:px-6 [&_p]:sm:px-0 [&_p]:text-[#555555] [&_p]:mt-5 [&_p]:sm:mt-12 [&_p]:text-justify [&_p]:[hyphens:none] [&_p]:sm:[hyphens:auto] [&_p]:[-webkit-hyphens:none] [&_p]:sm:[-webkit-hyphens:auto]',
+                  '[&_p_strong]:font-extralight [&_p_strong]:text-[#307fe2] [&_p_strong]:no-underline',
                 ].join(' ')}
                 data={richText}
                 enableGutter={false}

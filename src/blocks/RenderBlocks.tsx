@@ -4,6 +4,7 @@ import type { Page } from '@/payload-types'
 
 import { AboutMethodologyBlock } from '@/blocks/AboutMethodology/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
+import { BlueStatementBlock } from '@/blocks/BlueStatement/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { CapabilitiesBlock } from '@/blocks/Capabilities/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
@@ -21,6 +22,7 @@ import { FullWidthBackgroundBlock } from '@/blocks/FullWidthBackground/Component
 const blockComponents = {
   aboutMethodology: AboutMethodologyBlock,
   archive: ArchiveBlock,
+  blueStatement: BlueStatementBlock,
   capabilities: CapabilitiesBlock,
   fullWidthBackground: FullWidthBackgroundBlock,
   content: ContentBlock,
