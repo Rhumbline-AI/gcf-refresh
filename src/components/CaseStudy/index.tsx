@@ -108,8 +108,11 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
     campaignTitle,
     subtitle,
     problem,
+    problemHeading,
     spark,
+    sparkHeading,
     growthFuel,
+    growthFuelHeading,
     results,
     contentBlocks,
     caseStudyContent,
@@ -163,9 +166,9 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
             {/* Left column - text sections */}
             <ScrollReveal animation="fadeUp" staggerChildren stagger={0.15} duration={0.8} className="flex-1 w-full max-w-lg">
               <div>
-                <Section heading="Problem" body={problem} />
-                <Section heading="Spark" body={spark} />
-                <Section heading="Growth Fuel" body={growthFuel} />
+                <Section heading={problemHeading?.trim() || 'Problem'} body={problem} />
+                <Section heading={sparkHeading?.trim() || 'Spark'} body={spark} />
+                <Section heading={growthFuelHeading?.trim() || 'Growth Fuel'} body={growthFuel} />
               </div>
             </ScrollReveal>
 

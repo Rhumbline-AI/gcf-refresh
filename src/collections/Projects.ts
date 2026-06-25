@@ -103,14 +103,41 @@ export const Projects: CollectionConfig = {
               },
             },
             {
+              name: 'problemHeading',
+              type: 'text',
+              label: 'Problem Section Title',
+              defaultValue: 'Problem',
+              admin: {
+                description: 'Heading shown above the problem copy. Defaults to "Problem".',
+              },
+            },
+            {
               name: 'problem',
               type: 'textarea',
               label: 'Problem',
             },
             {
+              name: 'sparkHeading',
+              type: 'text',
+              label: 'Spark Section Title',
+              defaultValue: 'Spark',
+              admin: {
+                description: 'Heading shown above the spark copy. Defaults to "Spark".',
+              },
+            },
+            {
               name: 'spark',
               type: 'textarea',
               label: 'Spark',
+            },
+            {
+              name: 'growthFuelHeading',
+              type: 'text',
+              label: 'Growth Fuel Section Title',
+              defaultValue: 'Growth Fuel',
+              admin: {
+                description: 'Heading shown above the growth fuel copy. Defaults to "Growth Fuel".',
+              },
             },
             {
               name: 'growthFuel',

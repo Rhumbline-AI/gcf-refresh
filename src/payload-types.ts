@@ -1038,8 +1038,20 @@ export interface Project {
    * e.g. "Record growth from an under-appreciated experience."
    */
   subtitle?: string | null;
+  /**
+   * Heading shown above the problem copy. Defaults to "Problem".
+   */
+  problemHeading?: string | null;
   problem?: string | null;
+  /**
+   * Heading shown above the spark copy. Defaults to "Spark".
+   */
+  sparkHeading?: string | null;
   spark?: string | null;
+  /**
+   * Heading shown above the growth fuel copy. Defaults to "Growth Fuel".
+   */
+  growthFuelHeading?: string | null;
   growthFuel?: string | null;
   /**
    * Text that appears inside the blue results circle
@@ -1720,8 +1732,11 @@ export interface ProjectsSelect<T extends boolean = true> {
   clientName?: T;
   campaignTitle?: T;
   subtitle?: T;
+  problemHeading?: T;
   problem?: T;
+  sparkHeading?: T;
   spark?: T;
+  growthFuelHeading?: T;
   growthFuel?: T;
   results?: T;
   contentBlocks?:
