@@ -60,7 +60,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
         <div className="logo-animate absolute top-16 md:top-24 left-0 right-0 z-20 flex justify-center">
           <Media
             resource={overlayLogo}
-            imgClassName="h-auto w-[180px] md:w-[155px]"
+            imgClassName="h-auto w-[200px] md:w-[280px]"
           />
         </div>
       )}
