@@ -7,20 +7,29 @@ import { ScrollReveal } from '@/components/ScrollReveal'
 
 type MethodologyProps = {
   title?: string | null
+  circleText?: string | null
   subtitle?: string | null
   definition?: string | null
   items?: { label: string; description: string; id?: string | null }[] | null
 }
 
-export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, definition, items }) => {
+export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, circleText, subtitle, definition, items }) => {
   const capitalizeWords = (str: string) => {
     return str.split(' ').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
     ).join(' ')
   }
-  const repeatingText = capitalizeWords(title || 'How do we do it?')
-  const separator = '\u00A0\u00A0\u00A0\u00A0'
-  const fullCircleText = Array.from({ length: 40 }, () => repeatingText).join(separator) + separator
+  const repeatingText = capitalizeWords(circleText || title || 'Inside Advantage')
+  const separator = '\u00A0\u00A0\u2022\u00A0\u00A0'
+
+  // Circle path circumference: 2π × 48 ≈ 301.6 SVG units.
+  // At font-size 1.4px, average char width ≈ 0.75 units.
+  // Calculate repetitions to fill path exactly once — no overlap.
+  const circumference = 2 * Math.PI * 48
+  const avgCharWidth = 0.75
+  const segmentLength = (repeatingText.length + separator.length) * avgCharWidth
+  const repetitions = Math.max(1, Math.floor(circumference / segmentLength))
+  const fullCircleText = Array.from({ length: repetitions }, () => repeatingText).join(separator) + separator
   
   return (
     <div 
@@ -45,7 +54,12 @@ export const MethodologyBlock: React.FC<MethodologyProps> = ({ title, subtitle, 
                 />
               </defs>
               <text className="text-[1.4px] fill-foreground tracking-wide font-medium" style={{ fontFamily: 'var(--font-inter)' }}>
-                <textPath href="#circlePath" startOffset="0%">
+                <textPath
+                  href="#circlePath"
+                  startOffset="0%"
+                  textLength={Math.floor(circumference)}
+                  lengthAdjust="spacing"
+                >
                   {fullCircleText}
                 </textPath>
               </text>

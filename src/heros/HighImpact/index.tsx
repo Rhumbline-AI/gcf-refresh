@@ -57,30 +57,31 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
         />
       )}
       {overlayLogo && typeof overlayLogo === 'object' && (
-        <div className="logo-animate absolute top-16 md:top-24 left-1/2 -translate-x-1/2 z-20">
+        <div className="logo-animate absolute top-16 md:top-24 left-0 right-0 z-20 flex justify-center">
           <Media
             resource={overlayLogo}
-            imgClassName="w-auto h-auto max-w-[120px] md:max-w-[160px] mx-auto"
+            imgClassName="w-auto h-auto max-w-[280px] md:max-w-[380px]"
           />
         </div>
       )}
 
       <div ref={contentRef} className="container z-10 relative flex items-center justify-center">
         <div className="max-w-full flex flex-col items-center text-center md:whitespace-nowrap" style={{ fontFamily: 'var(--font-inter)' }}>
-          {richText && <RichText className="rich-text-animate [&_h1]:font-bold md:[&_h1]:whitespace-nowrap [&_h1]:text-3xl md:[&_h1]:text-5xl lg:[&_h1]:text-6xl" data={richText} enableGutter={false} />}
-          {Array.isArray(links) && links.length > 0 && (
-            <ul className="flex justify-center gap-4 mt-12 md:mt-20">
-              {links.map(({ link }, i) => {
-                return (
-                  <li key={i} className="link-animate">
-                    <CMSLink {...link} />
-                  </li>
-                )
-              })}
-            </ul>
-          )}
+          {richText && <RichText className="rich-text-animate [&_h1]:font-bold md:[&_h1]:whitespace-nowrap [&_h1]:text-3xl md:[&_h1]:text-5xl lg:[&_h1]:text-6xl [&_p]:mt-10 md:[&_p]:mt-16" data={richText} enableGutter={false} />}
         </div>
       </div>
+
+      {Array.isArray(links) && links.length > 0 && (
+        <ul className="absolute bottom-[4%] left-0 right-0 flex justify-center gap-4 z-10">
+          {links.map(({ link }, i) => {
+            return (
+              <li key={i} className="link-animate">
+                <CMSLink {...link} />
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </div>
   )
 }

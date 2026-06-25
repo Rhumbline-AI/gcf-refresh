@@ -503,6 +503,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
           padding: size === 'mobile' ? '0 1.25rem' : size === 'mobileLarge' ? '0 1.75rem' : size === 'tablet' || size === 'tabletLarge' ? '0 2rem' : '0 3rem',
           fontFamily: 'var(--font-inter)',
           textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+          lineHeight: 1.05,
           zIndex: 3,
         }}
       >
@@ -545,11 +546,7 @@ function ProjectCircle({ project, size }: ProjectCircleProps) {
             maxWidth: '80%',
           }}
         >
-          {project.title === 'Tecovas' && 'How boots became a brand platform.'}
-          {project.title === 'The Venetian' && 'Reimagining luxury hospitality.'}
-          {project.title === 'USAA' && 'Banking on trust and service.'}
-          {project.title === 'Safe Auto' && 'Making insurance accessible.'}
-          {!['Tecovas', 'The Venetian', 'USAA', 'Safe Auto'].includes(project.title) && 'Discover the story behind this project.'}
+          {project.workBubbleHoverText?.trim() || 'Discover the story behind this project.'}
         </p>
         <span
           className="text-white font-bold uppercase tracking-wider"

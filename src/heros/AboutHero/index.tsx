@@ -49,13 +49,25 @@ export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
       <div className="container relative">
         <div className="flex flex-col items-center text-center" style={{ fontFamily: 'var(--font-inter)' }}>
           {richText && (
-            <div ref={wrapperRef}>
+            <div ref={wrapperRef} className="about-hero-headline">
+              <style>{`
+                .about-hero-headline h1,
+                .about-hero-headline h2,
+                .about-hero-headline h3 {
+                  margin: 0;
+                  line-height: 1.1;
+                }
+              `}</style>
               <RichText
                 className={[
                   'mb-0',
                   // Headings: large uppercase, extra-light weight, bold words turn blue
-                  '[&_h1]:font-extralight [&_h1]:text-center [&_h1]:leading-[1.05] [&_h1]:tracking-tight [&_h1]:uppercase [&_h1]:text-[2.2rem] [&_h1]:sm:text-[3.5rem] [&_h1]:md:text-[4.5rem] [&_h1]:lg:text-[5.5rem] [&_h1]:text-[#1a1a1a] [&_h1]:mb-0',
+                  '[&_h1]:font-extralight [&_h1]:text-center [&_h1]:tracking-tight [&_h1]:uppercase [&_h1]:text-[2.2rem] [&_h1]:sm:text-[3.5rem] [&_h1]:md:text-[4.5rem] [&_h1]:lg:text-[5.5rem] [&_h1]:text-[#1a1a1a]',
+                  '[&_h2]:font-extralight [&_h2]:text-center [&_h2]:tracking-tight [&_h2]:uppercase [&_h2]:text-[2.2rem] [&_h2]:sm:text-[3.5rem] [&_h2]:md:text-[4.5rem] [&_h2]:lg:text-[5.5rem] [&_h2]:text-[#1a1a1a]',
+                  '[&_h3]:font-extralight [&_h3]:text-center [&_h3]:tracking-tight [&_h3]:uppercase [&_h3]:text-[2.2rem] [&_h3]:sm:text-[3.5rem] [&_h3]:md:text-[4.5rem] [&_h3]:lg:text-[5.5rem] [&_h3]:text-[#1a1a1a]',
                   '[&_h1_strong]:font-extralight [&_h1_strong]:text-[#307fe2]',
+                  '[&_h2_strong]:font-extralight [&_h2_strong]:text-[#307fe2]',
+                  '[&_h3_strong]:font-extralight [&_h3_strong]:text-[#307fe2]',
                   // Body copy: uppercase, lighter weight, justified
                   '[&_p]:text-[0.8rem] [&_p]:sm:text-xl [&_p]:md:text-2xl [&_p]:lg:text-3xl [&_p]:font-extralight [&_p]:uppercase [&_p]:leading-[1.6] [&_p]:tracking-[0.08em] [&_p]:max-w-2xl md:[&_p]:max-w-3xl [&_p]:mx-auto [&_p]:px-6 [&_p]:sm:px-0 [&_p]:text-[#555555] [&_p]:mt-5 [&_p]:sm:mt-12 [&_p]:text-justify [&_p]:[hyphens:none] [&_p]:sm:[hyphens:auto] [&_p]:[-webkit-hyphens:none] [&_p]:sm:[-webkit-hyphens:auto]',
                   '[&_p_strong]:font-extralight [&_p_strong]:text-[#307fe2] [&_p_strong]:no-underline',

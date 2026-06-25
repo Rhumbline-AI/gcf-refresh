@@ -14,6 +14,16 @@ export const Methodology: Block = {
       defaultValue: 'How do we do it?',
     },
     {
+      name: 'circleText',
+      type: 'text',
+      label: 'Revolving Circle Text',
+      defaultValue: 'Inside Advantage',
+      admin: {
+        description:
+          'Text that revolves around the outer edge of the circle. Keep it short (1–3 words). It will repeat automatically to fill the ring evenly.',
+      },
+    },
+    {
       name: 'subtitle',
       type: 'text',
       label: 'Subtitle',

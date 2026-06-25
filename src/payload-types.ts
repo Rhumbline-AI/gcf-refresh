@@ -303,6 +303,10 @@ export interface Page {
       }
     | {
         title?: string | null;
+        /**
+         * Text that revolves around the outer edge of the circle. Keep it short (1–3 words). It will repeat automatically to fill the ring evenly.
+         */
+        circleText?: string | null;
         subtitle?: string | null;
         definition?: string | null;
         items?:
@@ -1003,6 +1007,10 @@ export interface Project {
    * Project thumbnail image (for work circles)
    */
   thumbnail?: (number | null) | Media;
+  /**
+   * Short line shown when hovering a work circle on the Work page (desktop). e.g. "How boots became a brand platform."
+   */
+  workBubbleHoverText?: string | null;
   description?: {
     root: {
       type: string;
@@ -1490,6 +1498,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               title?: T;
+              circleText?: T;
               subtitle?: T;
               definition?: T;
               items?:
@@ -1706,6 +1715,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   thumbnail?: T;
+  workBubbleHoverText?: T;
   description?: T;
   clientName?: T;
   campaignTitle?: T;

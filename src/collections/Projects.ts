@@ -52,6 +52,15 @@ export const Projects: CollectionConfig = {
       },
     },
     {
+      name: 'workBubbleHoverText',
+      type: 'textarea',
+      label: 'Work Bubble Hover Text',
+      admin: {
+        description:
+          'Short line shown when hovering a work circle on the Work page (desktop). e.g. "How boots became a brand platform."',
+      },
+    },
+    {
       name: 'description',
       type: 'richText',
       editor: lexicalEditor({
