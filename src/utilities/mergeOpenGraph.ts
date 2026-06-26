@@ -1,18 +1,15 @@
 import type { Metadata } from 'next'
 import { getServerSideURL } from './getURL'
+import { SITE_DEFAULT_TITLE, SITE_DESCRIPTION, SITE_NAME, SITE_OG_IMAGE } from './siteMetadata'
 
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
-  description: 'We engineer combustible ideas. Growth Catalyst Firm identifies energy sources, blind spots, and acceleration points to fuel undeniable brand growth.',
-  images: [
-    {
-      url: `${getServerSideURL()}/og-image.jpg`,
-      width: 1200,
-      height: 628,
-    },
-  ],
-  siteName: 'Growth Catalyst Firm',
-  title: 'Growth Catalyst Firm',
+  locale: 'en_US',
+  url: getServerSideURL(),
+  siteName: SITE_NAME,
+  title: SITE_DEFAULT_TITLE,
+  description: SITE_DESCRIPTION,
+  images: [SITE_OG_IMAGE],
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {

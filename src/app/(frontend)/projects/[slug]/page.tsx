@@ -8,7 +8,7 @@ import React, { cache } from 'react'
 import type { Project } from '@/payload-types'
 
 import { CaseStudy } from '@/components/CaseStudy'
-import { generateMeta } from '@/utilities/generateMeta'
+import { generateProjectMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 
 export async function generateStaticParams() {
@@ -57,11 +57,10 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const decodedSlug = decodeURIComponent(slug)
   const project = await queryProjectBySlug({ slug: decodedSlug })
 
-  return {
-    title: project?.campaignTitle
-      ? `${project.campaignTitle} — ${project.clientName || project.title}`
-      : project?.title,
-  }
+  return generateProjectMeta({
+    project,
+    path: `/projects/${decodedSlug}`,
+  })
 }
 
 const queryProjectBySlug = cache(async ({ slug }: { slug: string }) => {

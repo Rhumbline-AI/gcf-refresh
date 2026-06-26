@@ -13,6 +13,12 @@ import { PageTransitionProvider } from '@/providers/PageTransition'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import {
+  SITE_DEFAULT_TITLE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  defaultTwitter,
+} from '@/utilities/siteMetadata'
 import { draftMode } from 'next/headers'
 
 import './globals.css'
@@ -68,16 +74,31 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
   title: {
-    default: 'GCF',
-    template: '%s | GCF',
+    default: SITE_DEFAULT_TITLE,
+    template: `%s | GCF`,
   },
-  description: 'We engineer combustible ideas. Growth Catalyst Firm identifies energy sources, blind spots, and acceleration points to fuel undeniable brand growth.',
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: mergeOpenGraph(),
-  twitter: {
-    card: 'summary_large_image',
-  },
+  twitter: defaultTwitter,
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: '/',
   },
 }
