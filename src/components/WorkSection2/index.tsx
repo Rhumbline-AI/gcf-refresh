@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { gsap, registerGSAP, ScrollTrigger } from '@/utilities/gsapSetup'
+import { gsap, registerGSAP } from '@/utilities/gsapSetup'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import type { Project } from '@/payload-types'
 import { FloatingWrapper } from '../WorkSection/FloatingWrapper'
@@ -203,19 +203,30 @@ export function WorkSection2({
       if (ring) tl.to(ring, { strokeDashoffset: 0, opacity: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
     }
 
-    const st = ScrollTrigger.create({
-      trigger: section,
-      start: 'top bottom+=100',
-      once: true,
-      onEnter: playAnimation,
-    })
-
-    // Fallback: if section is already in view on mount (common on mobile for
-    // subsequent sections), fire animation after a short delay
-    const sRect = section.getBoundingClientRect()
-    if (sRect.top < window.innerHeight) {
-      setTimeout(playAnimation, 300)
-    }
+    // IntersectionObserver replaces a previous ScrollTrigger here. With many
+    // case studies on the Work page, ScrollTrigger's cached scroll positions
+    // would go stale on mobile (the iOS/Android address bar showing/hiding
+    // changes viewport height), causing some of the repeating WorkSection2
+    // blocks past the first few to silently never fire — leaving their lines
+    // and dots in the hidden initial state. IO is observation-based and
+    // fires reliably for any number of sections at any scroll depth.
+    //
+    // `rootMargin: '0px 0px 100px 0px'` matches the previous
+    // `start: 'top bottom+=100'` ScrollTrigger position: the trigger fires
+    // when the section is approaching from 100px below the viewport.
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            playAnimation()
+            io.disconnect()
+            break
+          }
+        }
+      },
+      { rootMargin: '0px 0px 100px 0px', threshold: 0 },
+    )
+    io.observe(section)
 
     // Live-anchor the line tips + terminus dots to each orb's current visual
     // center. This makes the line "pivot" at the fixed bend (elbow) as the
@@ -253,7 +264,7 @@ export function WorkSection2({
     gsap.ticker.add(liveAnchor)
 
     return () => {
-      st.kill()
+      io.disconnect()
       ro.disconnect()
       window.removeEventListener('resize', scheduleCalc)
       if (rafId != null) cancelAnimationFrame(rafId)

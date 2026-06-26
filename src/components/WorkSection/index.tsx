@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { gsap, registerGSAP, ScrollTrigger } from '@/utilities/gsapSetup'
+import { gsap, registerGSAP } from '@/utilities/gsapSetup'
 import blueNoiseBg from '@/images/blue-noise-background.jpg'
 import type { Project } from '@/payload-types'
 import { FloatingWrapper } from './FloatingWrapper'
@@ -163,51 +163,69 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
     if (orb2Ref.current) ro.observe(orb2Ref.current)
     window.addEventListener('resize', scheduleCalc)
 
-    const st = ScrollTrigger.create({
-      trigger: section,
-      start: 'top 95%',
-      once: true,
-      onEnter: () => {
-        animated = true
-        // Orbs animate in via FloatingWrapper (0–1.0s). Lines draw after.
-        // onComplete: clear GSAP CSS styles so lines stay fully drawn at any width
-        const clearDash = () => {
-          svg.querySelectorAll<SVGLineElement>('line').forEach(l => { l.style.strokeDasharray = ''; l.style.strokeDashoffset = '' })
-          const r = svg.querySelector<SVGElement>('.dec-ring')
-          if (r) { r.style.strokeDasharray = ''; r.style.strokeDashoffset = '' }
+    // Build the entrance timeline. Identical to the previous implementation —
+    // we just gate it on IntersectionObserver instead of ScrollTrigger because
+    // ScrollTrigger's cached scroll positions can go stale on mobile when the
+    // browser's address bar shows/hides, causing deeper sections to silently
+    // fail to fire. IO is the right primitive for "is this element visible".
+    const playAnimation = () => {
+      if (animated) return
+      animated = true
+      // Orbs animate in via FloatingWrapper (0–1.0s). Lines draw after.
+      // onComplete: clear GSAP CSS styles so lines stay fully drawn at any width
+      const clearDash = () => {
+        svg.querySelectorAll<SVGLineElement>('line').forEach(l => { l.style.strokeDasharray = ''; l.style.strokeDashoffset = '' })
+        const r = svg.querySelector<SVGElement>('.dec-ring')
+        if (r) { r.style.strokeDasharray = ''; r.style.strokeDashoffset = '' }
+      }
+      const tl = gsap.timeline({ delay: 1.2, onComplete: clearDash })
+
+      // Long segments first (from screen edges toward bend dots)
+      const ll1 = svg.querySelector('.ll1')
+      const rl1 = svg.querySelector('.rl1')
+      const ll2 = svg.querySelector('.ll2')
+      const rl2 = svg.querySelector('.rl2')
+      const dl  = svg.querySelector('.dl')
+      const dr  = svg.querySelector('.dr')
+      const dlEnd = svg.querySelector('.dl_end')
+      const drEnd = svg.querySelector('.dr_end')
+      const ring = svg.querySelector('.dec-ring')
+
+      if (ll1) tl.to(ll1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0)
+      if (rl1) tl.to(rl1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0.1)
+
+      // Bend dots fade in when long segments reach them
+      if (dl) tl.to(dl, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.85)
+      if (dr) tl.to(dr, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.95)
+
+      // Short segments (bend → orb) draw after dots appear
+      if (ll2) tl.to(ll2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.0)
+      if (rl2) tl.to(rl2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.1)
+
+      // Terminus dots fade in alongside the line tips arriving at the orbs
+      if (dlEnd) tl.to(dlEnd, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 1.4)
+      if (drEnd) tl.to(drEnd, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 1.5)
+
+      // Decorative ring draws on in parallel with lines
+      if (ring) tl.to(ring, { strokeDashoffset: 0, opacity: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
+    }
+
+    // `top 95%` previously meant: fire when 5% of the section enters from the
+    // bottom of the viewport. Match that with a negative bottom rootMargin so
+    // the IO callback fires at the same scroll position the ScrollTrigger did.
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            playAnimation()
+            io.disconnect()
+            break
+          }
         }
-        const tl = gsap.timeline({ delay: 1.2, onComplete: clearDash })
-
-        // Long segments first (from screen edges toward bend dots)
-        const ll1 = svg.querySelector('.ll1')
-        const rl1 = svg.querySelector('.rl1')
-        const ll2 = svg.querySelector('.ll2')
-        const rl2 = svg.querySelector('.rl2')
-        const dl  = svg.querySelector('.dl')
-        const dr  = svg.querySelector('.dr')
-        const dlEnd = svg.querySelector('.dl_end')
-        const drEnd = svg.querySelector('.dr_end')
-        const ring = svg.querySelector('.dec-ring')
-
-        if (ll1) tl.to(ll1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0)
-        if (rl1) tl.to(rl1, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, 0.1)
-
-        // Bend dots fade in when long segments reach them
-        if (dl) tl.to(dl, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.85)
-        if (dr) tl.to(dr, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.95)
-
-        // Short segments (bend → orb) draw after dots appear
-        if (ll2) tl.to(ll2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.0)
-        if (rl2) tl.to(rl2, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 1.1)
-
-        // Terminus dots fade in alongside the line tips arriving at the orbs
-        if (dlEnd) tl.to(dlEnd, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 1.4)
-        if (drEnd) tl.to(drEnd, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 1.5)
-
-        // Decorative ring draws on in parallel with lines
-        if (ring) tl.to(ring, { strokeDashoffset: 0, opacity: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
       },
-    })
+      { rootMargin: '0px 0px -5% 0px', threshold: 0 },
+    )
+    io.observe(section)
 
     // Live-anchor the line tips + terminus dots to each orb's current visual
     // center so the line "pivots" at the fixed bend as the orbs float / drift.
@@ -243,7 +261,7 @@ export function WorkSection({ projects, title }: { projects: Project[]; title?: 
     recalcConnectorsRef.current = scheduleCalc
 
     return () => {
-      st.kill()
+      io.disconnect()
       ro.disconnect()
       window.removeEventListener('resize', scheduleCalc)
       if (rafId != null) cancelAnimationFrame(rafId)
