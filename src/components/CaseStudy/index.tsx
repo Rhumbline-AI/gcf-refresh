@@ -331,6 +331,7 @@ export const CaseStudy: React.FC<CaseStudyProps> = ({ project }) => {
                               allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope"
                               allowFullScreen
                               frameBorder="0"
+                              loading="lazy"
                             />
                           </div>
                         ) : media && typeof media !== 'number' ? (
@@ -455,6 +456,7 @@ function MediaSlot({
           allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope"
           allowFullScreen
           frameBorder="0"
+          loading="lazy"
         />
       ) : mediaObj ? (
         <Image
