@@ -2,25 +2,46 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 import redirects from './redirects.js'
 
-const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+const VERCEL_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : undefined || process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
+  : undefined
 
 // Strip whitespace/newlines — the Vercel-managed env var came through with a
 // trailing literal `\n` which would corrupt rewrite destinations.
 const BLOB_STORE_BASE_URL = process.env.BLOB_STORE_BASE_URL?.trim()
 
+// Media is served as ABSOLUTE URLs built from NEXT_PUBLIC_SERVER_URL (now the
+// canonical gcfactory.com). Every host that can appear in an <Image> src must be
+// whitelisted here or next/image returns 400. Collect all of them — the canonical
+// domain(s), the Vercel deployment URL, and localhost — into a deduped set.
+const imageHostnames = new Set(
+  [
+    process.env.NEXT_PUBLIC_SERVER_URL,
+    VERCEL_URL,
+    process.env.__NEXT_PRIVATE_ORIGIN,
+    'https://gcfactory.com',
+    'https://www.gcfactory.com',
+    'http://localhost:3000',
+  ]
+    .filter(Boolean)
+    .map((item) => {
+      try {
+        return new URL(item.trim()).hostname
+      } catch {
+        return null
+      }
+    })
+    .filter(Boolean),
+)
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL].map((item) => {
-        const url = new URL(item)
-        return {
-          hostname: url.hostname,
-          protocol: url.protocol.replace(':', ''),
-        }
-      }),
+      ...Array.from(imageHostnames).flatMap((hostname) => [
+        { hostname, protocol: 'https' },
+        { hostname, protocol: 'http' },
+      ]),
       ...(BLOB_STORE_BASE_URL
         ? [
             {
