@@ -44,6 +44,23 @@ if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
   )
 }
 
+// Domains allowed to authenticate against the admin / API. The site is served at
+// the canonical client domain (gcfactory.com) as well as the Vercel preview URLs,
+// so all of them must be present in both CORS and CSRF or admin mutations are
+// rejected with "You are not allowed to perform this action."
+const allowedOrigins = Array.from(
+  new Set(
+    [
+      getServerSideURL(),
+      'https://gcfactory.com',
+      'https://www.gcfactory.com',
+      process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : '',
+    ].filter(Boolean),
+  ),
+)
+
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
   email: nodemailerAdapter({
@@ -104,7 +121,8 @@ export default buildConfig({
     push: process.env.PAYLOAD_DB_PUSH === 'true',
   }),
   collections: [Pages, Posts, Projects, Media, Categories, Users],
-  cors: [getServerSideURL()].filter(Boolean),
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
   globals: [Header, Footer],
   plugins,
   secret: process.env.PAYLOAD_SECRET,

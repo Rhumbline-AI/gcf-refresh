@@ -13,6 +13,7 @@ import { PageTransitionProvider } from '@/providers/PageTransition'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { Analytics } from '@vercel/analytics/next'
 import {
   SITE_DEFAULT_TITLE,
   SITE_DESCRIPTION,
@@ -66,6 +67,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </PageTransitionProvider>
           <Footer />
         </Providers>
+        <Analytics />
       </body>
     </html>
   )
