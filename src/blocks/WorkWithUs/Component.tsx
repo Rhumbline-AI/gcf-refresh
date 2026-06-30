@@ -38,9 +38,10 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
       <div
         className="absolute pointer-events-none work-with-us-ring"
         style={{
-          // ~20% smaller than before (1000 → 800px max, 95 → 76vw cap) so the
-          // ring's circumference drops by the same ratio.
-          width: 'min(800px, 76vw)',
+          // Mobile keeps the larger ring (looks great there). Desktop overrides
+          // --ring-width below to a smaller circle. ~20% smaller than the
+          // original (1000 → 800px max, 95 → 76vw cap) on mobile.
+          width: 'var(--ring-width, min(800px, 76vw))',
           aspectRatio: '1 / 1',
           right: 0,
           top: 'var(--ring-top, calc(50% - 250px))',
@@ -76,10 +77,12 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
         .work-with-us-ring { --ring-top: 35%; }
         .work-with-us-text { font-size: 4.2px; }
         @media (min-width: 768px) {
-          /* Pull the ring left (instead of pushing it off the right edge) so it
-             slides behind and overlaps the centered blue circle, matching the
-             overlap seen on mobile. */
-          .work-with-us-ring { --ring-top: calc(50% - 250px); --ring-transform: translate(-12%, -50%); }
+          /* Smaller ring on desktop. The larger leftward translate (-45% vs -12%)
+             keeps the ring's LEFT edge roughly where the 800px version sat, so it
+             still slides behind and overlaps the centered blue circle while the
+             top/right sweep pulls in to a smaller, tidier circle. Text font-size
+             is in viewBox units so it scales down proportionally with the ring. */
+          .work-with-us-ring { --ring-width: min(620px, 60vw); --ring-top: calc(50% - 250px); --ring-transform: translate(-45%, -50%); }
           .work-with-us-text { font-size: 1.4px; }
         }
       `}</style>
