@@ -1,6 +1,7 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
 import type { Project } from '../../payload-types'
+import { cacheTags } from '../../utilities/cacheTags'
 
 // Project content surfaces in several places, so a single edit may need to
 // invalidate multiple statically-generated routes:
@@ -12,7 +13,7 @@ import type { Project } from '../../payload-types'
 // Projects don't use drafts, so there's no _status gate — every save should
 // publish-through immediately.
 const revalidateAllProjectPaths = async (doc: Project, previousDoc?: Partial<Project>) => {
-  const { revalidatePath } = await import('next/cache')
+  const { revalidatePath, revalidateTag } = await import('next/cache')
 
   const slugsToRevalidate = new Set<string>()
   if (doc?.slug) slugsToRevalidate.add(doc.slug)
@@ -23,10 +24,15 @@ const revalidateAllProjectPaths = async (doc: Project, previousDoc?: Partial<Pro
   for (const slug of slugsToRevalidate) {
     revalidatePath(`/work/${slug}`)
     revalidatePath(`/projects/${slug}`)
+    revalidateTag(cacheTags.docBySlug('projects', slug))
   }
 
   revalidatePath('/work')
   revalidatePath('/')
+
+  // Busts both the per-slug case-study caches AND the Work/Work2 block project
+  // lists rendered on the home and work pages.
+  revalidateTag(cacheTags.collection('projects'))
 }
 
 export const revalidateProject: CollectionAfterChangeHook<Project> = async ({

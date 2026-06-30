@@ -14,6 +14,8 @@ import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { HomePageLivePreview } from './HomePageLivePreview'
+import { unstable_cache } from 'next/cache'
+import { cacheTags } from '@/utilities/cacheTags'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -120,24 +122,53 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   return generateMeta({ doc: page })
 }
 
+// Published pages are read through the Next Data Cache (no Neon round-trip on
+// warm navigations). The `revalidatePage` hook busts these tags on every edit,
+// so content stays fresh. Draft preview always bypasses the cache below.
+const getCachedPageBySlug = (slug: string) =>
+  unstable_cache(
+    async () => {
+      const payload = await getPayload({ config: configPromise })
+      const result = await payload.find({
+        collection: 'pages',
+        draft: false,
+        depth: 2,
+        limit: 1,
+        overrideAccess: false,
+        pagination: false,
+        where: {
+          slug: {
+            equals: slug,
+          },
+        },
+      })
+      return result.docs?.[0] || null
+    },
+    ['page-by-slug', slug],
+    { tags: [cacheTags.collection('pages'), cacheTags.docBySlug('pages', slug)], revalidate: 3600 },
+  )()
+
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
 
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
-    collection: 'pages',
-    draft,
-    depth: 2,
-    limit: 1,
-    overrideAccess: draft,
-    pagination: false,
-    where: {
-      slug: {
-        equals: slug,
+  // Draft preview must always be live — never serve cached published data.
+  if (draft) {
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'pages',
+      draft: true,
+      depth: 2,
+      limit: 1,
+      overrideAccess: true,
+      pagination: false,
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-  })
+    })
+    return result.docs?.[0] || null
+  }
 
-  return result.docs?.[0] || null
+  return getCachedPageBySlug(slug)
 })

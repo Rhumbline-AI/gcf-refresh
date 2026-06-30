@@ -1,8 +1,7 @@
 import React from 'react'
-import { getPayload } from 'payload'
-import config from '@payload-config'
 import { WorkSection2 } from '@/components/WorkSection2'
 import type { Project } from '@/payload-types'
+import { getCachedProjectsByIds } from '@/utilities/getCachedProjectsByIds'
 
 type Work2BlockProps = {
   title?: string | null
@@ -27,21 +26,12 @@ export const Work2Block = async ({
   // Get project IDs (whether they're numbers or objects)
   const projectIds = projects.map((p) => (typeof p === 'object' ? p.id : p))
 
-  // Fetch the full project data
-  const payload = await getPayload({ config })
-  const result = await payload.find({
-    collection: 'projects',
-    depth: 1,
-    where: {
-      id: {
-        in: projectIds,
-      },
-    },
-  })
+  // Fetch the full project data (cached; busted by revalidateProject on edit)
+  const docs = await getCachedProjectsByIds(projectIds)
 
   // Sort to maintain the order from the CMS
   const sortedProjects = projectIds
-    .map((id) => result.docs.find((p) => p.id === id))
+    .map((id) => docs.find((p) => p.id === id))
     .filter((p): p is Project => p !== undefined)
 
   if (sortedProjects.length === 0) {

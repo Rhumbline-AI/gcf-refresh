@@ -13,6 +13,8 @@ import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { unstable_cache } from 'next/cache'
+import { cacheTags } from '@/utilities/cacheTags'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -79,23 +81,49 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   return generateMeta({ doc: post })
 }
 
+// Published posts read through the Next Data Cache; `revalidatePost` busts these
+// tags on every edit. Draft preview always bypasses the cache below.
+const getCachedPostBySlug = (slug: string) =>
+  unstable_cache(
+    async () => {
+      const payload = await getPayload({ config: configPromise })
+      const result = await payload.find({
+        collection: 'posts',
+        draft: false,
+        limit: 1,
+        overrideAccess: false,
+        pagination: false,
+        where: {
+          slug: {
+            equals: slug,
+          },
+        },
+      })
+      return result.docs?.[0] || null
+    },
+    ['post-by-slug', slug],
+    { tags: [cacheTags.collection('posts'), cacheTags.docBySlug('posts', slug)], revalidate: 3600 },
+  )()
+
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
 
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
-    collection: 'posts',
-    draft,
-    limit: 1,
-    overrideAccess: draft,
-    pagination: false,
-    where: {
-      slug: {
-        equals: slug,
+  if (draft) {
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'posts',
+      draft: true,
+      limit: 1,
+      overrideAccess: true,
+      pagination: false,
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-  })
+    })
+    return result.docs?.[0] || null
+  }
 
-  return result.docs?.[0] || null
+  return getCachedPostBySlug(slug)
 })

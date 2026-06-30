@@ -1,6 +1,7 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
 import type { Post } from '../../../payload-types'
+import { cacheTags } from '../../../utilities/cacheTags'
 
 export const revalidatePost: CollectionAfterChangeHook<Post> = async ({
   doc,
@@ -16,6 +17,8 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = async ({
 
       revalidatePath(path)
       revalidateTag('posts-sitemap')
+      revalidateTag(cacheTags.collection('posts'))
+      if (doc.slug) revalidateTag(cacheTags.docBySlug('posts', doc.slug))
     }
 
     // If the post was previously published, we need to revalidate the old path
@@ -26,6 +29,8 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = async ({
 
       revalidatePath(oldPath)
       revalidateTag('posts-sitemap')
+      revalidateTag(cacheTags.collection('posts'))
+      if (previousDoc.slug) revalidateTag(cacheTags.docBySlug('posts', previousDoc.slug))
     }
   }
   return doc
@@ -41,6 +46,8 @@ export const revalidateDelete: CollectionAfterDeleteHook<Post> = async ({
 
     revalidatePath(path)
     revalidateTag('posts-sitemap')
+    revalidateTag(cacheTags.collection('posts'))
+    if (doc?.slug) revalidateTag(cacheTags.docBySlug('posts', doc.slug))
   }
 
   return doc
