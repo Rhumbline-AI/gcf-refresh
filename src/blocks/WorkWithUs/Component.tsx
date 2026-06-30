@@ -44,7 +44,7 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
           aspectRatio: '1 / 1',
           right: 0,
           top: 'var(--ring-top, calc(50% - 250px))',
-          transform: 'translate(35%, -50%)',
+          transform: 'var(--ring-transform, translate(35%, -50%))',
         }}
         aria-hidden
       >
@@ -76,7 +76,10 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
         .work-with-us-ring { --ring-top: 35%; }
         .work-with-us-text { font-size: 4.2px; }
         @media (min-width: 768px) {
-          .work-with-us-ring { --ring-top: calc(50% - 250px); }
+          /* Pull the ring left (instead of pushing it off the right edge) so it
+             slides behind and overlaps the centered blue circle, matching the
+             overlap seen on mobile. */
+          .work-with-us-ring { --ring-top: calc(50% - 250px); --ring-transform: translate(-12%, -50%); }
           .work-with-us-text { font-size: 1.4px; }
         }
       `}</style>

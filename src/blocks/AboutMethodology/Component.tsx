@@ -195,7 +195,7 @@ export const AboutMethodologyBlock: React.FC<AboutMethodologyProps> = ({ title, 
                 willChange: 'transform',
               }}
             >
-              <div ref={innerContentRef} className="w-full px-10 sm:px-16 md:px-24 lg:px-32 xl:px-40">
+              <div ref={innerContentRef} className="w-full px-10 sm:px-16 md:px-12 lg:px-16 xl:px-20">
                 {title && (
                   <h2
                     className="text-white text-center font-extralight uppercase tracking-wide text-2xl sm:text-2xl md:text-3xl lg:text-[2.75rem] xl:text-5xl mb-6 sm:mb-8 md:mb-10 lg:mb-12 whitespace-pre-line"
@@ -238,7 +238,7 @@ function MethodologyCircle({ item }: { item: MethodologyItem }) {
         {item.label}
       </h3>
       <p
-        className="text-sm sm:text-sm md:text-sm lg:text-base text-white/90 font-medium leading-snug sm:leading-snug max-w-[230px] sm:max-w-[190px] md:max-w-[180px] lg:max-w-[220px]"
+        className="text-sm sm:text-sm md:text-sm lg:text-base text-white/90 font-medium leading-snug sm:leading-snug max-w-[230px] sm:max-w-[210px] md:max-w-[240px] lg:max-w-[290px] xl:max-w-[330px]"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         {item.description}

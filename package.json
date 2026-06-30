@@ -17,6 +17,7 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "check:db": "node scripts/check-postgres.mjs",
     "seed:faq": "cross-env NODE_OPTIONS=\"--no-deprecation --import tsx/esm\" node scripts/seed-faq.mjs",
+    "deploy:all": "bash scripts/deploy-all.sh",
     "db:start": "docker compose -f docker-compose.postgres.yml up -d",
     "db:stop": "docker compose -f docker-compose.postgres.yml down",
     "reinstall": "cross-env NODE_OPTIONS=--no-deprecation rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
