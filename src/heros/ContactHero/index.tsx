@@ -261,9 +261,9 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
                 className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#307fe2] leading-tight"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
-                Recieved!<br />
-                A human will<br />
-                contact you soon.
+                Thank you.<br />
+                We'll be in touch<br />
+                shortly.
               </p>
             </div>
           )}
