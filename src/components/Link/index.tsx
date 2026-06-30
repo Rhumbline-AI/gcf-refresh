@@ -22,6 +22,47 @@ type CMSLinkType = {
   onClick?: () => void
 }
 
+export function getCMSLinkHref(
+  props: Pick<CMSLinkType, 'type' | 'reference' | 'url'>,
+): string | null {
+  const { type, reference, url } = props
+
+  if (type === 'custom' && url) {
+    return url
+  }
+
+  if (type === 'reference' && reference?.value) {
+    const { relationTo, value } = reference
+
+    if (typeof value === 'object' && 'slug' in value && value.slug) {
+      const slug = value.slug
+
+      if (relationTo === 'pages') {
+        return slug === 'home' ? '/' : `/${slug}`
+      }
+
+      return `/${relationTo}/${slug}`
+    }
+  }
+
+  return url || null
+}
+
+/** Ensure hero CTAs like "Talk to us" always resolve to /contact. */
+export function normalizeCMSLink(link: CMSLinkType): CMSLinkType {
+  const label = link.label?.trim().toLowerCase() ?? ''
+
+  if (label.includes('talk to us') || label === 'contact') {
+    return {
+      ...link,
+      type: 'custom',
+      url: '/contact',
+    }
+  }
+
+  return link
+}
+
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const {
     type,
@@ -37,12 +78,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     onClick,
   } = props
 
-  const href =
-    type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
-          reference.value.slug
-        }`
-      : url
+  const href = getCMSLinkHref({ type, reference, url })
 
   if (!href) return null
 

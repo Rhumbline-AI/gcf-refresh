@@ -38,6 +38,12 @@ if (!process.env.DATABASE_URI) {
   )
 }
 
+if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+  console.warn(
+    '[email] SMTP_USER/SMTP_PASS are not set. Contact form notification emails will fail until Gmail SMTP credentials are configured.',
+  )
+}
+
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
   email: nodemailerAdapter({

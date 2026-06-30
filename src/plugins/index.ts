@@ -10,6 +10,12 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
+import {
+  CONTACT_FORM_NOTIFY_EMAIL,
+  formatSubmissionText,
+  getSubmitterEmail,
+  getSubmitterName,
+} from '@/utilities/contactFormEmail'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -103,6 +109,44 @@ export const plugins: Plugin[] = [
           }
           return field
         })
+      },
+    },
+    formSubmissionOverrides: {
+      hooks: {
+        afterChange: [
+          async ({ doc, operation, req }) => {
+            if (operation !== 'create') return
+
+            const formId = typeof doc.form === 'object' ? doc.form?.id : doc.form
+            if (!formId) return
+
+            const form = await req.payload.findByID({
+              collection: 'forms',
+              id: formId,
+              depth: 0,
+            })
+
+            const hasConfiguredRecipient = form.emails?.some((email) => email.emailTo?.trim())
+            if (hasConfiguredRecipient) return
+
+            const submitterEmail = getSubmitterEmail(doc.submissionData)
+            const submitterName = getSubmitterName(doc.submissionData)
+
+            try {
+              await req.payload.sendEmail({
+                to: CONTACT_FORM_NOTIFY_EMAIL,
+                replyTo: submitterEmail,
+                subject: `New contact form submission${submitterName ? ` from ${submitterName}` : ''}`,
+                text: `New contact form submission:\n\n${formatSubmissionText(doc.submissionData)}`,
+              })
+            } catch (error) {
+              req.payload.logger.error(
+                { err: error },
+                'Failed to send contact form notification email',
+              )
+            }
+          },
+        ],
       },
     },
   }),

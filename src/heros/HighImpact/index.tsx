@@ -5,7 +5,7 @@ import { gsap, registerGSAP } from '@/utilities/gsapSetup'
 
 import type { Page } from '@/payload-types'
 
-import { CMSLink } from '@/components/Link'
+import { CMSLink, normalizeCMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 
@@ -52,8 +52,9 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
           fill
           priority
           resource={media}
+          className="absolute inset-0 z-0 pointer-events-none"
           imgClassName="object-cover"
-          videoClassName="absolute inset-0 w-full h-full object-cover"
+          videoClassName="absolute inset-0 w-full h-full object-cover pointer-events-none"
         />
       )}
       {overlayLogo && typeof overlayLogo === 'object' && (
@@ -72,11 +73,11 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
       </div>
 
       {Array.isArray(links) && links.length > 0 && (
-        <ul className="absolute bottom-[4%] left-0 right-0 flex justify-center gap-4 z-10">
+        <ul className="absolute bottom-[4%] left-0 right-0 flex justify-center gap-4 z-30 pointer-events-none">
           {links.map(({ link }, i) => {
             return (
-              <li key={i} className="link-animate">
-                <CMSLink {...link} />
+              <li key={i} className="link-animate pointer-events-auto">
+                <CMSLink {...normalizeCMSLink(link)} />
               </li>
             )
           })}

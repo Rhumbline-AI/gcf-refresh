@@ -9,6 +9,16 @@ import bbbLockup from '@/images/bbb-rating-lockup.png'
 import footerWhite from '@/images/footer-white.png'
 import { BackToTop } from './BackToTop'
 
+const SOCIAL_LINKS = {
+  instagram: 'https://www.instagram.com/gcfactory/',
+  facebook: 'https://www.facebook.com/gcfactory/',
+  linkedin:
+    'https://www.linkedin.com/company/greatest-common-factory/posts/?feedView=all',
+} as const
+
+const BBB_PROFILE_URL =
+  'https://www.bbb.org/us/tx/austin/profile/advertising-agencies/greatest-common-factory-0825-1000101465/#sealclick'
+
 export async function Footer() {
   const footerData: Footer = await getCachedGlobal('footer', 1)()
 
@@ -43,9 +53,10 @@ export async function Footer() {
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
             <div className="flex gap-4">
               <Link
-                href="https://instagram.com"
+                href={SOCIAL_LINKS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="GCF on Instagram"
                 className="w-10 h-10 rounded-full bg-primary flex items-center justify-center hover:opacity-80 transition-opacity"
               >
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -53,9 +64,10 @@ export async function Footer() {
                 </svg>
               </Link>
               <Link
-                href="https://facebook.com"
+                href={SOCIAL_LINKS.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="GCF on Facebook"
                 className="w-10 h-10 rounded-full bg-primary flex items-center justify-center hover:opacity-80 transition-opacity"
               >
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -63,9 +75,10 @@ export async function Footer() {
                 </svg>
               </Link>
               <Link
-                href="https://linkedin.com"
+                href={SOCIAL_LINKS.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="GCF on LinkedIn"
                 className="w-10 h-10 rounded-full bg-primary flex items-center justify-center hover:opacity-80 transition-opacity"
               >
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -74,13 +87,20 @@ export async function Footer() {
               </Link>
             </div>
             <div className="flex flex-col items-center gap-3">
-              <Image
-                src={bbbLockup}
-                alt="BBB Accredited Business - Rating A+"
-                width={200}
-                height={60}
-                className="h-auto"
-              />
+              <Link
+                href={BBB_PROFILE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View GCF BBB Business Profile"
+              >
+                <Image
+                  src={bbbLockup}
+                  alt="BBB Accredited Business - Rating A+"
+                  width={200}
+                  height={60}
+                  className="h-auto"
+                />
+              </Link>
               <div className="text-sm text-foreground/60" style={{ fontFamily: 'var(--font-inter)' }}>
                 ©2026 MAKE THINGS BETTER, LLC.
               </div>
