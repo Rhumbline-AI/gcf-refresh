@@ -75,9 +75,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  // No-op title template ("%s"): pages provide their full SEO title verbatim
+  // (see formatPageTitle), so child titles render unchanged. The previous
+  // "%s | GCF" template double-appended the brand on top of titles editors had
+  // already branded in the CMS. `default` is used only for routes that don't
+  // set their own title.
   title: {
     default: SITE_DEFAULT_TITLE,
-    template: `%s | GCF`,
+    template: '%s',
   },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
