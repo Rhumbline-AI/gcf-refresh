@@ -1,7 +1,10 @@
 import type { FormSubmission } from '@/payload-types'
 
+// Where contact-form notifications are DELIVERED. This is the receive address
+// (the getstarted alias) and is intentionally separate from the SMTP send
+// identity (admin@gcfactory.com), so we don't fall back to SMTP_FROM_ADDRESS.
 export const CONTACT_FORM_NOTIFY_EMAIL =
-  process.env.CONTACT_FORM_NOTIFY_EMAIL || process.env.SMTP_FROM_ADDRESS || 'admin@gcfactory.com'
+  process.env.CONTACT_FORM_NOTIFY_EMAIL || 'getstarted@gcfactory.com'
 
 export function formatSubmissionText(submissionData?: FormSubmission['submissionData']): string {
   if (!submissionData?.length) return 'No submission data.'

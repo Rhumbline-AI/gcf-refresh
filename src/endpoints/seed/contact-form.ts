@@ -35,7 +35,10 @@ export const contactForm: RequiredDataFromCollectionSlug<'forms'> = {
   createdAt: '2023-01-12T21:47:41.374Z',
   emails: [
     {
-      emailTo: 'admin@gcfactory.com',
+      // Notifications are delivered to the getstarted alias; mail is still SENT
+      // from the authenticated admin@gcfactory.com mailbox (email_from defaults
+      // to SMTP_FROM_ADDRESS). replyTo points at the submitter.
+      emailTo: 'getstarted@gcfactory.com',
       replyTo: '{{email}}',
       subject: 'New contact form submission from {{name}}',
       message: {
