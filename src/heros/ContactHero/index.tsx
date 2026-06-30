@@ -262,7 +262,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
                 Thank you.<br />
-                We'll be in touch<br />
+                We&apos;ll be in touch<br />
                 shortly.
               </p>
             </div>
