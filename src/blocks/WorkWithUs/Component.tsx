@@ -81,8 +81,11 @@ export const WorkWithUsBlock: React.FC<WorkWithUsProps> = ({ title, image }) => 
              keeps the ring's LEFT edge roughly where the 800px version sat, so it
              still slides behind and overlaps the centered blue circle while the
              top/right sweep pulls in to a smaller, tidier circle. Text font-size
-             is in viewBox units so it scales down proportionally with the ring. */
-          .work-with-us-ring { --ring-width: min(620px, 60vw); --ring-top: calc(50% - 250px); --ring-transform: translate(-45%, -50%); }
+             is in viewBox units so it scales down proportionally with the ring.
+             --ring-top is 50% (not 50% - 250px) so the ring centers on the blue
+             circle as a halo instead of bleeding up into the previous section and
+             crossing the "MORE CASE STUDIES" button above it. */
+          .work-with-us-ring { --ring-width: min(620px, 60vw); --ring-top: 50%; --ring-transform: translate(-45%, -50%); }
           .work-with-us-text { font-size: 1.4px; }
         }
       `}</style>
