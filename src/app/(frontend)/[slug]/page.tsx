@@ -132,7 +132,7 @@ const getCachedPageBySlug = (slug: string) =>
       const result = await payload.find({
         collection: 'pages',
         draft: false,
-        depth: 2,
+        depth: 3,
         limit: 1,
         overrideAccess: false,
         pagination: false,
@@ -157,7 +157,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     const result = await payload.find({
       collection: 'pages',
       draft: true,
-      depth: 2,
+      depth: 3,
       limit: 1,
       overrideAccess: true,
       pagination: false,

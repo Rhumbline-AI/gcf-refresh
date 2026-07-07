@@ -16,8 +16,10 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = async ({
       payload.logger.info(`Revalidating post at path: ${path}`)
 
       revalidatePath(path)
+      revalidatePath('/pov')
       revalidateTag('posts-sitemap')
       revalidateTag(cacheTags.collection('posts'))
+      revalidateTag(cacheTags.collection('pages'))
       if (doc.slug) revalidateTag(cacheTags.docBySlug('posts', doc.slug))
     }
 
@@ -28,8 +30,10 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = async ({
       payload.logger.info(`Revalidating old post at path: ${oldPath}`)
 
       revalidatePath(oldPath)
+      revalidatePath('/pov')
       revalidateTag('posts-sitemap')
       revalidateTag(cacheTags.collection('posts'))
+      revalidateTag(cacheTags.collection('pages'))
       if (previousDoc.slug) revalidateTag(cacheTags.docBySlug('posts', previousDoc.slug))
     }
   }
@@ -45,8 +49,10 @@ export const revalidateDelete: CollectionAfterDeleteHook<Post> = async ({
     const path = `/posts/${doc?.slug}`
 
     revalidatePath(path)
+    revalidatePath('/pov')
     revalidateTag('posts-sitemap')
     revalidateTag(cacheTags.collection('posts'))
+    revalidateTag(cacheTags.collection('pages'))
     if (doc?.slug) revalidateTag(cacheTags.docBySlug('posts', doc.slug))
   }
 

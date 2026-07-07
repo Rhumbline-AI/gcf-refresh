@@ -1,7 +1,6 @@
 import React from 'react'
 import type { Post } from '@/payload-types'
 import { formatAuthors } from '@/utilities/formatAuthors'
-import adageLogo from '@/images/adage-logo.png'
 
 export const PostHero: React.FC<{
   post: Post
@@ -9,7 +8,7 @@ export const PostHero: React.FC<{
   const { publicationLogo, populatedAuthors, title } = post
 
   const logoUrl =
-    typeof publicationLogo === 'object' && publicationLogo !== null
+    typeof publicationLogo === 'object' && publicationLogo !== null && publicationLogo.url
       ? publicationLogo.url
       : null
 
@@ -20,11 +19,13 @@ export const PostHero: React.FC<{
     <div className="pt-10 pb-2 md:pt-14 md:pb-3" style={{ backgroundColor: '#ffffff' }}>
       <div className="container">
         <div className="max-w-2xl">
-          <img
-            src={logoUrl || adageLogo.src}
-            alt=""
-            className="h-12 md:h-14 w-auto object-contain object-left mb-6"
-          />
+          {logoUrl && (
+            <img
+              src={logoUrl}
+              alt=""
+              className="h-12 md:h-14 w-auto object-contain object-left mb-6"
+            />
+          )}
 
           <h1
             className="text-3xl md:text-4xl lg:text-[2.75rem] font-light leading-[1.25] text-[#1a1a1a] mb-4"

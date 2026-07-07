@@ -41,9 +41,9 @@ export const Posts: CollectionConfig<'posts'> = {
   defaultPopulate: {
     title: true,
     slug: true,
+    publicationLogo: true,
     categories: true,
     meta: {
-      image: true,
       description: true,
     },
   },
@@ -81,6 +81,10 @@ export const Posts: CollectionConfig<'posts'> = {
               type: 'upload',
               relationTo: 'media',
               label: 'Publication Logo',
+              admin: {
+                description:
+                  'Upload the outlet logo (e.g. AdAge, Forbes, Campaign). This appears at the top of the article page and on the POV page when this post is linked there. Upload the logo here — not on the POV page.',
+              },
             },
             {
               name: 'heroImage',
@@ -240,7 +244,7 @@ export const Posts: CollectionConfig<'posts'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: 2000, // Live preview without hammering the DB (100ms caused admin timeouts)
       },
       schedulePublish: true,
     },

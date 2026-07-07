@@ -321,10 +321,27 @@ export interface Page {
         blockType: 'methodology';
       }
     | {
+        /**
+         * Link published posts to list on the POV page. Upload each post's Publication Logo under Posts → Content (not here). Optionally add a short POV listing summary below each link.
+         */
         articles?:
           | {
+              /**
+               * Select a published post. Its title, publication logo, and link are pulled automatically from the post.
+               */
+              post?: (number | null) | Post;
+              /**
+               * Short blurb shown on the POV page. Leave blank to use the post's SEO description (Posts → SEO tab).
+               */
+              listingSummary?: string | null;
+              /**
+               * Legacy field. Prefer linking a Post above — set its Publication Logo on the post instead.
+               */
               logo?: (number | null) | Media;
-              title: string;
+              /**
+               * Legacy field. Prefer linking a Post above.
+               */
+              title?: string | null;
               description?: string | null;
               link?: string | null;
               id?: string | null;
@@ -389,6 +406,9 @@ export interface Page {
 export interface Post {
   id: number;
   title: string;
+  /**
+   * Upload the outlet logo (e.g. AdAge, Forbes, Campaign). This appears at the top of the article page and on the POV page when this post is linked there. Upload the logo here — not on the POV page.
+   */
   publicationLogo?: (number | null) | Media;
   heroImage?: (number | null) | Media;
   content: {
@@ -1529,6 +1549,8 @@ export interface PagesSelect<T extends boolean = true> {
               articles?:
                 | T
                 | {
+                    post?: T;
+                    listingSummary?: T;
                     logo?: T;
                     title?: T;
                     description?: T;
