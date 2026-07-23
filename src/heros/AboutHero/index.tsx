@@ -68,8 +68,8 @@ export const AboutHero: React.FC<Page['hero']> = ({ richText }) => {
                   '[&_h1_strong]:font-extralight [&_h1_strong]:text-[#307fe2]',
                   '[&_h2_strong]:font-extralight [&_h2_strong]:text-[#307fe2]',
                   '[&_h3_strong]:font-extralight [&_h3_strong]:text-[#307fe2]',
-                  // Body copy: sentence case, light weight (+1 from extralight), +1pt size
-                  '[&_p]:text-[calc(0.8rem+1pt)] [&_p]:sm:text-[calc(1.25rem+1pt)] [&_p]:md:text-[calc(1.5rem+1pt)] [&_p]:lg:text-[calc(1.875rem+1pt)] [&_p]:font-light [&_p]:normal-case [&_p]:leading-[1.6] [&_p]:tracking-normal [&_p]:max-w-2xl md:[&_p]:max-w-3xl [&_p]:mx-auto [&_p]:px-6 [&_p]:sm:px-0 [&_p]:text-[#555555] [&_p]:mt-5 [&_p]:sm:mt-12 [&_p]:text-justify [&_p]:[hyphens:none] [&_p]:sm:[hyphens:auto] [&_p]:[-webkit-hyphens:none] [&_p]:sm:[-webkit-hyphens:auto]',
+                  // Body copy: sentence case, light weight (+1 from extralight), +1pt size, centered
+                  '[&_p]:text-[calc(0.8rem+1pt)] [&_p]:sm:text-[calc(1.25rem+1pt)] [&_p]:md:text-[calc(1.5rem+1pt)] [&_p]:lg:text-[calc(1.875rem+1pt)] [&_p]:font-light [&_p]:normal-case [&_p]:leading-[1.45] [&_p]:tracking-normal [&_p]:max-w-2xl md:[&_p]:max-w-3xl [&_p]:mx-auto [&_p]:px-6 [&_p]:sm:px-0 [&_p]:text-[#555555] [&_p]:mt-5 [&_p]:sm:mt-12 [&_p]:text-center [&_p]:[hyphens:none] [&_p]:sm:[hyphens:auto] [&_p]:[-webkit-hyphens:none] [&_p]:sm:[-webkit-hyphens:auto]',
                   '[&_p_strong]:font-light [&_p_strong]:text-[#307fe2] [&_p_strong]:no-underline',
                 ].join(' ')}
                 data={richText}
